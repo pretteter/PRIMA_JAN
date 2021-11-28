@@ -49,11 +49,11 @@ var Script;
     let ctrTurn = new ƒ.Control("Turn", 100, 0 /* PROPORTIONAL */);
     let mtxTerrain;
     let meshTerrain;
-    let camera = new ƒ.Node("cameraNode");
-    let cmpCamera = new ƒ.ComponentCamera();
-    camera.addComponent(cmpCamera);
-    camera.addComponent(new ƒ.ComponentTransform());
-    graph.addChild(camera);
+    // let camera: ƒ.Node = new ƒ.Node("cameraNode");
+    // let cmpCamera = new ƒ.ComponentCamera();
+    // camera.addComponent(cmpCamera);
+    // camera.addComponent(new ƒ.ComponentTransform())
+    // graph.addChild(camera);
     ctrForward.setDelay(50);
     document.addEventListener("interactiveViewportStarted", start);
     function start(_event) {
@@ -69,8 +69,8 @@ var Script;
     }
     function update(_event) {
         // ƒ.Physics.world.simulate();  // if physics is included and used
-        camera.mtxLocal.translation = cart.mtxWorld.translation;
-        camera.mtxLocal.rotation = new ƒ.Vector3();
+        // camera.mtxLocal.translation = cart.mtxWorld.translation;
+        // camera.mtxLocal.rotation = new ƒ.Vector3()
         viewport.draw();
         ƒ.AudioManager.default.update();
         let deltaTime = ƒ.Loop.timeFrameReal / 1000;
