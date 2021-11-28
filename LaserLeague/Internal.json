@@ -1,0 +1,72 @@
+{
+  "Graph|2021-11-24T19:08:00.751Z|01362": {
+    "ƒ.Graph": {
+      "name": "mainGraph",
+      "components": {},
+      "children": [
+        {
+          "ƒ.Node": {
+            "name": "Arena",
+            "components": {
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshQuad|2021-11-24T19:09:18.496Z|02341",
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[20, 2, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[0.25098039215686274, 0.25098039215686274, 0.25098039215686274, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0, 0]",
+                      "rotation": 0,
+                      "scaling": "[1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2021-11-24T19:10:58.365Z|18836"
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
+        }
+      ],
+      "idResource": "Graph|2021-11-24T19:08:00.751Z|01362",
+      "type": "Graph"
+    }
+  },
+  "MeshQuad|2021-11-24T19:09:18.496Z|02341": {
+    "ƒ.MeshQuad": {
+      "idResource": "MeshQuad|2021-11-24T19:09:18.496Z|02341",
+      "name": "MeshQuad",
+      "type": "MeshQuad"
+    }
+  },
+  "Material|2021-11-24T19:10:58.365Z|18836": {
+    "ƒ.Material": {
+      "name": "mat1",
+      "idResource": "Material|2021-11-24T19:10:58.365Z|18836",
+      "shader": "ShaderUniColor",
+      "coat": {
+        "ƒ.CoatColored": {
+          "color": "[1, 1, 1, 1]"
+        }
+      }
+    }
+  }
+}

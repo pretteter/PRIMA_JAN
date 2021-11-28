@@ -1,0 +1,440 @@
+{
+  "MeshRelief|2021-11-24T19:42:46.915Z|18740": {
+    "ƒ.MeshRelief": {
+      "idResource": "MeshRelief|2021-11-24T19:42:46.915Z|18740",
+      "name": "MeshRelief",
+      "type": "MeshRelief",
+      "idTexture": "TextureImage|2021-11-24T19:43:17.576Z|51168"
+    }
+  },
+  "TextureImage|2021-11-24T19:43:17.576Z|51168": {
+    "ƒ.TextureImage": {
+      "url": "Textures\\map.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2021-11-24T19:43:17.576Z|51168",
+        "name": "Map",
+        "mipmap": "CRISP"
+      }
+    }
+  },
+  "Material|2021-11-24T20:00:39.569Z|80468": {
+    "ƒ.Material": {
+      "name": "matMap",
+      "idResource": "Material|2021-11-24T20:00:39.569Z|80468",
+      "shader": "ShaderTextureFlat",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2021-11-24T19:59:15.186Z|74250"
+        }
+      }
+    }
+  },
+  "TextureImage|2021-11-24T19:59:15.186Z|74250": {
+    "ƒ.TextureImage": {
+      "url": "Textures\\maptex.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2021-11-24T19:59:15.186Z|74250",
+        "name": "mapOverlay.png",
+        "mipmap": "CRISP"
+      }
+    }
+  },
+  "MeshSphere|2021-11-24T20:12:42.332Z|22172": {
+    "ƒ.MeshSphere": {
+      "idResource": "MeshSphere|2021-11-24T20:12:42.332Z|22172",
+      "name": "Kart",
+      "type": "MeshSphere",
+      "sectors": 8,
+      "stacks": 8
+    }
+  },
+  "Material|2021-11-24T20:13:36.467Z|81437": {
+    "ƒ.Material": {
+      "name": "KartColor",
+      "idResource": "Material|2021-11-24T20:13:36.467Z|81437",
+      "shader": "ShaderFlat",
+      "coat": {
+        "ƒ.CoatColored": {
+          "color": "[0.9294117647058824, 0.00784313725490196, 0.00784313725490196, 1]"
+        }
+      }
+    }
+  },
+  "Graph|2021-11-24T19:42:33.800Z|02509": {
+    "ƒ.Graph": {
+      "name": "mainGraph",
+      "components": {
+        "ComponentLight": [
+          {
+            "ƒ.ComponentLight": {
+              "pivot": {
+                "translation": "[0, 0, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[1, 1, 1]"
+              },
+              "light": {
+                "ƒ.LightAmbient": {
+                  "color": "[0.7294117647058823, 0.7294117647058823, 0.7294117647058823, 0.64]"
+                }
+              }
+            }
+          },
+          {
+            "ƒ.ComponentLight": {
+              "pivot": {
+                "translation": "[0, 0, 0]",
+                "rotation": "[-20, -20, 0]",
+                "scaling": "[1, 1, 1]"
+              },
+              "light": {
+                "ƒ.LightPoint": {
+                  "color": "[1, 1, 1, 1]"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "children": [
+        {
+          "ƒ.Node": {
+            "name": "Map",
+            "components": {
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshRelief|2021-11-24T19:42:46.915Z|18740",
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[100, 11, 100]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[1, 1, 1, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0, 0]",
+                      "rotation": 0,
+                      "scaling": "[1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2021-11-24T20:00:39.569Z|80468"
+                  }
+                }
+              ]
+            },
+            "children": [
+              {
+                "ƒ.Node": {
+                  "name": "skybox_1",
+                  "components": {
+                    "ComponentMesh": [
+                      {
+                        "ƒ.ComponentMesh": {
+                          "idMesh": "MeshRelief|2021-11-28T13:26:06.306Z|08995",
+                          "pivot": {
+                            "translation": "[140, 0, 0]",
+                            "rotation": "[0, 0, 90]",
+                            "scaling": "[300, 1, 300]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "ComponentMaterial": [
+                      {
+                        "ƒ.ComponentMaterial": {
+                          "sortForAlpha": false,
+                          "clrPrimary": "[1, 1, 1, 1]",
+                          "clrSecondary": "[1, 1, 1, 1]",
+                          "pivot": {
+                            "translation": "[0, 0]",
+                            "rotation": 0,
+                            "scaling": "[1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          },
+                          "idMaterial": "Material|2021-11-28T13:22:51.148Z|01322"
+                        }
+                      }
+                    ]
+                  },
+                  "children": []
+                }
+              },
+              {
+                "ƒ.Node": {
+                  "name": "skybox_2",
+                  "components": {
+                    "ComponentMesh": [
+                      {
+                        "ƒ.ComponentMesh": {
+                          "idMesh": "MeshRelief|2021-11-28T13:26:06.306Z|08995",
+                          "pivot": {
+                            "translation": "[0, 0, 140]",
+                            "rotation": "[-90, 0, 0]",
+                            "scaling": "[300, 1, 300]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "ComponentMaterial": [
+                      {
+                        "ƒ.ComponentMaterial": {
+                          "sortForAlpha": false,
+                          "clrPrimary": "[1, 1, 1, 1]",
+                          "clrSecondary": "[1, 1, 1, 1]",
+                          "pivot": {
+                            "translation": "[0, 0]",
+                            "rotation": 0,
+                            "scaling": "[1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          },
+                          "idMaterial": "Material|2021-11-28T13:22:51.148Z|01322"
+                        }
+                      }
+                    ]
+                  },
+                  "children": []
+                }
+              },
+              {
+                "ƒ.Node": {
+                  "name": "skybox_3",
+                  "components": {
+                    "ComponentMesh": [
+                      {
+                        "ƒ.ComponentMesh": {
+                          "idMesh": "MeshRelief|2021-11-28T13:26:06.306Z|08995",
+                          "pivot": {
+                            "translation": "[0, 0, -140]",
+                            "rotation": "[90, 0, 0]",
+                            "scaling": "[300, 1, 300]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "ComponentMaterial": [
+                      {
+                        "ƒ.ComponentMaterial": {
+                          "sortForAlpha": false,
+                          "clrPrimary": "[1, 1, 1, 1]",
+                          "clrSecondary": "[1, 1, 1, 1]",
+                          "pivot": {
+                            "translation": "[0, 0]",
+                            "rotation": 0,
+                            "scaling": "[1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          },
+                          "idMaterial": "Material|2021-11-28T13:22:51.148Z|01322"
+                        }
+                      }
+                    ]
+                  },
+                  "children": []
+                }
+              },
+              {
+                "ƒ.Node": {
+                  "name": "skybox_4",
+                  "components": {
+                    "ComponentMesh": [
+                      {
+                        "ƒ.ComponentMesh": {
+                          "idMesh": "MeshRelief|2021-11-28T13:26:06.306Z|08995",
+                          "pivot": {
+                            "translation": "[-140, 0, 0]",
+                            "rotation": "[0, 0, -90]",
+                            "scaling": "[300, 1, 300]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "ComponentMaterial": [
+                      {
+                        "ƒ.ComponentMaterial": {
+                          "sortForAlpha": false,
+                          "clrPrimary": "[1, 1, 1, 1]",
+                          "clrSecondary": "[1, 1, 1, 1]",
+                          "pivot": {
+                            "translation": "[0, 0]",
+                            "rotation": 0,
+                            "scaling": "[1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          },
+                          "idMaterial": "Material|2021-11-28T13:22:51.148Z|01322"
+                        }
+                      }
+                    ]
+                  },
+                  "children": []
+                }
+              },
+              {
+                "ƒ.Node": {
+                  "name": "skybox_top",
+                  "components": {
+                    "ComponentMesh": [
+                      {
+                        "ƒ.ComponentMesh": {
+                          "idMesh": "MeshRelief|2021-11-28T13:26:06.306Z|08995",
+                          "pivot": {
+                            "translation": "[0, 130, 0]",
+                            "rotation": "[180, 0, 0]",
+                            "scaling": "[300, 1, 300]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "ComponentMaterial": [
+                      {
+                        "ƒ.ComponentMaterial": {
+                          "sortForAlpha": false,
+                          "clrPrimary": "[1, 1, 1, 1]",
+                          "clrSecondary": "[1, 1, 1, 1]",
+                          "pivot": {
+                            "translation": "[0, 0]",
+                            "rotation": 0,
+                            "scaling": "[1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          },
+                          "idMaterial": "Material|2021-11-28T13:22:51.148Z|01322"
+                        }
+                      }
+                    ]
+                  },
+                  "children": []
+                }
+              }
+            ]
+          }
+        },
+        {
+          "ƒ.Node": {
+            "name": "Kart",
+            "components": {
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshSphere|2021-11-24T20:12:42.332Z|22172",
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 2]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[1, 1, 1, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0, 0]",
+                      "rotation": 0,
+                      "scaling": "[1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2021-11-24T20:13:36.467Z|81437"
+                  }
+                }
+              ],
+              "ComponentTransform": [
+                {
+                  "ƒ.ComponentTransform": {
+                    "local": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
+        }
+      ],
+      "idResource": "Graph|2021-11-24T19:42:33.800Z|02509",
+      "type": "Graph"
+    }
+  },
+  "TextureImage|2021-11-28T13:22:33.466Z|01433": {
+    "ƒ.TextureImage": {
+      "url": "Textures\\skybox.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2021-11-28T13:22:33.466Z|01433",
+        "name": "skybox_texture_1.png",
+        "mipmap": "CRISP"
+      }
+    }
+  },
+  "Material|2021-11-28T13:22:51.148Z|01322": {
+    "ƒ.Material": {
+      "name": "skybox_mat",
+      "idResource": "Material|2021-11-28T13:22:51.148Z|01322",
+      "shader": "ShaderTexture",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2021-11-28T13:22:33.466Z|01433"
+        }
+      }
+    }
+  },
+  "MeshRelief|2021-11-28T13:26:06.306Z|08995": {
+    "ƒ.MeshRelief": {
+      "idResource": "MeshRelief|2021-11-28T13:26:06.306Z|08995",
+      "name": "skybox_mesh",
+      "type": "MeshRelief"
+    }
+  }
+}
