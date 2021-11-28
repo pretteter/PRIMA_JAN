@@ -49,17 +49,20 @@ var Script;
     let ctrTurn = new ƒ.Control("Turn", 100, 0 /* PROPORTIONAL */);
     let mtxTerrain;
     let meshTerrain;
-    // let camera: ƒ.Node = new ƒ.Node("cameraNode");
-    // let cmpCamera = new ƒ.ComponentCamera();
-    // camera.addComponent(cmpCamera);
-    // camera.addComponent(new ƒ.ComponentTransform())
-    // graph.addChild(camera);
+    let camera = new ƒ.Node("cameraNode");
+    let cmpCamera = new ƒ.ComponentCamera();
     ctrForward.setDelay(50);
     document.addEventListener("interactiveViewportStarted", start);
     function start(_event) {
         viewport = _event.detail;
         graph = viewport.getBranch();
         cart = graph.getChildrenByName("Kart")[0];
+        camera.addComponent(cmpCamera);
+        camera.addComponent(new ƒ.ComponentTransform());
+        graph.addChild(camera);
+        cmpCamera.mtxPivot.translation = new ƒ.Vector3(0, 8, -12);
+        cmpCamera.mtxPivot.rotation = new ƒ.Vector3(25, 0, 0);
+        cart.addComponent(cmpCamera);
         viewport.calculateTransforms();
         let cmpMeshTerrain = graph.getChildrenByName("Map")[0].getComponent(ƒ.ComponentMesh);
         meshTerrain = cmpMeshTerrain.mesh;

@@ -16,11 +16,9 @@ namespace Script {
   let mtxTerrain: ƒ.Matrix4x4;
   let meshTerrain: ƒ.MeshTerrain;
 
-  // let camera: ƒ.Node = new ƒ.Node("cameraNode");
-  // let cmpCamera = new ƒ.ComponentCamera();
-  // camera.addComponent(cmpCamera);
-  // camera.addComponent(new ƒ.ComponentTransform())
-  // graph.addChild(camera);
+  let camera: ƒ.Node = new ƒ.Node("cameraNode");
+  let cmpCamera = new ƒ.ComponentCamera();
+  
 
   ctrForward.setDelay(50);
 
@@ -32,6 +30,13 @@ namespace Script {
 
     cart = graph.getChildrenByName("Kart")[0];
 
+    camera.addComponent(cmpCamera);
+    camera.addComponent(new ƒ.ComponentTransform())
+    graph.addChild(camera);
+
+    cmpCamera.mtxPivot.translation = new ƒ.Vector3(0,8,-12);
+    cmpCamera.mtxPivot.rotation = new ƒ.Vector3(25,0,0);
+    cart.addComponent(cmpCamera);
 
     viewport.calculateTransforms();
     let cmpMeshTerrain: ƒ.ComponentMesh = graph.getChildrenByName("Map")[0].getComponent(ƒ.ComponentMesh);
