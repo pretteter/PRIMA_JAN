@@ -5,8 +5,9 @@ namespace Script {
   let viewport: ƒ.Viewport;
   let graph: ƒ.Graph;
   let cart: ƒ.Node;
+  let body: ƒ.ComponentRigidbody;
 
-  let carSpeed: number = 3;
+  let carSpeed: number = 1;
   let carTurn: number = 2.5;
 
   let ctrForward: ƒ.Control = new ƒ.Control("Forward", 10, ƒ.CONTROL_TYPE.PROPORTIONAL);
@@ -18,27 +19,37 @@ namespace Script {
 
   let camera: ƒ.Node = new ƒ.Node("cameraNode");
   let cmpCamera = new ƒ.ComponentCamera();
-  
+
 
   ctrForward.setDelay(50);
 
-  document.addEventListener("interactiveViewportStarted", <EventListener>start);
+  window.addEventListener("load", start);
 
-  function start(_event: CustomEvent): void {
-    viewport = _event.detail;
-    graph = <ƒ.Graph>viewport.getBranch();
+  async function start(_event: Event): Promise<void> {
+    // viewport = _event.detail;
+    // graph = <ƒ.Graph>viewport.getBranch();
+
+    await ƒ.Project.loadResourcesFromHTML();
+    graph = <ƒ.Graph>ƒ.Project.resources["Graph|2021-11-24T19:42:33.800Z|02509"]
 
     cart = graph.getChildrenByName("Kart")[0];
+    body = cart.getComponent(ƒ.ComponentRigidbody);
 
     camera.addComponent(cmpCamera);
     camera.addComponent(new ƒ.ComponentTransform())
     graph.addChild(camera);
 
-    cmpCamera.mtxPivot.translation = new ƒ.Vector3(0,8,-12);
-    cmpCamera.mtxPivot.rotation = new ƒ.Vector3(25,0,0);
-    cart.addComponent(cmpCamera);
+    cmpCamera.mtxPivot.translation = new ƒ.Vector3(0, 8, -12);
+    cmpCamera.mtxPivot.rotation = new ƒ.Vector3(25, 0, 0);
+
+    // cart.addChild(camera);
+
+    let canvas: HTMLCanvasElement = document.querySelector("canvas");
+    viewport = new ƒ.Viewport();
+    viewport.initialize("Viewport", graph, cmpCamera, canvas);
 
     viewport.calculateTransforms();
+
     let cmpMeshTerrain: ƒ.ComponentMesh = graph.getChildrenByName("Map")[0].getComponent(ƒ.ComponentMesh);
     meshTerrain = <ƒ.MeshTerrain>cmpMeshTerrain.mesh;
     mtxTerrain = cmpMeshTerrain.mtxWorld;
@@ -48,12 +59,23 @@ namespace Script {
   }
 
   function update(_event: Event): void {
-    // ƒ.Physics.world.simulate();  // if physics is included and used
+    let maxHeight: number=0.3;
+    let minHeight: number=0.2;
+    let forceNodes: ƒ.Node[] = cart.getChildren();
+    let force: ƒ.Vector3 = ƒ.Vector3.SCALE(ƒ.Physics.world.getGravity(), -body.mass / forceNodes.length);
+    for (let forceNode of forceNodes) {
+      let posForce: ƒ.Vector3 = forceNode.getComponent(ƒ.ComponentMesh).mtxWorld.translation;
+      let terrainInfo: ƒ.TerrainInfo = meshTerrain.getTerrainInfo(posForce, mtxTerrain);
+      let height: number = posForce.y - terrainInfo.position.y;
+      body.applyForceAtPoint(force, posForce);
+    }
+    // if physics is included and used
+    ƒ.Physics.world.simulate();
 
-    // camera.mtxLocal.translation = cart.mtxWorld.translation;
-    // camera.mtxLocal.rotation = new ƒ.Vector3()
+    camera.mtxLocal.translation = cart.mtxWorld.translation;
+    camera.mtxLocal.rotation = new ƒ.Vector3(0, cart.mtxWorld.rotation.y, 0)
     viewport.draw();
-    ƒ.AudioManager.default.update();
+    // ƒ.AudioManager.default.update();
 
     let deltaTime: number = ƒ.Loop.timeFrameReal / 1000;
 
