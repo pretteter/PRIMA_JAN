@@ -99,13 +99,12 @@ namespace FudgeCore {
       try {
         // loop constructed solely to access type-property. Only one expected!
         for (path in _serialization) {
-          // reconstruct = new (<General>Fudge)[typeName];
           reconstruct = Serializer.reconstruct(path);
           reconstruct = await reconstruct.deserialize(_serialization[path]);
           return reconstruct;
         }
       } catch (_error) {
-        throw new Error(`Deserialization of ${path} failed: ` + _error);
+        throw new Error(`Deserialization of ${path}, ${Reflect.get(reconstruct, "idResource")} failed: ` + _error);
       }
       return null;
     }
@@ -192,7 +191,7 @@ namespace FudgeCore {
 
     // public static getConstructor<T extends Serializable>(_type: string, _namespace: Object = FudgeCore): new () => T {
     public static getConstructor<T extends Serializable>(_path: string): new () => T {
-      let typeName: string = _path.substr(_path.lastIndexOf(".") + 1);
+      let typeName: string = _path.substring(_path.lastIndexOf(".") + 1);
       let namespace: Object = Serializer.getNamespace(_path);
       if (!namespace)
         throw new Error(`Constructor of serializable object of type ${_path} not found. Maybe the namespace hasn't been registered?`);

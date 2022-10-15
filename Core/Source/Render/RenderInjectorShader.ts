@@ -1,5 +1,5 @@
 namespace FudgeCore {
-   //gives WebGL Buffer the data from the {@link Shader}
+  //gives WebGL Buffer the data from the {@link Shader}
   export class RenderInjectorShader {
     public static decorate(_constructor: Function): void {
       Object.defineProperty(_constructor, "useProgram", {
@@ -18,7 +18,6 @@ namespace FudgeCore {
         this.createProgram();
       let crc3: WebGL2RenderingContext = RenderWebGL.getRenderingContext();
       crc3.useProgram(this.program);
-      crc3.enableVertexAttribArray(this.attributes["a_position"]);
     }
 
     public static deleteProgram(this: typeof Shader): void {
@@ -35,8 +34,10 @@ namespace FudgeCore {
       let crc3: WebGL2RenderingContext = RenderWebGL.getRenderingContext();
       let program: WebGLProgram = crc3.createProgram();
       try {
-        crc3.attachShader(program, RenderWebGL.assert<WebGLShader>(compileShader(this.getVertexShaderSource(), WebGL2RenderingContext.VERTEX_SHADER)));
-        crc3.attachShader(program, RenderWebGL.assert<WebGLShader>(compileShader(this.getFragmentShaderSource(), WebGL2RenderingContext.FRAGMENT_SHADER)));
+        let shdVertex: WebGLShader = compileShader(this.getVertexShaderSource(), WebGL2RenderingContext.VERTEX_SHADER);
+        let shdFragment: WebGLShader = compileShader(this.getFragmentShaderSource(), WebGL2RenderingContext.FRAGMENT_SHADER);
+        crc3.attachShader(program, RenderWebGL.assert<WebGLShader>(shdVertex));
+        crc3.attachShader(program, RenderWebGL.assert<WebGLShader>(shdFragment));
         crc3.linkProgram(program);
         let error: string = RenderWebGL.assert<string>(crc3.getProgramInfoLog(program));
         if (error !== "") {

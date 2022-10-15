@@ -22,7 +22,6 @@ namespace FudgeCore {
    */
 
   export class Matrix4x4 extends Mutable implements Serializable, Recycable {
-    private static deg2rad: number = Math.PI / 180;
     #eulerAngles: Vector3 = Vector3.ZERO();
     #vectors: VectorRepresentation = { translation: Vector3.ZERO(), rotation: Vector3.ZERO(), scaling: Vector3.ZERO() };
 
@@ -120,6 +119,21 @@ namespace FudgeCore {
     }
 
     /**
+     * Computes and returns the transpose of a passed matrix.
+     */
+    public static TRANSPOSE(_mtx: Matrix4x4): Matrix4x4 {
+      let m: Float32Array = _mtx.data;
+      let result: Matrix4x4 = Recycler.get(Matrix4x4);
+      result.data.set([
+        m[0], m[4], m[8], m[12],
+        m[1], m[5], m[9], m[13],
+        m[2], m[6], m[10], m[14],
+        m[3], m[7], m[11], m[15]
+      ]);
+      return result;
+    }
+
+    /**
      * Computes and returns the inverse of a passed matrix.
      * @param _mtx The matrix to compute the inverse of.
      */
@@ -203,13 +217,15 @@ namespace FudgeCore {
     /**
      * Computes and returns a matrix with the given translation, its z-axis pointing directly at the given target,
      * and a minimal angle between its y-axis and the given up-{@link Vector3}, respetively calculating yaw and pitch.
+     * The pitch may be restricted to the up-vector to only calculate yaw.
      */
-    public static LOOK_AT(_translation: Vector3, _target: Vector3, _up: Vector3 = Vector3.Y()): Matrix4x4 {
+    public static LOOK_AT(_translation: Vector3, _target: Vector3, _up: Vector3 = Vector3.Y(), _restrict: boolean = false): Matrix4x4 {
       const mtxResult: Matrix4x4 = Recycler.get(Matrix4x4);
       let zAxis: Vector3 = Vector3.DIFFERENCE(_target, _translation);
       zAxis.normalize();
       let xAxis: Vector3 = Vector3.NORMALIZATION(Vector3.CROSS(_up, zAxis));
-      let yAxis: Vector3 = Vector3.NORMALIZATION(Vector3.CROSS(zAxis, xAxis));
+      let yAxis: Vector3 = _restrict ? _up : Vector3.NORMALIZATION(Vector3.CROSS(zAxis, xAxis));
+      zAxis = _restrict ? Vector3.NORMALIZATION(Vector3.CROSS(xAxis, _up)) : zAxis;
       mtxResult.data.set(
         [
           xAxis.x, xAxis.y, xAxis.z, 0,
@@ -227,25 +243,25 @@ namespace FudgeCore {
      * Computes and returns a matrix with the given translation, its y-axis matching the given up-{@link Vector3}
      * and its z-axis facing towards the given target at a minimal angle, respetively calculating yaw only.
      */
-    public static SHOW_TO(_translation: Vector3, _target: Vector3, _up: Vector3 = Vector3.Y()): Matrix4x4 {
-      const mtxResult: Matrix4x4 = Recycler.get(Matrix4x4);
-      let zAxis: Vector3 = Vector3.DIFFERENCE(_target, _translation);
-      zAxis.normalize();
-      let xAxis: Vector3 = Vector3.NORMALIZATION(Vector3.CROSS(_up, zAxis));
-      // let yAxis: Vector3 = Vector3.NORMALIZATION(Vector3.CROSS(zAxis, xAxis));
-      zAxis = Vector3.NORMALIZATION(Vector3.CROSS(xAxis, _up));
-      mtxResult.data.set(
-        [
-          xAxis.x, xAxis.y, xAxis.z, 0,
-          _up.x, _up.y, _up.z, 0,
-          zAxis.x, zAxis.y, zAxis.z, 0,
-          _translation.x,
-          _translation.y,
-          _translation.z,
-          1
-        ]);
-      return mtxResult;
-    }
+    // public static SHOW_TO(_translation: Vector3, _target: Vector3, _up: Vector3 = Vector3.Y()): Matrix4x4 {
+    //   const mtxResult: Matrix4x4 = Recycler.get(Matrix4x4);
+    //   let zAxis: Vector3 = Vector3.DIFFERENCE(_target, _translation);
+    //   zAxis.normalize();
+    //   let xAxis: Vector3 = Vector3.NORMALIZATION(Vector3.CROSS(_up, zAxis));
+    //   // let yAxis: Vector3 = Vector3.NORMALIZATION(Vector3.CROSS(zAxis, xAxis));
+    //   zAxis = Vector3.NORMALIZATION(Vector3.CROSS(xAxis, _up));
+    //   mtxResult.data.set(
+    //     [
+    //       xAxis.x, xAxis.y, xAxis.z, 0,
+    //       _up.x, _up.y, _up.z, 0,
+    //       zAxis.x, zAxis.y, zAxis.z, 0,
+    //       _translation.x,
+    //       _translation.y,
+    //       _translation.z,
+    //       1
+    //     ]);
+    //   return mtxResult;
+    // }
 
     /**
      * Returns a matrix that translates coordinates along the x-, y- and z-axis according to the given {@link Vector3}.
@@ -266,7 +282,7 @@ namespace FudgeCore {
      */
     public static ROTATION_X(_angleInDegrees: number): Matrix4x4 {
       const mtxResult: Matrix4x4 = Recycler.get(Matrix4x4);
-      let angleInRadians: number = _angleInDegrees * Matrix4x4.deg2rad;
+      let angleInRadians: number = _angleInDegrees * Calc.deg2rad;
       let sin: number = Math.sin(angleInRadians);
       let cos: number = Math.cos(angleInRadians);
       mtxResult.data.set([
@@ -283,7 +299,7 @@ namespace FudgeCore {
      */
     public static ROTATION_Y(_angleInDegrees: number): Matrix4x4 {
       let mtxResult: Matrix4x4 = Recycler.get(Matrix4x4);
-      let angleInRadians: number = _angleInDegrees * Matrix4x4.deg2rad;
+      let angleInRadians: number = _angleInDegrees * Calc.deg2rad;
       let sin: number = Math.sin(angleInRadians);
       let cos: number = Math.cos(angleInRadians);
       mtxResult.data.set([
@@ -300,7 +316,7 @@ namespace FudgeCore {
      */
     public static ROTATION_Z(_angleInDegrees: number): Matrix4x4 {
       const mtxResult: Matrix4x4 = Recycler.get(Matrix4x4);
-      let angleInRadians: number = _angleInDegrees * Matrix4x4.deg2rad;
+      let angleInRadians: number = _angleInDegrees * Calc.deg2rad;
       let sin: number = Math.sin(angleInRadians);
       let cos: number = Math.cos(angleInRadians);
       mtxResult.data.set([
@@ -318,7 +334,7 @@ namespace FudgeCore {
      */
     public static ROTATION(_eulerAnglesInDegrees: Vector3): Matrix4x4 {
       const mtxResult: Matrix4x4 = Recycler.get(Matrix4x4);
-      let anglesInRadians: Vector3 = Vector3.SCALE(_eulerAnglesInDegrees, Matrix4x4.deg2rad);
+      let anglesInRadians: Vector3 = Vector3.SCALE(_eulerAnglesInDegrees, Calc.deg2rad);
       let sinX: number = Math.sin(anglesInRadians.x);
       let cosX: number = Math.cos(anglesInRadians.x);
       let sinY: number = Math.sin(anglesInRadians.y);
@@ -354,7 +370,7 @@ namespace FudgeCore {
      */
     public static RELATIVE(_mtx: Matrix4x4, _mtxBase: Matrix4x4, _mtxInverse?: Matrix4x4): Matrix4x4 {
       if (_mtxInverse)
-       return Matrix4x4.MULTIPLICATION(_mtxInverse, _mtx);
+        return Matrix4x4.MULTIPLICATION(_mtxInverse, _mtx);
 
       let mtxInverse: Matrix4x4 = Matrix4x4.INVERSION(_mtxBase);
       let mtxResult: Matrix4x4 = Matrix4x4.MULTIPLICATION(mtxInverse, _mtx);
@@ -374,7 +390,7 @@ namespace FudgeCore {
      */
     public static PROJECTION_CENTRAL(_aspect: number, _fieldOfViewInDegrees: number, _near: number, _far: number, _direction: FIELD_OF_VIEW): Matrix4x4 {
       //TODO: camera looks down negative z-direction, should be positive
-      let fieldOfViewInRadians: number = _fieldOfViewInDegrees * Matrix4x4.deg2rad;
+      let fieldOfViewInRadians: number = _fieldOfViewInDegrees * Calc.deg2rad;
       let f: number = Math.tan(0.5 * (Math.PI - fieldOfViewInRadians));
       let rangeInv: number = 1.0 / (_near - _far);
       const mtxResult: Matrix4x4 = Recycler.get(Matrix4x4);
@@ -414,8 +430,8 @@ namespace FudgeCore {
       const mtxResult: Matrix4x4 = Recycler.get(Matrix4x4);
       mtxResult.data.set([
         2 / (_right - _left), 0, 0, 0,
-        0, 2 / (_top - _bottom), 0, 0,
-        0, 0, 2 / (_near - _far), 0,
+        0, -2 / (_top - _bottom), 0, 0,
+        0, 0, 2 / (_far - _near), 0,
         (_left + _right) / (_left - _right),
         (_bottom + _top) / (_bottom - _top),
         (_near + _far) / (_near - _far),
@@ -472,9 +488,9 @@ namespace FudgeCore {
       if (!this.vectors.scaling) {
         this.vectors.scaling = this.#vectors.scaling;
         this.vectors.scaling.set(
-          Math.hypot(this.data[0], this.data[1], this.data[2]),
-          Math.hypot(this.data[4], this.data[5], this.data[6]),
-          Math.hypot(this.data[8], this.data[9], this.data[10])
+          Math.hypot(this.data[0], this.data[1], this.data[2]), //* (this.data[0] < 0 ? -1 : 1),
+          Math.hypot(this.data[4], this.data[5], this.data[6]), //* (this.data[5] < 0 ? -1 : 1),
+          Math.hypot(this.data[8], this.data[9], this.data[10]) // * (this.data[10] < 0 ? -1 : 1)
         );
       }
       return this.vectors.scaling; // .clone;
@@ -494,6 +510,9 @@ namespace FudgeCore {
     }
     //#endregion
 
+    /**
+     * Resets the matrix to the identity-matrix and clears cache. Used by the recycler to reset.
+     */
     public recycle(): void {
       this.data.set([
         1, 0, 0, 0,
@@ -501,7 +520,14 @@ namespace FudgeCore {
         0, 0, 1, 0,
         0, 0, 0, 1
       ]);
-      this.resetCache(); 
+      this.resetCache();
+    }
+
+    /**
+     * Resets the matrix to the identity-matrix and clears cache.
+     */
+    public reset(): void {
+      this.recycle();
     }
 
     //#region Rotation
@@ -516,6 +542,95 @@ namespace FudgeCore {
       let mtxRotation: Matrix4x4 = Matrix4x4.ROTATION(_by);
       this.multiply(mtxRotation, _fromLeft);
       Recycler.store(mtxRotation);
+    }
+
+    public transpose(): Matrix4x4 {
+      let matrix: Float32Array = this.data;
+      this.data.set([
+        matrix[0], matrix[4], matrix[8], matrix[12],
+        matrix[1], matrix[5], matrix[9], matrix[13],
+        matrix[2], matrix[6], matrix[10], matrix[14],
+        matrix[3], matrix[7], matrix[11], matrix[15]
+      ]);
+      return this;
+    }
+
+    public inverse(): Matrix4x4 {
+      let m: Float32Array = this.data;
+      let m00: number = m[0 * 4 + 0];
+      let m01: number = m[0 * 4 + 1];
+      let m02: number = m[0 * 4 + 2];
+      let m03: number = m[0 * 4 + 3];
+      let m10: number = m[1 * 4 + 0];
+      let m11: number = m[1 * 4 + 1];
+      let m12: number = m[1 * 4 + 2];
+      let m13: number = m[1 * 4 + 3];
+      let m20: number = m[2 * 4 + 0];
+      let m21: number = m[2 * 4 + 1];
+      let m22: number = m[2 * 4 + 2];
+      let m23: number = m[2 * 4 + 3];
+      let m30: number = m[3 * 4 + 0];
+      let m31: number = m[3 * 4 + 1];
+      let m32: number = m[3 * 4 + 2];
+      let m33: number = m[3 * 4 + 3];
+      let tmp0: number = m22 * m33;
+      let tmp1: number = m32 * m23;
+      let tmp2: number = m12 * m33;
+      let tmp3: number = m32 * m13;
+      let tmp4: number = m12 * m23;
+      let tmp5: number = m22 * m13;
+      let tmp6: number = m02 * m33;
+      let tmp7: number = m32 * m03;
+      let tmp8: number = m02 * m23;
+      let tmp9: number = m22 * m03;
+      let tmp10: number = m02 * m13;
+      let tmp11: number = m12 * m03;
+      let tmp12: number = m20 * m31;
+      let tmp13: number = m30 * m21;
+      let tmp14: number = m10 * m31;
+      let tmp15: number = m30 * m11;
+      let tmp16: number = m10 * m21;
+      let tmp17: number = m20 * m11;
+      let tmp18: number = m00 * m31;
+      let tmp19: number = m30 * m01;
+      let tmp20: number = m00 * m21;
+      let tmp21: number = m20 * m01;
+      let tmp22: number = m00 * m11;
+      let tmp23: number = m10 * m01;
+
+      let t0: number = (tmp0 * m11 + tmp3 * m21 + tmp4 * m31) -
+        (tmp1 * m11 + tmp2 * m21 + tmp5 * m31);
+
+      let t1: number = (tmp1 * m01 + tmp6 * m21 + tmp9 * m31) -
+        (tmp0 * m01 + tmp7 * m21 + tmp8 * m31);
+      let t2: number = (tmp2 * m01 + tmp7 * m11 + tmp10 * m31) -
+        (tmp3 * m01 + tmp6 * m11 + tmp11 * m31);
+      let t3: number = (tmp5 * m01 + tmp8 * m11 + tmp11 * m21) -
+        (tmp4 * m01 + tmp9 * m11 + tmp10 * m21);
+
+      let d: number = 1.0 / (m00 * t0 + m10 * t1 + m20 * t2 + m30 * t3);
+
+      // let matrix: Matrix4x4 = new Matrix4x4;
+      const matrix: Matrix4x4 = Recycler.get(Matrix4x4);
+      matrix.data.set([
+        d * t0, // [0]
+        d * t1, // [1]
+        d * t2, // [2]
+        d * t3, // [3]
+        d * ((tmp1 * m10 + tmp2 * m20 + tmp5 * m30) - (tmp0 * m10 + tmp3 * m20 + tmp4 * m30)),        // [4]
+        d * ((tmp0 * m00 + tmp7 * m20 + tmp8 * m30) - (tmp1 * m00 + tmp6 * m20 + tmp9 * m30)),        // [5]
+        d * ((tmp3 * m00 + tmp6 * m10 + tmp11 * m30) - (tmp2 * m00 + tmp7 * m10 + tmp10 * m30)),      // [6]
+        d * ((tmp4 * m00 + tmp9 * m10 + tmp10 * m20) - (tmp5 * m00 + tmp8 * m10 + tmp11 * m20)),      // [7]
+        d * ((tmp12 * m13 + tmp15 * m23 + tmp16 * m33) - (tmp13 * m13 + tmp14 * m23 + tmp17 * m33)),  // [8]
+        d * ((tmp13 * m03 + tmp18 * m23 + tmp21 * m33) - (tmp12 * m03 + tmp19 * m23 + tmp20 * m33)),  // [9]
+        d * ((tmp14 * m03 + tmp19 * m13 + tmp22 * m33) - (tmp15 * m03 + tmp18 * m13 + tmp23 * m33)),  // [10]
+        d * ((tmp17 * m03 + tmp20 * m13 + tmp23 * m23) - (tmp16 * m03 + tmp21 * m13 + tmp22 * m23)),  // [11]
+        d * ((tmp14 * m22 + tmp17 * m32 + tmp13 * m12) - (tmp16 * m32 + tmp12 * m12 + tmp15 * m22)),  // [12]
+        d * ((tmp20 * m32 + tmp12 * m02 + tmp19 * m22) - (tmp18 * m22 + tmp21 * m32 + tmp13 * m02)),  // [13]
+        d * ((tmp18 * m12 + tmp23 * m32 + tmp15 * m02) - (tmp22 * m32 + tmp14 * m02 + tmp19 * m12)),  // [14]
+        d * ((tmp22 * m22 + tmp16 * m02 + tmp21 * m12) - (tmp20 * m12 + tmp23 * m22 + tmp17 * m02))  // [15]
+      ]);
+      return matrix;
     }
 
     /**
@@ -548,69 +663,53 @@ namespace FudgeCore {
     /**
      * Adjusts the rotation of this matrix to point the z-axis directly at the given target and tilts it to accord with the given up-{@link Vector3},
      * respectively calculating yaw and pitch. If no up-{@link Vector3} is given, the previous up-{@link Vector3} is used. 
-     * When _preserveScaling is false, a rotated identity matrix is the result. 
+     * The pitch may be restricted to the up-vector to only calculate yaw.
      */
-    public lookAt(_target: Vector3, _up?: Vector3, _preserveScaling: boolean = true): void {
-      if (!_up)
-        _up = this.getY();
+    public lookAt(_target: Vector3, _up?: Vector3, _restrict: boolean = false): void {
+      _up = _up ? Vector3.NORMALIZATION(_up) : Vector3.NORMALIZATION(this.getY());
 
-      const mtxResult: Matrix4x4 = Matrix4x4.LOOK_AT(this.translation, _target, _up);
-      if (_preserveScaling)
-        mtxResult.scale(this.scaling);
+      const mtxResult: Matrix4x4 = Matrix4x4.LOOK_AT(this.translation, _target, _up, _restrict);
+      mtxResult.scale(this.scaling);
       this.set(mtxResult);
       Recycler.store(mtxResult);
     }
+
     /**
      * Same as {@link Matrix4x4.lookAt}, but optimized and needs testing
      */
     // TODO: testing lookat that really just rotates the matrix rather than creating a new one
-    public lookAtRotate(_target: Vector3, _up?: Vector3, _preserveScaling: boolean = true): void {
-      if (!_up)
-        _up = this.getY();
+    // public lookAtRotate(_target: Vector3, _up?: Vector3, _preserveScaling: boolean = true): void {
+    //   if (!_up)
+    //     _up = this.getY();
 
-      let scaling: Vector3 = this.scaling;
-      let difference: Vector3 = Vector3.DIFFERENCE(_target, this.translation);
-      difference.normalize();
-      let cos: number = Vector3.DOT(Vector3.NORMALIZATION(this.getZ()), difference);
-      let sin: number = Vector3.DOT(Vector3.NORMALIZATION(this.getX()), difference);
-      // console.log(sin, cos);
-      let mtxRotation: Matrix4x4 = Recycler.borrow(Matrix4x4);
-      mtxRotation.data.set([
-        cos, 0, -sin, 0,
-        0, 1, 0, 0,
-        sin, 0, cos, 0,
-        0, 0, 0, 1
-      ]);
-      this.multiply(mtxRotation, false);
+    //   let scaling: Vector3 = this.scaling;
+    //   let difference: Vector3 = Vector3.DIFFERENCE(_target, this.translation);
+    //   difference.normalize();
+    //   let cos: number = Vector3.DOT(Vector3.NORMALIZATION(this.getZ()), difference);
+    //   let sin: number = Vector3.DOT(Vector3.NORMALIZATION(this.getX()), difference);
+    //   // console.log(sin, cos);
+    //   let mtxRotation: Matrix4x4 = Recycler.get(Matrix4x4);
+    //   mtxRotation.data.set([
+    //     cos, 0, -sin, 0,
+    //     0, 1, 0, 0,
+    //     sin, 0, cos, 0,
+    //     0, 0, 0, 1
+    //   ]);
+    //   this.multiply(mtxRotation, false);
 
-      cos = Vector3.DOT(Vector3.NORMALIZATION(this.getZ()), difference);
-      sin = -Vector3.DOT(Vector3.NORMALIZATION(this.getY()), difference);
-      // console.log(sin, cos);
-      mtxRotation.data.set([
-        1, 0, 0, 0,
-        0, cos, sin, 0,
-        0, -sin, cos, 0,
-        0, 0, 0, 1
-      ]);
-      this.multiply(mtxRotation, false);
-      this.scaling = scaling;
-    }
-
-    /**
-     * Adjusts the rotation of this matrix to match its y-axis with the given up-{@link Vector3} and facing its z-axis toward the given target at minimal angle,
-     * respectively calculating yaw only. If no up-{@link Vector3} is given, the previous up-{@link Vector3} is used. 
-     * When _preserveScaling is false, a rotated identity matrix is the result. 
-     */
-    public showTo(_target: Vector3, _up?: Vector3, _preserveScaling: boolean = true): void {
-      if (!_up)
-        _up = this.getY();
-
-      const mtxResult: Matrix4x4 = Matrix4x4.SHOW_TO(this.translation, _target, _up);
-      if (_preserveScaling)
-        mtxResult.scale(this.scaling);
-      this.set(mtxResult);
-      Recycler.store(mtxResult);
-    }
+    //   cos = Vector3.DOT(Vector3.NORMALIZATION(this.getZ()), difference);
+    //   sin = -Vector3.DOT(Vector3.NORMALIZATION(this.getY()), difference);
+    //   // console.log(sin, cos);
+    //   mtxRotation.data.set([
+    //     1, 0, 0, 0,
+    //     0, cos, sin, 0,
+    //     0, -sin, cos, 0,
+    //     0, 0, 0, 1
+    //   ]);
+    //   this.multiply(mtxRotation, false);
+    //   this.scaling = scaling;
+    //   Recycler.store(mtxRotation);
+    // }
     //#endregion
 
     //#region Translation
@@ -717,9 +816,37 @@ namespace FudgeCore {
     //#endregion
 
     //#region Transfer
+    // public getEulerAnglesNew(): Vector3 {
+    //   let scaling: Vector3 = this.scaling;
+
+    //   let thetaX: number, thetaY: number, thetaZ: number;
+    //   let r02: number = this.data[2] / scaling.z;
+    //   let r11: number = this.data[5] / scaling.y;
+
+    //   if (r02 < 1) {
+    //     if (r02 > -1) {
+    //       thetaY = Math.asin(-r02);
+    //       thetaZ = Math.atan2(this.data[1] / scaling.y, this.data[0] / scaling.x);
+    //       thetaX = Math.atan2(this.data[9] / scaling.z, this.data[10] / scaling.z);
+    //     }
+    //     else {
+    //       thetaY = Math.PI / 2;
+    //       thetaZ = -Math.atan2(this.data[6] / scaling.y, r11);
+    //       thetaX = 0;
+    //     }
+    //   }
+    //   else {
+    //     thetaY = -Math.PI / 2;
+    //     thetaZ = Math.atan2(-this.data[6] / scaling.y, r11);
+    //     thetaX = 0;
+    //   }
+    //   this.#eulerAngles.set(-thetaX, thetaY, thetaZ);
+    //   this.#eulerAngles.scale(Mathematic.rad2deg);
+
+    //   return this.#eulerAngles;
+    // }
     /**
      * Calculates and returns the euler-angles representing the current rotation of this matrix.  
-     * **Caution!** Use immediately and readonly, since the vector is going to be reused by Recycler. Create a clone to keep longer and manipulate. 
      */
     public getEulerAngles(): Vector3 {
       let scaling: Vector3 = this.scaling;
@@ -758,9 +885,8 @@ namespace FudgeCore {
         z1 = 0;
       }
 
-      // let rotation: Vector3 = Recycler.borrow(Vector3);
       this.#eulerAngles.set(x1, y1, z1);
-      this.#eulerAngles.scale(180 / Math.PI);
+      this.#eulerAngles.scale(Calc.rad2deg);
 
       return this.#eulerAngles;
     }
@@ -784,6 +910,7 @@ namespace FudgeCore {
      * Return the elements of this matrix as a Float32Array
      */
     public get(): Float32Array {
+      // TODO: optimization, it shouldn't always return a copy, since this bloats memory
       return new Float32Array(this.data);
     }
 
@@ -920,12 +1047,9 @@ namespace FudgeCore {
       let mtxResult: Matrix4x4 = Matrix4x4.IDENTITY();
       if (vectors.translation)
         mtxResult.translate(vectors.translation);
-      if (vectors.rotation) {
-        // mtxResult.rotateZ(vectors.rotation.z);
-        // mtxResult.rotateY(vectors.rotation.y);
-        // mtxResult.rotateX(vectors.rotation.x);
+      // problem: previous rotation might have been calculated back as a scaling and vice versa. Applying again might double the effect...
+      if (vectors.rotation)
         mtxResult.rotate(vectors.rotation);
-      }
       if (vectors.scaling)
         mtxResult.scale(vectors.scaling);
 

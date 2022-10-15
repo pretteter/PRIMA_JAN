@@ -1,4 +1,4 @@
-/// <reference path="../../core/build/fudgecore.d.ts" />
+/// <reference path="../../Core/Build/FudgeCore.d.ts" />
 /// <reference types="../../core/build/fudgecore" />
 import ƒ = FudgeCore;
 import ƒAid = FudgeAid;
@@ -60,11 +60,11 @@ declare namespace FudgeAid {
         readonly axisRotateX: ƒ.Axis;
         readonly axisRotateY: ƒ.Axis;
         readonly axisDistance: ƒ.Axis;
+        minDistance: number;
+        maxDistance: number;
         protected translator: ƒ.Node;
         protected rotatorX: ƒ.Node;
         private maxRotX;
-        private minDistance;
-        private maxDistance;
         constructor(_cmpCamera: ƒ.ComponentCamera, _distanceStart?: number, _maxRotX?: number, _minDistance?: number, _maxDistance?: number);
         get cmpCamera(): ƒ.ComponentCamera;
         get nodeCamera(): ƒ.Node;

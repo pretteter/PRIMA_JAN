@@ -3,7 +3,7 @@ namespace FudgeCore {
    * Abstract base class for all meshes. 
    * Meshes provide indexed vertices, the order of indices to create trigons and normals, and texture coordinates
    * 
-   * @authors Jirka Dell'Oro-Friedl, HFU, 2019
+   * @authors Jirka Dell'Oro-Friedl, HFU, 2019/22
    */
   @RenderInjectorMesh.decorate
   export abstract class Mesh extends Mutable implements SerializableResource {
@@ -12,20 +12,24 @@ namespace FudgeCore {
     /** list of all the subclasses derived from this class, if they registered properly*/
     public static readonly subclasses: typeof Mesh[] = [];
 
+    // TODO: at this time, creating the buffers for flat shading is a brute force algorithm and should be optimized in the different subclasses
+    // TODO: rename vertices to verticesSmooth or just cloud, and cloud to vertices
+    // 
 
     public idResource: string = undefined;
     public name: string = "Mesh";
+    // base structure for meshes in FUDGE
+    public vertices: Vertices = new Vertices();
+    public faces: Face[] = [];
 
-    public renderBuffers: RenderBuffers; /* defined by RenderInjector*/
+    // public renderBuffers: RenderBuffers; /* defined by RenderInjector*/
+    protected renderMesh: RenderMesh; /* defined by RenderInjector*/
 
-    // TODO: check if these arrays must be cached like this or if calling the methods is better.
-    protected ƒvertices: Float32Array;
-    protected ƒindices: Uint16Array;
-    protected ƒtextureUVs: Float32Array;
-    protected ƒnormalsFace: Float32Array;
-    protected ƒnormals: Float32Array;
+
+    /** bounding box AABB */
     protected ƒbox: Box;
     // TODO: explore mathematics for easy transformations of radius 
+    /** bounding radius */
     protected ƒradius: number;
 
 
@@ -36,65 +40,12 @@ namespace FudgeCore {
       Project.register(this);
     }
 
-    public static getBufferSpecification(): BufferSpecification {
-      return { size: 3, dataType: WebGL2RenderingContext.FLOAT, normalize: false, stride: 0, offset: 0 };
-    }
-
     protected static registerSubclass(_subClass: typeof Mesh): number { return Mesh.subclasses.push(_subClass) - 1; }
-
-    /**
-     * Takes an array of four indices for a quad and returns an array of six indices for two trigons cutting that quad.
-     * If the quad is planar (default), the trigons end on the same index, allowing a single normal for both faces on the referenced vertex 
-     */
-    protected static getTrigonsFromQuad(_quad: number[], _even: boolean = true): number[] {
-      // TODO: add parameters for other diagonal and reversion of rotation
-      let indices: number[];
-      if (_even)
-        indices = [_quad[0], _quad[1], _quad[2], _quad[3], _quad[0], _quad[2]];
-      else
-        indices = [_quad[0], _quad[1], _quad[2], _quad[0], _quad[2], _quad[3]];
-      return indices;
-    }
-
-    protected static deleteInvalidIndices(_indices: number[], _vertices: Vector3[]): void {
-      //delete "non"-faces with two identical vectors
-      for (let i: number = _indices.length - 3; i >= 0; i -= 3) {
-        let v0: Vector3 = _vertices[_indices[i]];
-        let v1: Vector3 = _vertices[_indices[i + 1]];
-        let v2: Vector3 = _vertices[_indices[i + 2]];
-        if (v0.equals(v1) || v2.equals(v1) || v0.equals(v2))
-          _indices.splice(i, 3);
-      }
-    }
 
     public get type(): string {
       return this.constructor.name;
     }
 
-    public get vertices(): Float32Array {
-      if (this.ƒvertices == null)
-        this.ƒvertices = this.createVertices();
-
-      return this.ƒvertices;
-    }
-    public get indices(): Uint16Array {
-      if (this.ƒindices == null)
-        this.ƒindices = this.createIndices();
-
-      return this.ƒindices;
-    }
-    public get normalsFace(): Float32Array {
-      if (this.ƒnormalsFace == null)
-        this.ƒnormalsFace = this.createFaceNormals();
-
-      return this.ƒnormalsFace;
-    }
-    public get textureUVs(): Float32Array {
-      if (this.ƒtextureUVs == null)
-        this.ƒtextureUVs = this.createTextureUVs();
-
-      return this.ƒtextureUVs;
-    }
     public get boundingBox(): Box {
       if (this.ƒbox == null)
         this.ƒbox = this.createBoundingBox();
@@ -108,30 +59,18 @@ namespace FudgeCore {
       return this.ƒradius;
     }
 
-
-    public useRenderBuffers(_shader: typeof Shader, _mtxWorld: Matrix4x4, _mtxProjection: Matrix4x4, _id?: number): void {/* injected by RenderInjector*/ }
-    public createRenderBuffers(): void {/* injected by RenderInjector*/ }
+    public useRenderBuffers(_shader: typeof Shader, _mtxMeshToWorld: Matrix4x4, _mtxMeshToView: Matrix4x4, _id?: number): RenderBuffers { return null; /* injected by RenderInjector*/ }
+    public getRenderBuffers(_shader: typeof Shader): RenderBuffers { return null; /* injected by RenderInjector*/ }
     public deleteRenderBuffers(_shader: typeof Shader): void {/* injected by RenderInjector*/ }
 
-    public getVertexCount(): number {
-      return this.vertices.length / Mesh.getBufferSpecification().size;
-    }
-    public getIndexCount(): number {
-      return this.indices.length;
-    }
-
     public clear(): void {
-      this.ƒvertices = undefined;
-      this.ƒindices = undefined;
-      this.ƒtextureUVs = undefined;
-      this.ƒnormalsFace = undefined;
-      this.ƒnormals = undefined;
       this.ƒbox = undefined;
       this.ƒradius = undefined;
 
-      this.renderBuffers = null;
+      this.renderMesh?.clear();
     }
 
+    //#region Transfer
     // Serialize/Deserialize for all meshes that calculate without parameters
     public serialize(): Serialization {
       let serialization: Serialization = {
@@ -148,80 +87,33 @@ namespace FudgeCore {
       return this;
     }
 
-    /**Flip the Normals of a Mesh to render opposite side of each polygon*/
-    public flipNormals(): void {
+    protected reduceMutator(_mutator: Mutator): void {
+      // TODO: so much to delete... rather just gather what to mutate
+      delete _mutator.ƒbox;
+      delete _mutator.ƒradius;
 
-      //invertNormals
-      for (let n: number = 0; n < this.normalsFace.length; n++) {
-        this.normalsFace[n] = -this.normalsFace[n];
-      }
-
-      //flip indices direction
-      for (let i: number = 0; i < this.indices.length - 2; i += 3) {
-        let i0: number = this.indices[i];
-        this.indices[i] = this.indices[i + 1];
-        this.indices[i + 1] = i0;
-      }
-      this.createRenderBuffers();
+      delete _mutator.renderBuffers;
     }
+    //#endregion
 
-
-    protected createVertices(): Float32Array { return null; }
-    protected createTextureUVs(): Float32Array { return null; }
-    protected createIndices(): Uint16Array { return null; }
-    protected createNormals(): Float32Array { return null; }
-
-    protected createFaceNormals(): Float32Array {
-      let normals: Float32Array = new Float32Array(this.vertices.length);
-      let vertices: Vector3[] = [];
-
-      for (let v: number = 0; v < this.vertices.length; v += 3)
-        vertices.push(new Vector3(...this.vertices.slice(v, v + 3)));
-
-      for (let i: number = 0; i < this.indices.length; i += 3) {
-        let trigon: number[] = [this.indices[i], this.indices[i + 1], this.indices[i + 2]];
-
-        let v0: Vector3 = Vector3.DIFFERENCE(vertices[trigon[0]], vertices[trigon[1]]);
-        let v1: Vector3 = Vector3.DIFFERENCE(vertices[trigon[0]], vertices[trigon[2]]);
-        let normal: Vector3 = /* Vector3.NORMALIZATION */(Vector3.CROSS(v0, v1));
-        let index: number = trigon[2] * 3;
-        normals.set(normal.get(), index);
-      }
-      return normals;
-    }
 
     protected createRadius(): number {
+      //TODO: radius and bounding box could be created on construction of vertex-array
       let radius: number = 0;
-      for (let vertex: number = 0; vertex < this.vertices.length; vertex += 3) {
-        radius = Math.max(radius, Math.hypot(this.vertices[vertex], this.vertices[vertex + 1], this.vertices[vertex + 2]));
+      for (let i: number = 0; i < this.vertices.length; i++) {
+        radius = Math.max(radius, this.vertices.position(i).magnitudeSquared);
       }
-      return radius;
+      return Math.sqrt(radius);
     }
 
     protected createBoundingBox(): Box {
       let box: Box = Recycler.get(Box);
       box.set();
-      for (let vertex: number = 0; vertex < this.vertices.length; vertex += 3) {
-        box.min.x = Math.min(this.vertices[vertex], box.min.x);
-        box.max.x = Math.max(this.vertices[vertex], box.max.x);
-        box.min.y = Math.min(this.vertices[vertex + 1], box.min.y);
-        box.max.y = Math.max(this.vertices[vertex + 1], box.max.y);
-        box.min.z = Math.min(this.vertices[vertex + 2], box.min.z);
-        box.max.z = Math.max(this.vertices[vertex + 2], box.max.z);
+      for (let i: number = 0; i < this.vertices.length; i ++) {
+        let point: Vector3 = this.vertices.position(i);
+        box.expand(point);
       }
       return box;
-    }
-
-
-    protected reduceMutator(_mutator: Mutator): void {
-      delete _mutator.ƒbox;
-      delete _mutator.ƒradius;
-      delete _mutator.ƒvertices;
-      delete _mutator.ƒindices;
-      delete _mutator.ƒnormals;
-      delete _mutator.ƒnormalsFace;
-      delete _mutator.ƒtextureUVs;
-      delete _mutator.renderBuffers;
     }
   }
 }

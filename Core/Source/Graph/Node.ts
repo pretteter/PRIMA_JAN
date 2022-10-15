@@ -8,11 +8,13 @@ namespace FudgeCore {
    * @authors Jascha Karagöl, HFU, 2019 | Jirka Dell'Oro-Friedl, HFU, 2019
    * @link https://github.com/JirkaDellOro/FUDGE/wiki/Graph
    */
-  export class Node extends EventTargetƒ implements Serializable {
+  export class Node extends EventTargetUnified implements Serializable {
     public name: string; // The name to call this node by.
     public readonly mtxWorld: Matrix4x4 = Matrix4x4.IDENTITY();
     public timestampUpdate: number = 0;
+    /** The number of nodes of the whole branch including this node and all successors */
     public nNodesInBranch: number = 0;
+    /** The radius of the bounding sphere in world dimensions enclosing the geometry of this node and all successors in the branch */
     public radius: number = 0;
 
     #mtxWorldInverseUpdated: number;
@@ -88,8 +90,8 @@ namespace FudgeCore {
 
     public activate(_on: boolean): void {
       this.active = _on;
-      // TODO: check if COMPONENT_ACTIVATE/DEACTIVATE is the correct event to dispatch. Shouldn't it be something like NODE_ACTIVATE/DEACTIVATE?
-      this.dispatchEvent(new Event(_on ? EVENT.COMPONENT_ACTIVATE : EVENT.COMPONENT_DEACTIVATE));
+      this.dispatchEvent(new Event(_on ? EVENT.NODE_ACTIVATE : EVENT.NODE_DEACTIVATE, { bubbles: true }));
+      this.broadcastEvent(new Event(_on ? EVENT.NODE_ACTIVATE : EVENT.NODE_DEACTIVATE));
     }
 
     // #region Scenetree
@@ -192,6 +194,7 @@ namespace FudgeCore {
         return;
 
       _child.dispatchEvent(new Event(EVENT.CHILD_REMOVE, { bubbles: true }));
+      _child.broadcastEvent(new Event(EVENT.NODE_DEACTIVATE));
       if (this.isDescendantOf(AudioManager.default.getGraphListeningTo()))
         _child.broadcastEvent(new Event(EVENT_AUDIO.CHILD_REMOVE));
       this.children.splice(found, 1);
@@ -327,7 +330,7 @@ namespace FudgeCore {
         this.components[_component.type] = [_component];
       else
         if (cmpList.length && _component.isSingleton)
-          throw new Error("Component is marked singleton and can't be attached, no more than one allowed");
+          throw new Error(`Component ${_component.type} is marked singleton and can't be attached, no more than one allowed`);
         else
           cmpList.push(_component);
 
@@ -364,7 +367,8 @@ namespace FudgeCore {
     // #region Serialization
     public serialize(): Serialization {
       let serialization: Serialization = {
-        name: this.name
+        name: this.name,
+        active: this.active
       };
 
       let components: Serialization = {};
@@ -399,12 +403,17 @@ namespace FudgeCore {
         }
       }
 
-      for (let serializedChild of _serialization.children) {
-        let deserializedChild: Node = <Node>await Serializer.deserialize(serializedChild);
-        this.appendChild(deserializedChild);
-      }
+      if (_serialization.children)
+        for (let serializedChild of _serialization.children) {
+          let deserializedChild: Node = <Node>await Serializer.deserialize(serializedChild);
+          this.appendChild(deserializedChild);
+        }
 
       this.dispatchEvent(new Event(EVENT.NODE_DESERIALIZED));
+      for (let component of this.getAllComponents())
+        component.dispatchEvent(new Event(EVENT.NODE_DESERIALIZED));
+
+      this.activate(_serialization.active);
       return this;
     }
     // #endregion
@@ -434,7 +443,7 @@ namespace FudgeCore {
      * Adds an event listener to the node. The given handler will be called when a matching event is passed to the node.
      * Deviating from the standard EventTarget, here the _handler must be a function and _capture is the only option.
      */
-    public addEventListener(_type: EVENT | string, _handler: EventListenerƒ, _capture: boolean /*| AddEventListenerOptions*/ = false): void {
+    public addEventListener(_type: EVENT | string, _handler: EventListenerUnified, _capture: boolean /*| AddEventListenerOptions*/ = false): void {
       let listListeners: MapEventTypeToListener = _capture ? this.captures : this.listeners;
       if (!listListeners[_type])
         listListeners[_type] = [];
@@ -443,8 +452,8 @@ namespace FudgeCore {
     /**
      * Removes an event listener from the node. The signature must match the one used with addEventListener
      */
-    public removeEventListener(_type: EVENT | string, _handler: EventListenerƒ, _capture: boolean /*| AddEventListenerOptions*/ = false): void {
-      let listenersForType: EventListenerƒ[] = _capture ? this.captures[_type] : this.listeners[_type];
+    public removeEventListener(_type: EVENT | string, _handler: EventListenerUnified, _capture: boolean /*| AddEventListenerOptions*/ = false): void {
+      let listenersForType: EventListenerUnified[] = _capture ? this.captures[_type] : this.listeners[_type];
       if (listenersForType)
         for (let i: number = listenersForType.length - 1; i >= 0; i--)
           if (listenersForType[i] == _handler)
@@ -463,6 +472,7 @@ namespace FudgeCore {
       // TODO: consider using Reflect instead of Object throughout. See also Render and Mutable...
       while (upcoming.parent)
         ancestors.push(upcoming = upcoming.parent);
+      Object.defineProperty(_event, "path", { writable: true, value: new Array<Node>(this, ...ancestors) });
 
       // capture phase
       Object.defineProperty(_event, "eventPhase", { writable: true, value: Event.CAPTURING_PHASE });
@@ -513,7 +523,7 @@ namespace FudgeCore {
     private broadcastEventRecursive(_event: Event): void {
       // capture phase only
       Object.defineProperty(_event, "currentTarget", { writable: true, value: this });
-      let captures: EventListenerƒ[] = this.captures[_event.type] || [];
+      let captures: EventListenerUnified[] = this.captures[_event.type] || [];
       for (let handler of captures)
         // @ts-ignore
         handler(_event);
@@ -528,7 +538,7 @@ namespace FudgeCore {
       }
     }
 
-    private callListeners(_listeners: EventListenerƒ[], _event: Event): void {
+    private callListeners(_listeners: EventListenerUnified[], _event: Event): void {
       if (_listeners?.length > 0)
         for (let handler of _listeners)
           // @ts-ignore

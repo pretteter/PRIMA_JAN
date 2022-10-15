@@ -31,18 +31,18 @@
       "coat": {
         "ƒ.CoatTextured": {
           "color": "[1, 1, 1, 1]",
-          "idTexture": "TextureImage|2022-10-11T14:55:59.309Z|06527"
+          "idTexture": "TextureImage|2022-10-13T16:08:57.627Z|53772"
         }
       }
     }
   },
-  "TextureImage|2022-10-11T14:55:59.309Z|06527": {
+  "TextureImage|2022-10-13T16:08:57.627Z|53772": {
     "ƒ.TextureImage": {
-      "url": "assets\\characters.gif",
+      "url": "assets\\Mario\\images\\Mario_Walk_8.png",
       "type": "TextureImage",
       "Texture": {
-        "idResource": "TextureImage|2022-10-11T14:55:59.309Z|06527",
-        "name": "assets\\characters.gif",
+        "idResource": "TextureImage|2022-10-13T16:08:57.627Z|53772",
+        "name": "assets\\Mario\\images\\Mario_Walk_8.png",
         "mipmap": "CRISP"
       }
     }
@@ -118,52 +118,17 @@
       },
       "children": [
         {
-          "ƒ.Node": {
-            "name": "Mario",
-            "active": true,
-            "components": {
-              "ComponentMesh": [
-                {
-                  "ƒ.ComponentMesh": {
-                    "idMesh": "MeshQuad|2022-10-11T14:50:13.787Z|78588",
-                    "pivot": {
-                      "translation": "[0, 1, 0]",
-                      "rotation": "[0, 0, 0]",
-                      "scaling": "[1, 1, 1]"
-                    },
-                    "Component": {
-                      "active": true
-                    }
-                  }
-                }
-              ],
-              "ComponentMaterial": [
-                {
-                  "ƒ.ComponentMaterial": {
-                    "sortForAlpha": false,
-                    "clrPrimary": "[1, 1, 1, 1]",
-                    "clrSecondary": "[1, 1, 1, 1]",
-                    "pivot": {
-                      "translation": "[-0.4609999358654022, 0]",
-                      "rotation": 0,
-                      "scaling": "[0.041999999433755875, 0.08399998396635056]"
-                    },
-                    "Component": {
-                      "active": true
-                    },
-                    "idMaterial": "Material|2022-10-11T14:48:35.737Z|77808"
-                  }
-                }
-              ]
-            },
-            "children": []
+          "ƒ.GraphInstance": {
+            "deserializeFromSource": true,
+            "name": "Floor",
+            "idSource": "Graph|2022-10-11T14:32:40.648Z|82152"
           }
         },
         {
           "ƒ.GraphInstance": {
             "deserializeFromSource": true,
-            "name": "Floor",
-            "idSource": "Graph|2022-10-11T14:32:40.648Z|82152"
+            "name": "Mario",
+            "idSource": "Graph|2022-10-13T13:05:33.389Z|60482"
           }
         }
       ],
@@ -462,6 +427,75 @@
     "ƒ.MeshQuad": {
       "idResource": "MeshQuad|2022-10-11T14:47:56.857Z|86163",
       "name": "Stone"
+    }
+  },
+  "Graph|2022-10-13T13:05:33.389Z|60482": {
+    "ƒ.Graph": {
+      "name": "Mario",
+      "active": true,
+      "components": {
+        "ComponentMesh": [
+          {
+            "ƒ.ComponentMesh": {
+              "idMesh": "MeshQuad|2022-10-11T14:50:13.787Z|78588",
+              "pivot": {
+                "translation": "[0, 1, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[1, 1, 1]"
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          }
+        ],
+        "ComponentTransform": [
+          {
+            "ƒ.ComponentTransform": {
+              "local": {
+                "translation": "[0, 0, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[1, 1, 1]"
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          }
+        ],
+        "ComponentMaterial": [
+          {
+            "ƒ.ComponentMaterial": {
+              "sortForAlpha": false,
+              "clrPrimary": "[1, 1, 1, 1]",
+              "clrSecondary": "[1, 1, 1, 1]",
+              "pivot": {
+                "translation": "[0, 0]",
+                "rotation": 0,
+                "scaling": "[1, 1]"
+              },
+              "Component": {
+                "active": true
+              },
+              "idMaterial": "Material|2022-10-11T14:48:35.737Z|77808"
+            }
+          }
+        ]
+      },
+      "children": [],
+      "idResource": "Graph|2022-10-13T13:05:33.389Z|60482",
+      "type": "Graph"
+    }
+  },
+  "TextureImage|2022-10-15T10:49:52.080Z|50640": {
+    "ƒ.TextureImage": {
+      "url": "assets\\Mario\\MarioWalk.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2022-10-15T10:49:52.080Z|50640",
+        "name": "assets\\Mario\\MarioWalk.png",
+        "mipmap": "CRISP"
+      }
     }
   }
 }
