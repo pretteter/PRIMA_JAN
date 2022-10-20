@@ -463,24 +463,7 @@
             }
           }
         ],
-        "ComponentMaterial": [
-          {
-            "ƒ.ComponentMaterial": {
-              "sortForAlpha": false,
-              "clrPrimary": "[1, 1, 1, 1]",
-              "clrSecondary": "[1, 1, 1, 1]",
-              "pivot": {
-                "translation": "[0, 0]",
-                "rotation": 0,
-                "scaling": "[1, 1]"
-              },
-              "Component": {
-                "active": true
-              },
-              "idMaterial": "Material|2022-10-11T14:48:35.737Z|77808"
-            }
-          }
-        ]
+        "ComponentMaterial": []
       },
       "children": [],
       "idResource": "Graph|2022-10-13T13:05:33.389Z|60482",

@@ -43,39 +43,77 @@ var Script;
     ƒ.Debug.info("Main Program Template running!");
     let viewport;
     let Mario;
-    let MarioSpriteNode;
+    let spriteNode;
+    let walkspeed = 1;
+    let walkRightAnimation;
+    let idleAnimation;
     document.addEventListener("interactiveViewportStarted", start);
     async function start(_event) {
         viewport = _event.detail;
         // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
         let branch = viewport.getBranch();
         Mario = branch.getChildrenByName("Mario")[0];
-        let MarioSpriteNode = await walkRight();
-        Mario.addChild(MarioSpriteNode);
-        Mario.getComponent(ƒ.ComponentMaterial).activate(false);
+        walkRightAnimation = await buildWalkRightAnimation();
+        idleAnimation = await buildIdleAnimation();
+        Mario.addChild(await createNewSpriteNode("forward"));
+        stetIdleAnimation();
         ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
         ƒ.Loop.start();
+        // ƒ.Loop.timeFrameGame
     }
-    function update(_event) {
+    async function update(_event) {
         // ƒ.Physics.simulate();  // if physics is included and used
         viewport.draw();
         ƒ.AudioManager.default.update();
-        Mario.mtxLocal.translateX(0.02);
+        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D])) {
+            setWalkRight();
+        }
+        else if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A])) {
+            ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT])
+                ? setWalkLeft(true)
+                : setWalkLeft();
+        }
+        else {
+            stetIdleAnimation();
+        }
     }
-    async function walkRight() {
+    function setWalkRight(sprint) {
+        const sprite = Mario.getChildrenByName("Sprite")[0];
+        sprite.setAnimation(walkRightAnimation);
+        Mario.mtxLocal.translateX((ƒ.Loop.timeFrameGame * walkspeed + (sprint ? 10 : 0)) / 1000);
+    }
+    function setWalkLeft(sprint) {
+        const sprite = Mario.getChildrenByName("Sprite")[0];
+        sprite.setAnimation(walkRightAnimation);
+        Mario.mtxLocal.translateX((-ƒ.Loop.timeFrameGame * walkspeed + (sprint ? 10 : 0)) / 1000);
+    }
+    function stetIdleAnimation() {
+        const sprite = Mario.getChildrenByName("Sprite")[0];
+        sprite.setAnimation(idleAnimation);
+    }
+    async function createNewSpriteNode(frameDirection) {
         // let root: ƒ.Node = new ƒ.Node("root");
-        let coat = await loadSpriteSheet("assets/Mario/MarioWalk.png");
-        let animation = new ƒAid.SpriteSheetAnimation("walkRight", coat);
-        animation.generateByGrid(ƒ.Rectangle.GET(247, 1, 15, 28), 3, 30, ƒ.ORIGIN2D.TOPCENTER, ƒ.Vector2.X(14));
-        MarioSpriteNode = new ƒAid.NodeSprite("Sprite");
-        MarioSpriteNode.addComponent(new ƒ.ComponentTransform(new ƒ.Matrix4x4()));
-        MarioSpriteNode.setAnimation(animation);
-        MarioSpriteNode.setFrameDirection(1);
-        MarioSpriteNode.mtxLocal.translateY(1.4);
+        spriteNode = new ƒAid.NodeSprite("Sprite");
+        spriteNode.addComponent(new ƒ.ComponentTransform(new ƒ.Matrix4x4()));
+        // MarioSpriteNode.setAnimation(await buildWalkRightAnimation());
+        spriteNode.setFrameDirection(frameDirection === "back" ? -1 : frameDirection === "forward" ? 1 : 1);
+        spriteNode.mtxLocal.translateY(0.5);
         // MarioSpriteNode.framerate = 30;
-        return MarioSpriteNode;
+        return spriteNode;
     }
-    async function loadSpriteSheet(pathSpriteSheet) {
+    async function buildWalkRightAnimation() {
+        let coat = await loadTextureFromSpriteSheet("assets/Mario/MarioWalk.png");
+        let animation = new ƒAid.SpriteSheetAnimation("walkRight", coat);
+        animation.generateByGrid(ƒ.Rectangle.GET(247, 1, 15, 28), 3, 30, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(14));
+        return animation;
+    }
+    async function buildIdleAnimation() {
+        let coat = await loadTextureFromSpriteSheet("assets/Mario/MarioWalk.png");
+        let animation = new ƒAid.SpriteSheetAnimation("idle", coat);
+        animation.generateByGrid(ƒ.Rectangle.GET(247, 1, 15, 28), 1, 30, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(0));
+        return animation;
+    }
+    async function loadTextureFromSpriteSheet(pathSpriteSheet) {
         let imgSpriteSheet = new ƒ.TextureImage();
         await imgSpriteSheet.load(pathSpriteSheet);
         let coat = new ƒ.CoatTextured(undefined, imgSpriteSheet);
