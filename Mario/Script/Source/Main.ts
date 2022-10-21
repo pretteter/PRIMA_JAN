@@ -8,9 +8,16 @@ namespace Script {
   let Mario: ƒ.Node;
   let spriteNode: ƒAid.NodeSprite;
   let walkspeed: number = 1;
+  let walkDirechtion: "right" | "left" = "right";
 
-  let walkRightAnimation: ƒAid.SpriteSheetAnimation;
-  let idleAnimation: ƒAid.SpriteSheetAnimation;
+  let animationCurrent: ƒAid.SpriteSheetAnimation;
+  let animationWalkRight: ƒAid.SpriteSheetAnimation;
+  let animationWalkLeft: ƒAid.SpriteSheetAnimation;
+  let animationIdle: ƒAid.SpriteSheetAnimation;
+  let animationJump: ƒAid.SpriteSheetAnimation;
+
+  let ySpeed: number = 0.01;
+  let gravity: number = 0.1;
 
   document.addEventListener(
     "interactiveViewportStarted",
@@ -22,9 +29,12 @@ namespace Script {
     // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
     let branch: ƒ.Node = viewport.getBranch();
     Mario = branch.getChildrenByName("Mario")[0];
-    walkRightAnimation = await buildWalkRightAnimation();
-    idleAnimation = await buildIdleAnimation();
     Mario.addChild(await createNewSpriteNode("forward"));
+
+    animationWalkRight = await buildWalkRightAnimation();
+    animationWalkLeft = await buildWalkLeftAnimation();
+    animationIdle = await buildIdleAnimation();
+
     stetIdleAnimation();
 
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
@@ -36,37 +46,101 @@ namespace Script {
     // ƒ.Physics.simulate();  // if physics is included and used
     viewport.draw();
     ƒ.AudioManager.default.update();
+    setGravity();
+    marioMovement();
+  }
 
-    if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D])) {
-      setWalkRight();
+  function marioMovement() {
+    if (
+      !ƒ.Keyboard.isPressedOne([
+        ƒ.KEYBOARD_CODE.D,
+        ƒ.KEYBOARD_CODE.A,
+        ƒ.KEYBOARD_CODE.W,
+        ƒ.KEYBOARD_CODE.S,
+      ])
+    ) {
+      stetIdleAnimation();
+    } else if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D])) {
+      ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT])
+        ? walkRight(true)
+        : walkRight();
     } else if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A])) {
       ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT])
-        ? setWalkLeft(true)
-        : setWalkLeft();
-    } else {
-      stetIdleAnimation();
+        ? walkLeft(true)
+        : walkLeft();
+    }
+    if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.W])) {
+      ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D])
+        ? ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT])
+          ? walkRight(true)
+          : walkRight()
+        : ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A])
+          ? ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT])
+            ? walkLeft(true)
+            : walkLeft()
+          : "";
+      jump();
     }
   }
 
-  function setWalkRight(sprint?: boolean) {
+  function walkRight(sprint?: boolean) {
     const sprite = Mario.getChildrenByName("Sprite")[0] as ƒAid.NodeSprite;
-    sprite.setAnimation(walkRightAnimation);
+    animationCurrent !== animationWalkRight
+      ? sprite.setAnimation(animationWalkRight)
+      : "";
+    animationCurrent = animationWalkRight;
+    walkDirechtion === "left" ? turnMario() : "";
     Mario.mtxLocal.translateX(
       (ƒ.Loop.timeFrameGame * walkspeed + (sprint ? 10 : 0)) / 1000
     );
   }
 
-  function setWalkLeft(sprint?: boolean) {
+  function walkLeft(sprint?: boolean) {
     const sprite = Mario.getChildrenByName("Sprite")[0] as ƒAid.NodeSprite;
-    sprite.setAnimation(walkRightAnimation);
-    Mario.mtxLocal.translateX(
-      (-ƒ.Loop.timeFrameGame * walkspeed + (sprint ? 10 : 0)) / 1000
-    );
+    animationCurrent !== animationWalkLeft
+      ? sprite.setAnimation(animationWalkLeft)
+      : "";
+    walkDirechtion === "right" ? turnMario() : "";
+    animationCurrent = animationWalkLeft;
+    sprite
+      .getComponent(ƒ.ComponentTransform)
+      .mtxLocal.translateX(
+        (ƒ.Loop.timeFrameGame * walkspeed + (sprint ? 10 : 0)) / 1000
+      );
+  }
+
+  function jump() {
+    ySpeed <= 0.01 ? (ySpeed = 0.05) : "";
+  }
+
+  function setGravity() {
+    let deltaTime: number = ƒ.Loop.timeFrameGame / 1000;
+    ySpeed -= gravity * deltaTime;
+    Mario.mtxLocal.translateY(ySpeed);
+
+    let pos: ƒ.Vector3 = Mario.mtxLocal.translation;
+    if (pos.y + ySpeed > 0) Mario.mtxLocal.translateY(ySpeed);
+    else {
+      ySpeed = 0;
+      pos.y = 0;
+      Mario.mtxLocal.translation = pos;
+    }
   }
 
   function stetIdleAnimation() {
     const sprite = Mario.getChildrenByName("Sprite")[0] as ƒAid.NodeSprite;
-    sprite.setAnimation(idleAnimation);
+    sprite.setAnimation(animationIdle);
+    animationCurrent = animationIdle;
+  }
+
+  function turnMario() {
+    const sprite = Mario.getChildrenByName("Sprite")[0] as ƒAid.NodeSprite;
+    sprite.getComponent(ƒ.ComponentTransform).mtxLocal.rotateY(180);
+    walkDirechtion === "right"
+      ? (walkDirechtion = "left")
+      : walkDirechtion === "left"
+        ? (walkDirechtion = "right")
+        : "";
   }
 
   async function createNewSpriteNode(
@@ -99,7 +173,25 @@ namespace Script {
       3,
       30,
       ƒ.ORIGIN2D.BOTTOMCENTER,
-      ƒ.Vector2.X(14)
+      ƒ.Vector2.X(30)
+    );
+    return animation;
+  }
+
+  async function buildWalkLeftAnimation(): Promise<ƒAid.SpriteSheetAnimation> {
+    let coat: ƒ.CoatTextured = await loadTextureFromSpriteSheet(
+      "assets/Mario/MarioWalk.png"
+    );
+    let animation: ƒAid.SpriteSheetAnimation = new ƒAid.SpriteSheetAnimation(
+      "walkLeft",
+      coat
+    );
+    animation.generateByGrid(
+      ƒ.Rectangle.GET(247, 1, 15, 28),
+      3,
+      30,
+      ƒ.ORIGIN2D.BOTTOMCENTER,
+      ƒ.Vector2.X(30)
     );
     return animation;
   }
@@ -110,6 +202,24 @@ namespace Script {
     );
     let animation: ƒAid.SpriteSheetAnimation = new ƒAid.SpriteSheetAnimation(
       "idle",
+      coat
+    );
+    animation.generateByGrid(
+      ƒ.Rectangle.GET(247, 1, 15, 28),
+      1,
+      30,
+      ƒ.ORIGIN2D.BOTTOMCENTER,
+      ƒ.Vector2.X(0)
+    );
+    return animation;
+  }
+
+  async function buildJumpAnimation(): Promise<ƒAid.SpriteSheetAnimation> {
+    let coat: ƒ.CoatTextured = await loadTextureFromSpriteSheet(
+      "assets/Mario/MarioWalk.png"
+    );
+    let animation: ƒAid.SpriteSheetAnimation = new ƒAid.SpriteSheetAnimation(
+      "jump",
       coat
     );
     animation.generateByGrid(
