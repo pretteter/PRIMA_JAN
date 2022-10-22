@@ -15,6 +15,7 @@ namespace Script {
   let animationIdle: ƒAid.SpriteSheetAnimation;
   let animationJump: ƒAid.SpriteSheetAnimation;
   let animationFall: ƒAid.SpriteSheetAnimation;
+  let animationRun: ƒAid.SpriteSheetAnimation;
 
   let ySpeed: number = 0.01;
   let gravity: number = 0.1;
@@ -35,6 +36,7 @@ namespace Script {
     animationIdle = await buildIdleAnimation();
     animationJump = await buildJumpAnimation();
     animationFall = await buildFallAnimation();
+    animationRun = await buildRunAnimation();
 
     stetIdleAnimation();
 
@@ -88,10 +90,9 @@ namespace Script {
 
   function walk(direction: "right" | "left", sprint?: boolean) {
     const sprite = Mario.getChildrenByName("Sprite")[0] as ƒAid.NodeSprite;
-    animationCurrent !== animationWalk
-      ? sprite.setAnimation(animationWalk)
-      : "";
-    animationCurrent = animationWalk;
+    const anToUse = sprint ? animationRun : animationWalk;
+    animationCurrent !== anToUse ? sprite.setAnimation(anToUse) : "";
+    animationCurrent = anToUse;
     walkDirechtion !== direction ? turnMario() : "";
     sprite
       .getComponent(ƒ.ComponentTransform)
@@ -155,10 +156,10 @@ namespace Script {
 
   async function buildWalkAnimation(): Promise<ƒAid.SpriteSheetAnimation> {
     let coat: ƒ.CoatTextured = await loadTextureFromSpriteSheet(
-      "assets/Mario/MarioWalk.png"
+      "assets/Mario/marioSpriteSheet.png"
     );
     let animation: ƒAid.SpriteSheetAnimation = new ƒAid.SpriteSheetAnimation(
-      "walkRight",
+      "walk",
       coat
     );
     animation.generateByGrid(
@@ -173,7 +174,7 @@ namespace Script {
 
   async function buildIdleAnimation(): Promise<ƒAid.SpriteSheetAnimation> {
     let coat: ƒ.CoatTextured = await loadTextureFromSpriteSheet(
-      "assets/Mario/MarioWalk.png"
+      "assets/Mario/marioSpriteSheet.png"
     );
     let animation: ƒAid.SpriteSheetAnimation = new ƒAid.SpriteSheetAnimation(
       "idle",
@@ -191,7 +192,7 @@ namespace Script {
 
   async function buildJumpAnimation(): Promise<ƒAid.SpriteSheetAnimation> {
     let coat: ƒ.CoatTextured = await loadTextureFromSpriteSheet(
-      "assets/Mario/MarioWalk.png"
+      "assets/Mario/marioSpriteSheet.png"
     );
     let animation: ƒAid.SpriteSheetAnimation = new ƒAid.SpriteSheetAnimation(
       "jump",
@@ -209,7 +210,7 @@ namespace Script {
 
   async function buildFallAnimation(): Promise<ƒAid.SpriteSheetAnimation> {
     let coat: ƒ.CoatTextured = await loadTextureFromSpriteSheet(
-      "assets/Mario/MarioWalk.png"
+      "assets/Mario/marioSpriteSheet.png"
     );
     let animation: ƒAid.SpriteSheetAnimation = new ƒAid.SpriteSheetAnimation(
       "fall",
@@ -221,6 +222,24 @@ namespace Script {
       30,
       ƒ.ORIGIN2D.BOTTOMCENTER,
       ƒ.Vector2.X(0)
+    );
+    return animation;
+  }
+
+  async function buildRunAnimation(): Promise<ƒAid.SpriteSheetAnimation> {
+    let coat: ƒ.CoatTextured = await loadTextureFromSpriteSheet(
+      "assets/Mario/marioSpriteSheet.png"
+    );
+    let animation: ƒAid.SpriteSheetAnimation = new ƒAid.SpriteSheetAnimation(
+      "run",
+      coat
+    );
+    animation.generateByGrid(
+      ƒ.Rectangle.GET(245, 41, 18, 28),
+      3,
+      30,
+      ƒ.ORIGIN2D.BOTTOMCENTER,
+      ƒ.Vector2.X(30)
     );
     return animation;
   }
