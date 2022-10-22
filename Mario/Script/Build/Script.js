@@ -47,10 +47,10 @@ var Script;
     let walkspeed = 1;
     let walkDirechtion = "right";
     let animationCurrent;
-    let animationWalkRight;
-    let animationWalkLeft;
+    let animationWalk;
     let animationIdle;
     let animationJump;
+    let animationFall;
     let ySpeed = 0.01;
     let gravity = 0.1;
     document.addEventListener("interactiveViewportStarted", start);
@@ -60,9 +60,10 @@ var Script;
         let branch = viewport.getBranch();
         Mario = branch.getChildrenByName("Mario")[0];
         Mario.addChild(await createNewSpriteNode("forward"));
-        animationWalkRight = await buildWalkRightAnimation();
-        animationWalkLeft = await buildWalkLeftAnimation();
+        animationWalk = await buildWalkAnimation();
         animationIdle = await buildIdleAnimation();
+        animationJump = await buildJumpAnimation();
+        animationFall = await buildFallAnimation();
         stetIdleAnimation();
         ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
         ƒ.Loop.start();
@@ -82,7 +83,7 @@ var Script;
             ƒ.KEYBOARD_CODE.W,
             ƒ.KEYBOARD_CODE.S,
         ])) {
-            stetIdleAnimation();
+            ySpeed === 0 ? stetIdleAnimation() : "";
         }
         else if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D])) {
             ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT])
@@ -94,7 +95,7 @@ var Script;
                 ? walkLeft(true)
                 : walkLeft();
         }
-        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.W])) {
+        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.W]) || ySpeed !== 0) {
             ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D])
                 ? ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT])
                     ? walkRight(true)
@@ -109,26 +110,33 @@ var Script;
     }
     function walkRight(sprint) {
         const sprite = Mario.getChildrenByName("Sprite")[0];
-        animationCurrent !== animationWalkRight
-            ? sprite.setAnimation(animationWalkRight)
+        animationCurrent !== animationWalk
+            ? sprite.setAnimation(animationWalk)
             : "";
-        animationCurrent = animationWalkRight;
+        animationCurrent = animationWalk;
         walkDirechtion === "left" ? turnMario() : "";
         Mario.mtxLocal.translateX((ƒ.Loop.timeFrameGame * walkspeed + (sprint ? 10 : 0)) / 1000);
     }
     function walkLeft(sprint) {
         const sprite = Mario.getChildrenByName("Sprite")[0];
-        animationCurrent !== animationWalkLeft
-            ? sprite.setAnimation(animationWalkLeft)
+        animationCurrent !== animationWalk
+            ? sprite.setAnimation(animationWalk)
             : "";
         walkDirechtion === "right" ? turnMario() : "";
-        animationCurrent = animationWalkLeft;
+        animationCurrent = animationWalk;
         sprite
             .getComponent(ƒ.ComponentTransform)
             .mtxLocal.translateX((ƒ.Loop.timeFrameGame * walkspeed + (sprint ? 10 : 0)) / 1000);
     }
     function jump() {
-        ySpeed <= 0.01 ? (ySpeed = 0.05) : "";
+        const sprite = Mario.getChildrenByName("Sprite")[0];
+        animationCurrent !== animationJump
+            ? ySpeed >= 0
+                ? sprite.setAnimation(animationJump)
+                : sprite.setAnimation(animationFall)
+            : "";
+        animationCurrent = animationJump;
+        ySpeed === 0 ? (ySpeed = 0.05) : "";
     }
     function setGravity() {
         let deltaTime = ƒ.Loop.timeFrameGame / 1000;
@@ -158,24 +166,15 @@ var Script;
                 : "";
     }
     async function createNewSpriteNode(frameDirection) {
-        // let root: ƒ.Node = new ƒ.Node("root");
         spriteNode = new ƒAid.NodeSprite("Sprite");
         spriteNode.addComponent(new ƒ.ComponentTransform(new ƒ.Matrix4x4()));
-        // MarioSpriteNode.setAnimation(await buildWalkRightAnimation());
         spriteNode.setFrameDirection(frameDirection === "back" ? -1 : frameDirection === "forward" ? 1 : 1);
         spriteNode.mtxLocal.translateY(0.5);
-        // MarioSpriteNode.framerate = 30;
         return spriteNode;
     }
-    async function buildWalkRightAnimation() {
+    async function buildWalkAnimation() {
         let coat = await loadTextureFromSpriteSheet("assets/Mario/MarioWalk.png");
         let animation = new ƒAid.SpriteSheetAnimation("walkRight", coat);
-        animation.generateByGrid(ƒ.Rectangle.GET(247, 1, 15, 28), 3, 30, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(30));
-        return animation;
-    }
-    async function buildWalkLeftAnimation() {
-        let coat = await loadTextureFromSpriteSheet("assets/Mario/MarioWalk.png");
-        let animation = new ƒAid.SpriteSheetAnimation("walkLeft", coat);
         animation.generateByGrid(ƒ.Rectangle.GET(247, 1, 15, 28), 3, 30, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(30));
         return animation;
     }
@@ -188,7 +187,13 @@ var Script;
     async function buildJumpAnimation() {
         let coat = await loadTextureFromSpriteSheet("assets/Mario/MarioWalk.png");
         let animation = new ƒAid.SpriteSheetAnimation("jump", coat);
-        animation.generateByGrid(ƒ.Rectangle.GET(247, 1, 15, 28), 1, 30, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(0));
+        animation.generateByGrid(ƒ.Rectangle.GET(335, 1, 18, 28), 1, 30, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(0));
+        return animation;
+    }
+    async function buildFallAnimation() {
+        let coat = await loadTextureFromSpriteSheet("assets/Mario/MarioWalk.png");
+        let animation = new ƒAid.SpriteSheetAnimation("fall", coat);
+        animation.generateByGrid(ƒ.Rectangle.GET(366, 1, 16, 28), 1, 30, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(0));
         return animation;
     }
     async function loadTextureFromSpriteSheet(pathSpriteSheet) {
