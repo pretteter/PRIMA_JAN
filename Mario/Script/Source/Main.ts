@@ -65,46 +65,34 @@ namespace Script {
         : "";
     } else if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D])) {
       ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT])
-        ? walkRight(true)
-        : walkRight();
+        ? walk("right", true)
+        : walk("right");
     } else if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A])) {
       ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT])
-        ? walkLeft(true)
-        : walkLeft();
+        ? walk("left", true)
+        : walk("left");
     }
     if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.W]) || ySpeed !== 0) {
       ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D])
         ? ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT])
-          ? walkRight(true)
-          : walkRight()
+          ? walk("right", true)
+          : walk("right")
         : ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A])
         ? ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT])
-          ? walkLeft(true)
-          : walkLeft()
+          ? walk("left", true)
+          : walk("left")
         : "";
       jump();
     }
   }
 
-  function walkRight(sprint?: boolean) {
+  function walk(direction: "right" | "left", sprint?: boolean) {
     const sprite = Mario.getChildrenByName("Sprite")[0] as ƒAid.NodeSprite;
     animationCurrent !== animationWalk
       ? sprite.setAnimation(animationWalk)
       : "";
     animationCurrent = animationWalk;
-    walkDirechtion === "left" ? turnMario() : "";
-    Mario.mtxLocal.translateX(
-      (ƒ.Loop.timeFrameGame * walkspeed + (sprint ? 10 : 0)) / 1000
-    );
-  }
-
-  function walkLeft(sprint?: boolean) {
-    const sprite = Mario.getChildrenByName("Sprite")[0] as ƒAid.NodeSprite;
-    animationCurrent !== animationWalk
-      ? sprite.setAnimation(animationWalk)
-      : "";
-    walkDirechtion === "right" ? turnMario() : "";
-    animationCurrent = animationWalk;
+    walkDirechtion !== direction ? turnMario() : "";
     sprite
       .getComponent(ƒ.ComponentTransform)
       .mtxLocal.translateX(
