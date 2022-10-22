@@ -7,7 +7,7 @@ namespace Script {
   let viewport: ƒ.Viewport;
   let Mario: ƒ.Node;
   let spriteNode: ƒAid.NodeSprite;
-  let walkspeed: number = 1;
+  let walkspeed: number = 2;
   let walkDirechtion: "right" | "left" = "right";
 
   let animationCurrent: ƒAid.SpriteSheetAnimation;
@@ -46,7 +46,7 @@ namespace Script {
   async function update(_event: Event): Promise<void> {
     // ƒ.Physics.simulate();  // if physics is included and used
     viewport.draw();
-    ƒ.AudioManager.default.update();
+    // ƒ.AudioManager.default.update();
     setGravity();
     marioMovement();
   }
@@ -60,7 +60,9 @@ namespace Script {
         ƒ.KEYBOARD_CODE.S,
       ])
     ) {
-      ySpeed === 0 ? stetIdleAnimation() : "";
+      ySpeed === 0 && animationCurrent !== animationIdle
+        ? stetIdleAnimation()
+        : "";
     } else if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D])) {
       ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT])
         ? walkRight(true)

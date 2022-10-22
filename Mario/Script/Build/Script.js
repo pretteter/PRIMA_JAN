@@ -44,7 +44,7 @@ var Script;
     let viewport;
     let Mario;
     let spriteNode;
-    let walkspeed = 1;
+    let walkspeed = 2;
     let walkDirechtion = "right";
     let animationCurrent;
     let animationWalk;
@@ -72,7 +72,7 @@ var Script;
     async function update(_event) {
         // ƒ.Physics.simulate();  // if physics is included and used
         viewport.draw();
-        ƒ.AudioManager.default.update();
+        // ƒ.AudioManager.default.update();
         setGravity();
         marioMovement();
     }
@@ -83,7 +83,9 @@ var Script;
             ƒ.KEYBOARD_CODE.W,
             ƒ.KEYBOARD_CODE.S,
         ])) {
-            ySpeed === 0 ? stetIdleAnimation() : "";
+            ySpeed === 0 && animationCurrent !== animationIdle
+                ? stetIdleAnimation()
+                : "";
         }
         else if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D])) {
             ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT])
