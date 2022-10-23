@@ -61,11 +61,7 @@ var Script;
         let branch = viewport.getBranch();
         Mario = branch.getChildrenByName("Mario")[0];
         Mario.addChild(await createNewSpriteNode("forward"));
-        animationWalk = await buildWalkAnimation();
-        animationIdle = await buildIdleAnimation();
-        animationJump = await buildJumpAnimation();
-        animationFall = await buildFallAnimation();
-        animationRun = await buildRunAnimation();
+        await buildAllAnimations();
         stetIdleAnimation();
         ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
         ƒ.Loop.start();
@@ -114,13 +110,13 @@ var Script;
     }
     function walk(direction, sprint) {
         const sprite = Mario.getChildrenByName("Sprite")[0];
-        const anToUse = sprint ? animationRun : animationWalk;
-        animationCurrent !== anToUse ? sprite.setAnimation(anToUse) : "";
-        animationCurrent = anToUse;
+        const anmToUse = sprint ? animationRun : animationWalk;
+        animationCurrent !== anmToUse ? sprite.setAnimation(anmToUse) : "";
+        animationCurrent = anmToUse;
         walkDirechtion !== direction ? turnMario() : "";
         sprite
             .getComponent(ƒ.ComponentTransform)
-            .mtxLocal.translateX((ƒ.Loop.timeFrameGame * walkspeed + (sprint ? 10 : 0)) / 1000);
+            .mtxLocal.translateX((ƒ.Loop.timeFrameGame * walkspeed * (sprint ? 2 : 1)) / 1000);
     }
     function jump() {
         const sprite = Mario.getChildrenByName("Sprite")[0];
@@ -130,7 +126,7 @@ var Script;
                 : sprite.setAnimation(animationFall)
             : "";
         animationCurrent = animationJump;
-        ySpeed === 0 ? (ySpeed = 0.05) : "";
+        ySpeed === 0 ? (ySpeed = 0.075) : "";
     }
     function setGravity() {
         let deltaTime = ƒ.Loop.timeFrameGame / 1000;
@@ -166,41 +162,24 @@ var Script;
         spriteNode.mtxLocal.translateY(0.5);
         return spriteNode;
     }
-    async function buildWalkAnimation() {
-        let coat = await loadTextureFromSpriteSheet("assets/Mario/marioSpriteSheet.png");
-        let animation = new ƒAid.SpriteSheetAnimation("walk", coat);
-        animation.generateByGrid(ƒ.Rectangle.GET(247, 1, 15, 28), 3, 30, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(30));
-        return animation;
-    }
-    async function buildIdleAnimation() {
-        let coat = await loadTextureFromSpriteSheet("assets/Mario/marioSpriteSheet.png");
-        let animation = new ƒAid.SpriteSheetAnimation("idle", coat);
-        animation.generateByGrid(ƒ.Rectangle.GET(247, 1, 15, 28), 1, 30, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(0));
-        return animation;
-    }
-    async function buildJumpAnimation() {
-        let coat = await loadTextureFromSpriteSheet("assets/Mario/marioSpriteSheet.png");
-        let animation = new ƒAid.SpriteSheetAnimation("jump", coat);
-        animation.generateByGrid(ƒ.Rectangle.GET(335, 1, 18, 28), 1, 30, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(0));
-        return animation;
-    }
-    async function buildFallAnimation() {
-        let coat = await loadTextureFromSpriteSheet("assets/Mario/marioSpriteSheet.png");
-        let animation = new ƒAid.SpriteSheetAnimation("fall", coat);
-        animation.generateByGrid(ƒ.Rectangle.GET(366, 1, 16, 28), 1, 30, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(0));
-        return animation;
-    }
-    async function buildRunAnimation() {
-        let coat = await loadTextureFromSpriteSheet("assets/Mario/marioSpriteSheet.png");
-        let animation = new ƒAid.SpriteSheetAnimation("run", coat);
-        animation.generateByGrid(ƒ.Rectangle.GET(245, 41, 18, 28), 3, 30, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(30));
-        return animation;
-    }
     async function loadTextureFromSpriteSheet(pathSpriteSheet) {
         let imgSpriteSheet = new ƒ.TextureImage();
         await imgSpriteSheet.load(pathSpriteSheet);
         let coat = new ƒ.CoatTextured(undefined, imgSpriteSheet);
         return coat;
+    }
+    async function buildAllAnimations() {
+        animationRun = await buildSingleAnimation("assets/Mario/marioSpriteSheet.png", "run", 245, 41, 18, 28, 3, 30);
+        animationFall = await buildSingleAnimation("assets/Mario/marioSpriteSheet.png", "fall", 366, 1, 16, 28, 1);
+        animationJump = await buildSingleAnimation("assets/Mario/marioSpriteSheet.png", "jump", 335, 1, 18, 28, 1);
+        animationIdle = await buildSingleAnimation("assets/Mario/marioSpriteSheet.png", "idle", 247, 1, 15, 28, 1);
+        animationWalk = await buildSingleAnimation("assets/Mario/marioSpriteSheet.png", "walk", 247, 1, 15, 28, 3, 30);
+    }
+    async function buildSingleAnimation(path, name, startX, startY, width, height, frames, distanceBetweenSprites) {
+        let coat = await loadTextureFromSpriteSheet(path);
+        let animation = new ƒAid.SpriteSheetAnimation(name, coat);
+        animation.generateByGrid(ƒ.Rectangle.GET(startX, startY, width, height), frames, 30, ƒ.ORIGIN2D.BOTTOMCENTER, ƒ.Vector2.X(frames > 0 ? distanceBetweenSprites : 0));
+        return animation;
     }
 })(Script || (Script = {}));
 //# sourceMappingURL=Script.js.map
