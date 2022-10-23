@@ -8,4 +8,25 @@ declare namespace Script {
     }
 }
 declare namespace Script {
+    import ƒ = FudgeCore;
+    import ƒAid = FudgeAid;
+    let Mario: ƒ.Node;
+    let spriteNode: ƒAid.NodeSprite;
+    let walkspeed: number;
+    let walkDirechtion: "right" | "left";
+    let ySpeed: number;
+}
+declare namespace Script {
+    let animationCurrent: ƒAid.SpriteSheetAnimation;
+    let animationWalk: ƒAid.SpriteSheetAnimation;
+    let animationIdle: ƒAid.SpriteSheetAnimation;
+    let animationJump: ƒAid.SpriteSheetAnimation;
+    let animationFall: ƒAid.SpriteSheetAnimation;
+    let animationRun: ƒAid.SpriteSheetAnimation;
+    function stetIdleAnimation(): void;
+    function turnMario(): void;
+    function buildAllAnimations(): Promise<void>;
+}
+declare namespace Script {
+    function marioMovement(): void;
 }
