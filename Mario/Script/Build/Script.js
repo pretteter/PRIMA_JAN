@@ -44,8 +44,10 @@ var Script;
     let viewport;
     Script.walkspeed = 2;
     Script.walkDirechtion = "right";
-    Script.ySpeed = 0.01;
-    let gravity = 0.1;
+    Script.ySpeed = 1;
+    Script.collision = false;
+    let audioJump;
+    let gravity = 10;
     document.addEventListener("interactiveViewportStarted", start);
     async function start(_event) {
         viewport = _event.detail;
@@ -55,6 +57,11 @@ var Script;
         Script.Mario.addChild(await createNewSpriteNode("forward"));
         await Script.buildAllAnimations();
         Script.stetIdleAnimation();
+        let audio = viewport
+            .getBranch()
+            .getComponent(ƒ.ComponentAudio);
+        console.log(audio);
+        setJumpSound();
         ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
         ƒ.Loop.start();
         // ƒ.Loop.timeFrameGame
@@ -62,22 +69,18 @@ var Script;
     async function update(_event) {
         // ƒ.Physics.simulate();  // if physics is included and used
         viewport.draw();
-        // ƒ.AudioManager.default.update();
-        setGravity();
-        Script.marioMovement();
+        ƒ.AudioManager.default.update();
+        Script.marioControls();
+        setGravityForMario();
+        // checkCollision();
+        initCollision();
     }
-    function setGravity() {
+    function setGravityForMario() {
         let deltaTime = ƒ.Loop.timeFrameGame / 1000;
+        Script.ySpeed <= -5 ? (Script.ySpeed = -5) : "";
         Script.ySpeed -= gravity * deltaTime;
-        Script.Mario.mtxLocal.translateY(Script.ySpeed);
-        let pos = Script.Mario.mtxLocal.translation;
-        if (pos.y + Script.ySpeed > 0)
-            Script.Mario.mtxLocal.translateY(Script.ySpeed);
-        else {
-            Script.ySpeed = 0;
-            pos.y = 0;
-            Script.Mario.mtxLocal.translation = pos;
-        }
+        let yOffset = Script.ySpeed * deltaTime;
+        Script.Mario.mtxLocal.translateY(yOffset);
     }
     async function createNewSpriteNode(frameDirection) {
         Script.spriteNode = new ƒAid.NodeSprite("Sprite");
@@ -85,6 +88,40 @@ var Script;
         Script.spriteNode.setFrameDirection(frameDirection === "back" ? -1 : frameDirection === "forward" ? 1 : 1);
         Script.spriteNode.mtxLocal.translateY(0.5);
         return Script.spriteNode;
+    }
+    function checkCollision() {
+        let blocks = viewport.getBranch().getChildrenByName("Floor")[0];
+        let pos = Script.Mario.mtxLocal.translation;
+        for (let block of blocks.getChildren()) {
+            let posBlock = block.mtxLocal.translation;
+            if (Math.abs(pos.x - posBlock.x) < 0.5) {
+                if (pos.y < posBlock.y && pos.y > posBlock.y - 0.2) {
+                    Script.collision = true;
+                    return;
+                }
+            }
+        }
+        Script.collision = false;
+    }
+    Script.checkCollision = checkCollision;
+    function initCollision() {
+        checkCollision();
+        if (Script.collision) {
+            let blocks = viewport.getBranch().getChildrenByName("Floor")[0];
+            let pos = Script.Mario.mtxLocal.translation;
+            for (let block of blocks.getChildren()) {
+                let posBlock = block.mtxLocal.translation;
+                pos.y = posBlock.y;
+                Script.Mario.mtxLocal.translation = pos;
+                Script.ySpeed = 0;
+            }
+        }
+    }
+    function setJumpSound() {
+        audioJump = new ƒ.Audio("audio/jump.mp3");
+        Script.cmpAudio = new ƒ.ComponentAudio(audioJump, false, false);
+        Script.cmpAudio.connect(true);
+        Script.cmpAudio.volume = 0.7;
     }
 })(Script || (Script = {}));
 var Script;
@@ -96,8 +133,7 @@ var Script;
     }
     Script.stetIdleAnimation = stetIdleAnimation;
     function turnMario() {
-        const sprite = Script.Mario.getChildrenByName("Sprite")[0];
-        sprite.getComponent(ƒ.ComponentTransform).mtxLocal.rotateY(180);
+        Script.Mario.getComponent(ƒ.ComponentTransform).mtxLocal.rotateY(180);
         Script.walkDirechtion === "right"
             ? (Script.walkDirechtion = "left")
             : Script.walkDirechtion === "left"
@@ -143,28 +179,18 @@ var Script;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
-    function marioMovement() {
+    function marioControls() {
         if (!ƒ.Keyboard.isPressedOne([
             ƒ.KEYBOARD_CODE.D,
             ƒ.KEYBOARD_CODE.A,
             ƒ.KEYBOARD_CODE.W,
             ƒ.KEYBOARD_CODE.S,
         ])) {
-            Script.ySpeed === 0 && Script.animationCurrent !== Script.animationIdle
+            Script.collision && Script.animationCurrent !== Script.animationIdle
                 ? Script.stetIdleAnimation()
                 : "";
         }
-        else if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D])) {
-            ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT])
-                ? walk("right", true)
-                : walk("right");
-        }
-        else if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A])) {
-            ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT])
-                ? walk("left", true)
-                : walk("left");
-        }
-        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.W]) || Script.ySpeed !== 0) {
+        else if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.W])) {
             ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D])
                 ? ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT])
                     ? walk("right", true)
@@ -176,27 +202,41 @@ var Script;
                     : "";
             jump();
         }
+        else if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D])) {
+            ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT])
+                ? walk("right", true)
+                : walk("right");
+        }
+        else if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A])) {
+            ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT])
+                ? walk("left", true)
+                : walk("left");
+        }
+        if (!Script.collision) {
+            manageJumpAndFallAnimation();
+        }
     }
-    Script.marioMovement = marioMovement;
+    Script.marioControls = marioControls;
     function walk(direction, sprint) {
         const sprite = Script.Mario.getChildrenByName("Sprite")[0];
-        const anmToUse = sprint ? Script.animationRun : Script.animationWalk;
-        Script.animationCurrent !== anmToUse ? sprite.setAnimation(anmToUse) : "";
-        Script.animationCurrent = anmToUse;
+        if (Script.collision) {
+            const anmToUse = sprint ? Script.animationRun : Script.animationWalk;
+            Script.animationCurrent !== anmToUse ? sprite.setAnimation(anmToUse) : "";
+            Script.animationCurrent = anmToUse;
+        }
         Script.walkDirechtion !== direction ? Script.turnMario() : "";
-        sprite
-            .getComponent(ƒ.ComponentTransform)
-            .mtxLocal.translateX((ƒ.Loop.timeFrameGame * Script.walkspeed * (sprint ? 2 : 1)) / 1000);
+        Script.Mario.getComponent(ƒ.ComponentTransform).mtxLocal.translateX((ƒ.Loop.timeFrameGame * Script.walkspeed * (sprint ? 2 : 1)) / 1000);
     }
     function jump() {
+        Script.cmpAudio.play(true);
+        Script.collision ? (Script.ySpeed = 5) : "";
+    }
+    function manageJumpAndFallAnimation() {
         const sprite = Script.Mario.getChildrenByName("Sprite")[0];
-        Script.animationCurrent !== Script.animationJump
-            ? Script.ySpeed >= 0
-                ? sprite.setAnimation(Script.animationJump)
-                : sprite.setAnimation(Script.animationFall)
-            : "";
+        Script.ySpeed >= 0
+            ? sprite.setAnimation(Script.animationJump)
+            : sprite.setAnimation(Script.animationFall);
         Script.animationCurrent = Script.animationJump;
-        Script.ySpeed === 0 ? (Script.ySpeed = 0.075) : "";
     }
 })(Script || (Script = {}));
 //# sourceMappingURL=Script.js.map

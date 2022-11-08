@@ -15,6 +15,9 @@ declare namespace Script {
     let walkspeed: number;
     let walkDirechtion: "right" | "left";
     let ySpeed: number;
+    let collision: boolean;
+    let cmpAudio: ƒ.ComponentAudio;
+    function checkCollision(): void;
 }
 declare namespace Script {
     let animationCurrent: ƒAid.SpriteSheetAnimation;
@@ -28,5 +31,5 @@ declare namespace Script {
     function buildAllAnimations(): Promise<void>;
 }
 declare namespace Script {
-    function marioMovement(): void;
+    function marioControls(): void;
 }

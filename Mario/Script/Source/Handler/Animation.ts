@@ -13,8 +13,7 @@ namespace Script {
   }
 
   export function turnMario() {
-    const sprite = Mario.getChildrenByName("Sprite")[0] as ƒAid.NodeSprite;
-    sprite.getComponent(ƒ.ComponentTransform).mtxLocal.rotateY(180);
+    Mario.getComponent(ƒ.ComponentTransform).mtxLocal.rotateY(180);
     walkDirechtion === "right"
       ? (walkDirechtion = "left")
       : walkDirechtion === "left"

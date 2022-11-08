@@ -9,9 +9,12 @@ namespace Script {
   export let spriteNode: ƒAid.NodeSprite;
   export let walkspeed: number = 2;
   export let walkDirechtion: "right" | "left" = "right";
-  export let ySpeed: number = 0.01;
+  export let ySpeed: number = 1;
+  export let collision: boolean = false;
+  export let cmpAudio: ƒ.ComponentAudio;
+  let audioJump: ƒ.Audio;
 
-  let gravity: number = 0.1;
+  let gravity: number = 10;
 
   document.addEventListener(
     "interactiveViewportStarted",
@@ -27,6 +30,12 @@ namespace Script {
 
     await buildAllAnimations();
     stetIdleAnimation();
+    let audio: ƒ.ComponentAudio = viewport
+      .getBranch()
+      .getComponent(ƒ.ComponentAudio);
+    console.log(audio);
+
+    setJumpSound();
 
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
     ƒ.Loop.start();
@@ -36,23 +45,20 @@ namespace Script {
   async function update(_event: Event): Promise<void> {
     // ƒ.Physics.simulate();  // if physics is included and used
     viewport.draw();
-    // ƒ.AudioManager.default.update();
-    setGravity();
-    marioMovement();
+    ƒ.AudioManager.default.update();
+
+    marioControls();
+    setGravityForMario();
+    // checkCollision();
+    initCollision();
   }
 
-  function setGravity() {
+  function setGravityForMario() {
     let deltaTime: number = ƒ.Loop.timeFrameGame / 1000;
+    ySpeed <= -5 ? (ySpeed = -5) : "";
     ySpeed -= gravity * deltaTime;
-    Mario.mtxLocal.translateY(ySpeed);
-
-    let pos: ƒ.Vector3 = Mario.mtxLocal.translation;
-    if (pos.y + ySpeed > 0) Mario.mtxLocal.translateY(ySpeed);
-    else {
-      ySpeed = 0;
-      pos.y = 0;
-      Mario.mtxLocal.translation = pos;
-    }
+    let yOffset: number = ySpeed * deltaTime;
+    Mario.mtxLocal.translateY(yOffset);
   }
 
   async function createNewSpriteNode(
@@ -65,5 +71,41 @@ namespace Script {
     );
     spriteNode.mtxLocal.translateY(0.5);
     return spriteNode;
+  }
+
+  export function checkCollision() {
+    let blocks: ƒ.Node = viewport.getBranch().getChildrenByName("Floor")[0];
+    let pos: ƒ.Vector3 = Mario.mtxLocal.translation;
+    for (let block of blocks.getChildren()) {
+      let posBlock: ƒ.Vector3 = block.mtxLocal.translation;
+      if (Math.abs(pos.x - posBlock.x) < 0.5) {
+        if (pos.y < posBlock.y && pos.y > posBlock.y - 0.2) {
+          collision = true;
+          return;
+        }
+      }
+    }
+    collision = false;
+  }
+
+  function initCollision() {
+    checkCollision();
+    if (collision) {
+      let blocks: ƒ.Node = viewport.getBranch().getChildrenByName("Floor")[0];
+      let pos: ƒ.Vector3 = Mario.mtxLocal.translation;
+      for (let block of blocks.getChildren()) {
+        let posBlock: ƒ.Vector3 = block.mtxLocal.translation;
+        pos.y = posBlock.y;
+        Mario.mtxLocal.translation = pos;
+        ySpeed = 0;
+      }
+    }
+  }
+
+  function setJumpSound() {
+    audioJump = new ƒ.Audio("audio/jump.mp3");
+    cmpAudio = new ƒ.ComponentAudio(audioJump, false, false);
+    cmpAudio.connect(true);
+    cmpAudio.volume = 0.7;
   }
 }
