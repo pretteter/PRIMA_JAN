@@ -22,6 +22,8 @@ namespace Script {
   );
   async function start(_event: CustomEvent): Promise<void> {
     viewport = _event.detail;
+    viewport.camera.mtxPivot.translateZ(20);
+    viewport.camera.mtxPivot.rotateY(180);
 
     // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
     let branch: ƒ.Node = viewport.getBranch();
@@ -51,6 +53,7 @@ namespace Script {
     setGravityForMario();
     // checkCollision();
     initCollision();
+    // viewport.camera.mtxPivot.set(Mario.getComponent(ƒ.ComponentTransform).mtxLocal);
   }
 
   function setGravityForMario() {

@@ -1,0 +1,83 @@
+{
+  "MeshObj|2022-11-16T13:12:43.439Z|54765": {
+    "ƒ.MeshObj": {
+      "idResource": "MeshObj|2022-11-16T13:12:43.439Z|54765",
+      "name": "Mesh_Ship",
+      "type": "MeshObj",
+      "url": "assets\\Ship\\spacecraft.obj"
+    }
+  },
+  "Graph|2022-11-16T13:13:18.933Z|81547": {
+    "ƒ.Graph": {
+      "name": "Level",
+      "active": true,
+      "components": {},
+      "children": [
+        {
+          "ƒ.Node": {
+            "name": "Ship",
+            "active": true,
+            "components": {
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshObj|2022-11-17T13:06:04.503Z|25184",
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[1, 1, 1, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0, 0]",
+                      "rotation": 0,
+                      "scaling": "[1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2022-11-17T13:14:38.824Z|56973"
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
+        }
+      ],
+      "idResource": "Graph|2022-11-16T13:13:18.933Z|81547",
+      "type": "Graph"
+    }
+  },
+  "MeshObj|2022-11-17T13:06:04.503Z|25184": {
+    "ƒ.MeshObj": {
+      "idResource": "MeshObj|2022-11-17T13:06:04.503Z|25184",
+      "name": "Flo_Ship",
+      "type": "MeshObj",
+      "url": "assets\\Ship\\SpaceShip.obj"
+    }
+  },
+  "Material|2022-11-17T13:14:38.824Z|56973": {
+    "ƒ.Material": {
+      "name": "ShaderLit",
+      "idResource": "Material|2022-11-17T13:14:38.824Z|56973",
+      "shader": "ShaderLit",
+      "coat": {
+        "ƒ.CoatColored": {
+          "color": "[1, 1, 1, 1]"
+        }
+      }
+    }
+  }
+}

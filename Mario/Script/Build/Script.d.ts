@@ -5,6 +5,7 @@ declare namespace Script {
         message: string;
         constructor();
         hndEvent: (_event: Event) => void;
+        test: (_event: Event) => void;
     }
 }
 declare namespace Script {
@@ -18,6 +19,11 @@ declare namespace Script {
     let collision: boolean;
     let cmpAudio: ƒ.ComponentAudio;
     function checkCollision(): void;
+}
+declare namespace Script {
+    import ƒAid = FudgeAid;
+    class Avatar extends ƒAid.NodeSprite {
+    }
 }
 declare namespace Script {
     let animationCurrent: ƒAid.SpriteSheetAnimation;

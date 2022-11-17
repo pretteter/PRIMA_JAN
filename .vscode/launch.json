@@ -9,6 +9,12 @@
             "request": "launch",
             "name": "Open mario",
             "url": "http://127.0.0.1:5501/Mario/"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Open Starfox",
+            "url": "http://127.0.0.1:5501/StarFox/"
         }
     ]
 }

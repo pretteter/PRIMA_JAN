@@ -6,7 +6,7 @@
       "shader": "ShaderLit",
       "coat": {
         "ƒ.CoatColored": {
-          "color": "[0, 1, 0.03137254901960784, 1]"
+          "color": "[1, 0, 0.2980392156862745, 1]"
         }
       }
     }
@@ -85,6 +85,13 @@
       "type": "Audio"
     }
   },
+  "MeshCube|2022-11-10T13:30:37.470Z|97494": {
+    "ƒ.MeshCube": {
+      "idResource": "MeshCube|2022-11-10T13:30:37.470Z|97494",
+      "name": "MeshCube",
+      "type": "MeshCube"
+    }
+  },
   "Graph|2022-10-06T13:07:21.991Z|80828": {
     "ƒ.Graph": {
       "name": "Level",
@@ -128,9 +135,17 @@
             "ƒ.ComponentAudio": {
               "active": true,
               "idResource": "Audio|2022-10-27T12:35:21.156Z|00323",
-              "playing": true,
+              "playing": false,
               "loop": false,
               "volume": 0.49999991059303284
+            }
+          }
+        ],
+        "CustomComponentScript": [
+          {
+            "Script.CustomComponentScript": {
+              "active": true,
+              "message": "CustomComponentScript added to "
             }
           }
         ]
@@ -148,6 +163,49 @@
             "deserializeFromSource": true,
             "name": "Mario",
             "idSource": "Graph|2022-10-13T13:05:33.389Z|60482"
+          }
+        },
+        {
+          "ƒ.Node": {
+            "name": "Cube",
+            "active": true,
+            "components": {
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshCube|2022-11-10T13:30:37.470Z|97494",
+                    "pivot": {
+                      "translation": "[0, 2, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[1, 1, 1, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0, 0]",
+                      "rotation": 0,
+                      "scaling": "[1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2022-10-06T13:28:25.580Z|87630"
+                  }
+                }
+              ],
+              "CustomComponentScript": []
+            },
+            "children": []
           }
         }
       ],

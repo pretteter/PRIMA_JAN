@@ -17,6 +17,7 @@ var Script;
             this.addEventListener("componentAdd" /* ƒ.EVENT.COMPONENT_ADD */, this.hndEvent);
             this.addEventListener("componentRemove" /* ƒ.EVENT.COMPONENT_REMOVE */, this.hndEvent);
             this.addEventListener("nodeDeserialized" /* ƒ.EVENT.NODE_DESERIALIZED */, this.hndEvent);
+            this.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, this.test);
         }
         // Activate the functions of this component as response to events
         hndEvent = (_event) => {
@@ -32,6 +33,9 @@ var Script;
                     // if deserialized the node is now fully reconstructed and access to all its components and children is possible
                     break;
             }
+        };
+        test = (_event) => {
+            console.log("test");
         };
     }
     Script.CustomComponentScript = CustomComponentScript;
@@ -51,6 +55,8 @@ var Script;
     document.addEventListener("interactiveViewportStarted", start);
     async function start(_event) {
         viewport = _event.detail;
+        viewport.camera.mtxPivot.translateZ(20);
+        viewport.camera.mtxPivot.rotateY(180);
         // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
         let branch = viewport.getBranch();
         Script.Mario = branch.getChildrenByName("Mario")[0];
@@ -74,6 +80,7 @@ var Script;
         setGravityForMario();
         // checkCollision();
         initCollision();
+        // viewport.camera.mtxPivot.set(Mario.getComponent(ƒ.ComponentTransform).mtxLocal);
     }
     function setGravityForMario() {
         let deltaTime = ƒ.Loop.timeFrameGame / 1000;
@@ -123,6 +130,13 @@ var Script;
         Script.cmpAudio.connect(true);
         Script.cmpAudio.volume = 0.7;
     }
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    var ƒAid = FudgeAid;
+    class Avatar extends ƒAid.NodeSprite {
+    }
+    Script.Avatar = Avatar;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
