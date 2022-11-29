@@ -47,6 +47,7 @@ var Script;
     function start(_event) {
         viewport = _event.detail;
         cmpCamera = viewport.camera;
+        cmpCamera.mtxPivot.rotateY(90);
         cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 2, -15));
         ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
         ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a

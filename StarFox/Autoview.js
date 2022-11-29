@@ -53,7 +53,11 @@ async function startInteractiveViewport(_graphId)/* : void */ {
   ƒ.Debug.log("Viewport:", viewport);  
   // make the camera interactive (complex method in FudgeAid)
   let cameraOrbit/* : ƒ.Node */ = ƒAid.Viewport.expandCameraToInteractiveOrbit(viewport);
-
+  
+  let shipModel = graph.getChildrenByName("Ship")[0];
+  shipModel.addComponent(cmpCamera);
+  ƒ.Debug.log("Ship:", shipModel);
+  
   // hide the cursor when interacting, also suppressing right-click menu
   canvas.addEventListener("mousedown", canvas.requestPointerLock);
   canvas.addEventListener("mouseup", function () { document.exitPointerLock(); });
