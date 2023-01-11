@@ -44,10 +44,11 @@ var Script;
     document.addEventListener("interactiveViewportStarted", start);
     let rbShip;
     let cmpCamera;
+    let terrain;
     function start(_event) {
         viewport = _event.detail;
         cmpCamera = viewport.camera;
-        cmpCamera.mtxPivot.rotateY(90);
+        // cmpCamera.mtxPivot.rotateY(90);
         cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 2, -15));
         ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
         ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
@@ -55,12 +56,21 @@ var Script;
         let ship = graph.getChildrenByName("Ship")[0];
         console.log(ship);
         rbShip = ship.getComponent(ƒ.ComponentRigidbody);
+        terrain = graph
+            .getChildrenByName("Terrain")[0]
+            .getComponent(ƒ.ComponentMesh).mesh;
+        console.log(getDistanceToTerrain(graph));
     }
     function update(_event) {
         ƒ.Physics.simulate(); // if physics is included and used
         viewport.draw();
         ƒ.AudioManager.default.update();
         // rbShip.applyForce(ƒ.Vector3.Z(rbShip.mass * 5));
+    }
+    function getDistanceToTerrain(graph) {
+        return terrain.getTerrainInfo(graph.getChildrenByName("Ship")[0].getComponent(ƒ.ComponentMesh).mtxWorld
+            .translation, graph.getChildrenByName("Terrain")[0].getComponent(ƒ.ComponentMesh)
+            .mtxWorld).distance;
     }
 })(Script || (Script = {}));
 var Script;
@@ -73,7 +83,7 @@ var Script;
         // Properties may be mutated by users in the editor via the automatically created user interface
         message = "SpaceShipMovement added to ";
         strafeThrust = 20;
-        forwardthrust = 10000000000;
+        forwardthrust = 0.001;
         rgdBodySpaceship;
         relativeX;
         // private relativeY: ƒ.Vector3;
@@ -100,7 +110,7 @@ var Script;
                     this.rgdBodySpaceship = this.node.getComponent(ƒ.ComponentRigidbody);
                     ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, this.update);
                     console.log(this.node);
-                    window.addEventListener("mousemove", this.handleMouse);
+                    // window.addEventListener("mousemove", this.handleMouse);
                     break;
                 case "componentRemove" /* ƒ.EVENT.COMPONENT_REMOVE */:
                     this.removeEventListener("componentAdd" /* ƒ.EVENT.COMPONENT_ADD */, this.hndEvent);
@@ -128,14 +138,14 @@ var Script;
             this.rgdBodySpaceship.applyTorque(new ƒ.Vector3(0, this.xAxis * -3, 0));
             this.rgdBodySpaceship.applyTorque(ƒ.Vector3.SCALE(this.relativeX, this.yAxis));
         };
-        handleMouse = (e) => {
-            this.width = window.innerWidth;
-            this.height = window.innerHeight;
-            let mousePositionY = e.clientY;
-            let mousePositionX = e.clientX;
-            this.xAxis = 2 * (mousePositionX / this.width) - 1;
-            this.yAxis = 2 * (mousePositionY / this.height) - 1;
-        };
+        // handleMouse = (e: MouseEvent): void => {
+        //   this.width = window.innerWidth;
+        //   this.height = window.innerHeight;
+        //   let mousePositionY: number = e.clientY;
+        //   let mousePositionX: number = e.clientX;
+        //   this.xAxis = 2 * (mousePositionX / this.width) - 1;
+        //   this.yAxis = 2 * (mousePositionY / this.height) - 1;
+        // };
         setRelativeAxes() {
             this.relativeZ = ƒ.Vector3.Z(3);
             this.relativeZ.transform(this.node.mtxWorld, false);
@@ -146,7 +156,8 @@ var Script;
          * thrust forward with _forward 1, backwards with _forward -1
          */
         thrust(direction) {
-            let scaledRotatedDirection = ƒ.Vector3.SCALE(this.relativeZ, this.forwardthrust * (direction === "forward" ? 1 : -1));
+            let scaledRotatedDirection = ƒ.Vector3.SCALE(this.relativeZ, (this.forwardthrust =
+                this.forwardthrust * (direction === "forward" ? 0.1 : -0.1)));
             this.rgdBodySpaceship.applyForce(scaledRotatedDirection);
         }
         /**

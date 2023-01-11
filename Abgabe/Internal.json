@@ -1,0 +1,149 @@
+{
+  "Graph|2023-01-10T18:12:22.667Z|11898": {
+    "ƒ.Graph": {
+      "name": "World",
+      "active": true,
+      "components": {},
+      "children": [
+        {
+          "ƒ.Node": {
+            "name": "Background",
+            "active": true,
+            "components": {
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshQuad|2023-01-10T18:42:52.100Z|59573",
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[5, 2, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[1, 1, 1, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0, 0]",
+                      "rotation": 0,
+                      "scaling": "[1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2023-01-10T18:45:36.080Z|07463"
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
+        },
+        {
+          "ƒ.Node": {
+            "name": "Ground",
+            "active": true,
+            "components": {
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshTerrain|2023-01-10T18:48:23.158Z|00318",
+                    "pivot": {
+                      "translation": "[0, -0.2500000298023224, 0.20000001788139343]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[5, 1.3000000715255737, 0]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[1, 1, 1, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0, 0]",
+                      "rotation": 0,
+                      "scaling": "[1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2023-01-10T18:48:57.267Z|41817"
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
+        }
+      ],
+      "idResource": "Graph|2023-01-10T18:12:22.667Z|11898",
+      "type": "Graph"
+    }
+  },
+  "MeshQuad|2023-01-10T18:42:52.100Z|59573": {
+    "ƒ.MeshQuad": {
+      "idResource": "MeshQuad|2023-01-10T18:42:52.100Z|59573",
+      "name": "MeshBackground"
+    }
+  },
+  "TextureImage|2023-01-10T18:44:07.472Z|66763": {
+    "ƒ.TextureImage": {
+      "url": "assets\\pictures\\background.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2023-01-10T18:44:07.472Z|66763",
+        "name": "assets\\pictures\\background.png",
+        "mipmap": "CRISP"
+      }
+    }
+  },
+  "Material|2023-01-10T18:45:36.080Z|07463": {
+    "ƒ.Material": {
+      "name": "ShaderBackground",
+      "idResource": "Material|2023-01-10T18:45:36.080Z|07463",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2023-01-10T18:44:07.472Z|66763"
+        }
+      }
+    }
+  },
+  "MeshTerrain|2023-01-10T18:48:23.158Z|00318": {
+    "ƒ.MeshTerrain": {
+      "idResource": "MeshTerrain|2023-01-10T18:48:23.158Z|00318",
+      "name": "MeshTerrain",
+      "type": "MeshTerrain",
+      "seed": 0,
+      "scale": "[-1, 10]",
+      "resolution": "[20, 5]"
+    }
+  },
+  "Material|2023-01-10T18:48:57.267Z|41817": {
+    "ƒ.Material": {
+      "name": "ShaderLit",
+      "idResource": "Material|2023-01-10T18:48:57.267Z|41817",
+      "shader": "ShaderLit",
+      "coat": {
+        "ƒ.CoatColored": {
+          "color": "[0, 0.807843137254902, 0, 1]"
+        }
+      }
+    }
+  }
+}

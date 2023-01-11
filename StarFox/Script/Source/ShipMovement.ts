@@ -10,7 +10,7 @@ namespace Script {
     public message: string = "SpaceShipMovement added to ";
 
     public strafeThrust: number = 20;
-    public forwardthrust: number = 10000000000;
+    public forwardthrust: number = 0.001;
 
     private rgdBodySpaceship: ƒ.ComponentRigidbody;
 
@@ -45,7 +45,7 @@ namespace Script {
 
           ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, this.update);
           console.log(this.node);
-          window.addEventListener("mousemove", this.handleMouse);
+          // window.addEventListener("mousemove", this.handleMouse);
           break;
         case ƒ.EVENT.COMPONENT_REMOVE:
           this.removeEventListener(ƒ.EVENT.COMPONENT_ADD, this.hndEvent);
@@ -82,15 +82,15 @@ namespace Script {
       );
     };
 
-    handleMouse = (e: MouseEvent): void => {
-      this.width = window.innerWidth;
-      this.height = window.innerHeight;
-      let mousePositionY: number = e.clientY;
-      let mousePositionX: number = e.clientX;
+    // handleMouse = (e: MouseEvent): void => {
+    //   this.width = window.innerWidth;
+    //   this.height = window.innerHeight;
+    //   let mousePositionY: number = e.clientY;
+    //   let mousePositionX: number = e.clientX;
 
-      this.xAxis = 2 * (mousePositionX / this.width) - 1;
-      this.yAxis = 2 * (mousePositionY / this.height) - 1;
-    };
+    //   this.xAxis = 2 * (mousePositionX / this.width) - 1;
+    //   this.yAxis = 2 * (mousePositionY / this.height) - 1;
+    // };
 
     setRelativeAxes(): void {
       this.relativeZ = ƒ.Vector3.Z(3);
@@ -106,7 +106,8 @@ namespace Script {
     thrust(direction: "forward" | "back"): void {
       let scaledRotatedDirection: ƒ.Vector3 = ƒ.Vector3.SCALE(
         this.relativeZ,
-        this.forwardthrust * (direction === "forward" ? 1 : -1)
+        (this.forwardthrust =
+          this.forwardthrust * (direction === "forward" ? 0.1 : -0.1))
       );
       this.rgdBodySpaceship.applyForce(scaledRotatedDirection);
     }

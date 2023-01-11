@@ -26,7 +26,6 @@ declare namespace Script {
         constructor();
         hndEvent: (_event: Event) => void;
         update: () => void;
-        handleMouse: (e: MouseEvent) => void;
         setRelativeAxes(): void;
         /**
          * thrust forward with _forward 1, backwards with _forward -1
