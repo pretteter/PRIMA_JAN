@@ -1,10 +1,10 @@
 declare namespace Game {
-    function buildAllAnimations(character: Character): Promise<void>;
+    function buildAllAnimationsForCharacter(character: Character): Promise<void>;
 }
 declare namespace Game {
     import ƒAid = FudgeAid;
     class Character extends ƒAid.NodeSprite {
-        walkspeed: number;
+        moveSpeed: number;
         lookDirection: ConstructorParameters<typeof Character>[0];
         animationCurrent: ƒAid.SpriteSheetAnimation;
         animationMove: ƒAid.SpriteSheetAnimation;

@@ -27,7 +27,7 @@ namespace Game {
 //       : "";
 //   }
 
-  export async function buildAllAnimations(character:Character) {
+  export async function buildAllAnimationsForCharacter(character:Character) {
     await buildMoveAnimation(character);
     await buildIdleAnimation(character);
     // await buildJumpAnimation(character);

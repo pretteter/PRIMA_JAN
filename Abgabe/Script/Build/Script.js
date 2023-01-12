@@ -26,14 +26,14 @@ var Game;
     //       ? (currentDirection = "right")
     //       : "";
     //   }
-    async function buildAllAnimations(character) {
+    async function buildAllAnimationsForCharacter(character) {
         await buildMoveAnimation(character);
         await buildIdleAnimation(character);
         // await buildJumpAnimation(character);
         // await buildFallAnimation(character);
         // await buildRunAnimation(character);
     }
-    Game.buildAllAnimations = buildAllAnimations;
+    Game.buildAllAnimationsForCharacter = buildAllAnimationsForCharacter;
     async function buildMoveAnimation(character) {
         character.animationMove = await buildSingleAnimation("assets/Mario/marioSpriteSheet.png", "move", 247, 1, 15, 28, 3, 30);
     }
@@ -96,7 +96,7 @@ var Game;
     class Character extends ƒAid.NodeSprite {
         //     audioJump: ƒ.Audio;
         //     cmpAudio: ƒ.ComponentAudio;
-        walkspeed = 2;
+        moveSpeed = 2;
         lookDirection;
         animationCurrent;
         animationMove;
@@ -110,8 +110,6 @@ var Game;
             super("Character");
             this.lookDirection = lookDirection;
             this.initAvatar(lookDirection);
-            // this.addComponent(new ƒ.ComponentMesh(new ƒ.MeshQuad("character_" + Character.amountOfInstances.toString()+"_mesh")))
-            // this.addComponent(new ƒ.ComponentMaterial(new ƒ.ShaderFlat))
         }
         async initAvatar(lookDirection) {
             Game.viewport
@@ -119,16 +117,17 @@ var Game;
                 .addChild(new ƒ.Node("character_" + Character.amountOfInstances.toString()));
             this.addComponent(new ƒ.ComponentTransform());
             this.addChild(this.createNewSpriteNode(this.lookDirection));
-            await Game.buildAllAnimations(this);
+            await Game.buildAllAnimationsForCharacter(this);
             this.stetIdleAnimation();
             this.lookDirection = lookDirection;
             this.instanceId = ++Character.amountOfInstances;
         }
         createNewSpriteNode(frameDirection) {
             let spriteNode = new ƒAid.NodeSprite("Sprite");
-            spriteNode.addComponent(new ƒ.ComponentTransform(new ƒ.Matrix4x4()));
+            // spriteNode.addComponent(new ƒ.ComponentTransform(new ƒ.Matrix4x4()));
             spriteNode.setFrameDirection(frameDirection === "left" ? -1 : frameDirection === "right" ? 1 : 1);
-            // spriteNode.mtxLocal.translateY(0.5);
+            // spriteNode.mtxLocal.translateY(-0.5);
+            // spriteNode.mtxLocal.translateX(-0.5);
             return spriteNode;
         }
         // function setJumpSound() {
@@ -143,7 +142,7 @@ var Game;
             this.animationCurrent !== anmToUse ? sprite.setAnimation(anmToUse) : "";
             this.animationCurrent = anmToUse;
             this.lookDirection !== direction ? this.turnCharacter() : "";
-            this.getComponent(ƒ.ComponentTransform).mtxLocal.translateX((ƒ.Loop.timeFrameGame * this.walkspeed) / 1000);
+            this.getComponent(ƒ.ComponentTransform).mtxLocal.translateX((ƒ.Loop.timeFrameGame * this.moveSpeed) / 1000);
         }
         stetIdleAnimation() {
             const sprite = this.getChildrenByName("Sprite")[0];
@@ -208,14 +207,14 @@ var Game;
         Game.viewport = _event.detail;
         cmpCamera = Game.viewport.camera;
         let graph = Game.viewport.getBranch();
-        // cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 0, 6.5));
-        // cmpCamera.mtxPivot.rotateY(180);
+        cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 0, 35));
+        cmpCamera.mtxPivot.rotateY(180);
         let charLeft = new Game.Character("left");
-        let charRight = new Game.Character("right");
+        // let charRight = new Character("right");
         // charLeft.mtxLocal.translateY(2);
-        charLeft.mtxLocal.translateZ(2);
+        charLeft.mtxLocal.translateZ(1);
         graph.addChild(charLeft);
-        graph.addChild(charRight);
+        // graph.addChild(charRight);
         console.log(graph);
         ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
         // ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a

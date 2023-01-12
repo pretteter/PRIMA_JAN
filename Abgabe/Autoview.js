@@ -61,8 +61,8 @@ async function startInteractiveViewport(_graphId)/* : void */ {
   // setup audio
   let cmpListener/* : ƒ.ComponentAudioListener */ = new ƒ.ComponentAudioListener();
   cmpCamera.node.addComponent(cmpListener);
-  // let background = graph.getChildrenByName("Background")[0];
-  // background.addComponent(cmpCamera);
+  let background = graph.getChildrenByName("Background")[0];
+  background.addComponent(cmpCamera);
   ƒ.AudioManager.default.listenWith(cmpListener);
   ƒ.AudioManager.default.listenTo(graph);
   ƒ.Debug.log("Audio:", ƒ.AudioManager.default);

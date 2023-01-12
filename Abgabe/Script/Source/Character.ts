@@ -5,7 +5,7 @@ namespace Game {
   export class Character extends ƒAid.NodeSprite {
     //     audioJump: ƒ.Audio;
     //     cmpAudio: ƒ.ComponentAudio;
-    walkspeed: number = 2;
+    moveSpeed: number = 2;
     lookDirection: ConstructorParameters<typeof Character>[0];
     animationCurrent: ƒAid.SpriteSheetAnimation;
     animationMove: ƒAid.SpriteSheetAnimation;
@@ -21,11 +21,6 @@ namespace Game {
       super("Character");
       this.lookDirection = lookDirection;
       this.initAvatar(lookDirection);
-
-      // this.addComponent(new ƒ.ComponentMesh(new ƒ.MeshQuad("character_" + Character.amountOfInstances.toString()+"_mesh")))
-      // this.addComponent(new ƒ.ComponentMaterial(new ƒ.ShaderFlat))
-
-      
     }
 
     async initAvatar(
@@ -39,9 +34,9 @@ namespace Game {
 
       this.addComponent(new ƒ.ComponentTransform());
       this.addChild(this.createNewSpriteNode(this.lookDirection));
-      await buildAllAnimations(this);
+      await buildAllAnimationsForCharacter(this);
       this.stetIdleAnimation();
-      
+
       this.lookDirection = lookDirection;
       this.instanceId = ++Character.amountOfInstances;
     }
@@ -50,11 +45,12 @@ namespace Game {
       frameDirection: ConstructorParameters<typeof Character>[0]
     ): ƒAid.NodeSprite {
       let spriteNode = new ƒAid.NodeSprite("Sprite");
-      spriteNode.addComponent(new ƒ.ComponentTransform(new ƒ.Matrix4x4()));
+      // spriteNode.addComponent(new ƒ.ComponentTransform(new ƒ.Matrix4x4()));
       spriteNode.setFrameDirection(
         frameDirection === "left" ? -1 : frameDirection === "right" ? 1 : 1
       );
-      // spriteNode.mtxLocal.translateY(0.5);
+      // spriteNode.mtxLocal.translateY(-0.5);
+      // spriteNode.mtxLocal.translateX(-0.5);
       return spriteNode;
     }
 
@@ -74,7 +70,7 @@ namespace Game {
 
       this.lookDirection !== direction ? this.turnCharacter() : "";
       this.getComponent(ƒ.ComponentTransform).mtxLocal.translateX(
-        (ƒ.Loop.timeFrameGame * this.walkspeed) / 1000
+        (ƒ.Loop.timeFrameGame * this.moveSpeed) / 1000
       );
     }
 
