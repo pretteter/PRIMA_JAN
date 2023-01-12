@@ -15,16 +15,14 @@ namespace Game {
     cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 0, 35));
     cmpCamera.mtxPivot.rotateY(180);
 
-    let charLeft = new Character("left");
+    let charLeft = new Character("left", 0, 0);
+    let charRight = new Character("right", 5, 5);
     // let charRight = new Character("right");
     // charLeft.mtxLocal.translateY(2);
-    charLeft.mtxLocal.translateZ(1);
-
-    graph.addChild(charLeft);
     // graph.addChild(charRight);
     console.log(graph);
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
-    // ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
+    ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
   }
 
   function update(_event: Event): void {

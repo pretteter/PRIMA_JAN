@@ -93,7 +93,7 @@ var Game;
 (function (Game) {
     var ƒ = FudgeCore;
     var ƒAid = FudgeAid;
-    class Character extends ƒAid.NodeSprite {
+    class Character extends ƒ.Node {
         //     audioJump: ƒ.Audio;
         //     cmpAudio: ƒ.ComponentAudio;
         moveSpeed = 2;
@@ -106,21 +106,27 @@ var Game;
         // animationRun: ƒAid.SpriteSheetAnimation;
         static amountOfInstances = 0;
         instanceId;
-        constructor(lookDirection) {
+        constructor(lookDirection, coordinateX, coordinateY) {
             super("Character");
             this.lookDirection = lookDirection;
-            this.initAvatar(lookDirection);
+            this.initAvatar(lookDirection, coordinateX, coordinateY);
         }
-        async initAvatar(lookDirection) {
+        async initAvatar(lookDirection, coordinateX, coordinateY) {
             Game.viewport
                 .getBranch()
                 .addChild(new ƒ.Node("character_" + Character.amountOfInstances.toString()));
             this.addComponent(new ƒ.ComponentTransform());
+            this.mtxLocal.translateX(coordinateX);
+            this.mtxLocal.translateY(coordinateY);
+            this.mtxLocal.translateZ(1);
             this.addChild(this.createNewSpriteNode(this.lookDirection));
             await Game.buildAllAnimationsForCharacter(this);
-            this.stetIdleAnimation();
+            this.setIdleAnimation();
+            lookDirection === "left" ? this.turnCharacter() : "";
             this.lookDirection = lookDirection;
             this.instanceId = ++Character.amountOfInstances;
+            let graph = Game.viewport.getBranch();
+            graph.addChild(this);
         }
         createNewSpriteNode(frameDirection) {
             let spriteNode = new ƒAid.NodeSprite("Sprite");
@@ -144,7 +150,7 @@ var Game;
             this.lookDirection !== direction ? this.turnCharacter() : "";
             this.getComponent(ƒ.ComponentTransform).mtxLocal.translateX((ƒ.Loop.timeFrameGame * this.moveSpeed) / 1000);
         }
-        stetIdleAnimation() {
+        setIdleAnimation() {
             const sprite = this.getChildrenByName("Sprite")[0];
             sprite.setAnimation(this.animationIdle);
             this.animationCurrent = this.animationIdle;
@@ -209,15 +215,14 @@ var Game;
         let graph = Game.viewport.getBranch();
         cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 0, 35));
         cmpCamera.mtxPivot.rotateY(180);
-        let charLeft = new Game.Character("left");
+        let charLeft = new Game.Character("left", 0, 0);
+        let charRight = new Game.Character("right", 5, 5);
         // let charRight = new Character("right");
         // charLeft.mtxLocal.translateY(2);
-        charLeft.mtxLocal.translateZ(1);
-        graph.addChild(charLeft);
         // graph.addChild(charRight);
         console.log(graph);
         ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
-        // ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
+        ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
     }
     function update(_event) {
         // ƒ.Physics.simulate();  // if physics is included and used

@@ -2,10 +2,11 @@ namespace Game {
   import ƒ = FudgeCore;
   import ƒAid = FudgeAid;
 
-  export class Character extends ƒAid.NodeSprite {
+  export class Character extends ƒ.Node {
     //     audioJump: ƒ.Audio;
     //     cmpAudio: ƒ.ComponentAudio;
     moveSpeed: number = 2;
+
     lookDirection: ConstructorParameters<typeof Character>[0];
     animationCurrent: ƒAid.SpriteSheetAnimation;
     animationMove: ƒAid.SpriteSheetAnimation;
@@ -17,14 +18,20 @@ namespace Game {
     static amountOfInstances: number = 0;
     instanceId: number;
 
-    public constructor(lookDirection: "right" | "left") {
+    public constructor(
+      lookDirection: "right" | "left",
+      coordinateX: number,
+      coordinateY: number
+    ) {
       super("Character");
       this.lookDirection = lookDirection;
-      this.initAvatar(lookDirection);
+      this.initAvatar(lookDirection, coordinateX, coordinateY);
     }
 
     async initAvatar(
-      lookDirection: ConstructorParameters<typeof Character>[0]
+      lookDirection: ConstructorParameters<typeof Character>[0],
+      coordinateX: number,
+      coordinateY: number
     ) {
       viewport
         .getBranch()
@@ -33,12 +40,19 @@ namespace Game {
         );
 
       this.addComponent(new ƒ.ComponentTransform());
+      this.mtxLocal.translateX(coordinateX);
+      this.mtxLocal.translateY(coordinateY);
+      this.mtxLocal.translateZ(1);
       this.addChild(this.createNewSpriteNode(this.lookDirection));
       await buildAllAnimationsForCharacter(this);
-      this.stetIdleAnimation();
-
+      this.setIdleAnimation();
+    
+      lookDirection === "left" ? this.turnCharacter() : "";
       this.lookDirection = lookDirection;
       this.instanceId = ++Character.amountOfInstances;
+
+      let graph: ƒ.Node = viewport.getBranch();
+      graph.addChild(this);
     }
 
     private createNewSpriteNode(
@@ -74,7 +88,7 @@ namespace Game {
       );
     }
 
-    stetIdleAnimation() {
+    setIdleAnimation() {
       const sprite = this.getChildrenByName("Sprite")[0] as ƒAid.NodeSprite;
       sprite.setAnimation(this.animationIdle);
       this.animationCurrent = this.animationIdle;
