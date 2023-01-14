@@ -40,13 +40,14 @@ namespace Game {
         );
 
       this.addComponent(new ƒ.ComponentTransform());
+      this.addRidgetBody();
       this.mtxLocal.translateX(coordinateX);
       this.mtxLocal.translateY(coordinateY);
       this.mtxLocal.translateZ(1);
       this.addChild(this.createNewSpriteNode(this.lookDirection));
       await buildAllAnimationsForCharacter(this);
       this.setIdleAnimation();
-    
+
       lookDirection === "left" ? this.turnCharacter() : "";
       this.lookDirection = lookDirection;
       this.instanceId = ++Character.amountOfInstances;
@@ -101,6 +102,20 @@ namespace Game {
         : this.lookDirection === "left"
         ? (this.lookDirection = "right")
         : "";
+    }
+
+    addRidgetBody() {
+      let x = new ƒ.ComponentRigidbody();
+      x.initialization = ƒ.BODY_INIT.TO_PIVOT;
+      x.setScaling(new ƒ.Vector3(1, 1, 1));
+      x.effectGravity = 1;
+      x.mass = 1;
+      x.typeCollider=ƒ.COLLIDER_TYPE.CUBE
+      x.typeBody=ƒ.BODY_TYPE.DYNAMIC
+      x.initialize();
+      // x.activate(true);
+      this.addComponent(x);
+      // this.addComponent(new ƒ.ComponentRigidbody)
     }
   }
 }

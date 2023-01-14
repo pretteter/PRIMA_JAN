@@ -18,6 +18,7 @@ declare namespace Game {
         move(direction: ConstructorParameters<typeof Character>[0]): void;
         setIdleAnimation(): void;
         turnCharacter(): void;
+        addRidgetBody(): void;
     }
 }
 declare namespace Game {

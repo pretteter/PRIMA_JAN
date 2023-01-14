@@ -34,8 +34,8 @@
       "idResource": "MeshTerrain|2023-01-10T18:48:23.158Z|00318",
       "name": "MeshTerrain",
       "type": "MeshTerrain",
-      "seed": 4,
-      "scale": "[2, 17]",
+      "seed": -3,
+      "scale": "[0, 14]",
       "resolution": "[100, 10]"
     }
   },
@@ -159,7 +159,7 @@
                     "pivot": {
                       "translation": "[0, -8, 0]",
                       "rotation": "[0, 0, 0]",
-                      "scaling": "[50, 10, 1]"
+                      "scaling": "[50, 10, 2]"
                     },
                     "Component": {
                       "active": true

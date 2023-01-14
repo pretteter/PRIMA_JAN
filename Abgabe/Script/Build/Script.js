@@ -116,6 +116,7 @@ var Game;
                 .getBranch()
                 .addChild(new ƒ.Node("character_" + Character.amountOfInstances.toString()));
             this.addComponent(new ƒ.ComponentTransform());
+            this.addRidgetBody();
             this.mtxLocal.translateX(coordinateX);
             this.mtxLocal.translateY(coordinateY);
             this.mtxLocal.translateZ(1);
@@ -162,6 +163,19 @@ var Game;
                 : this.lookDirection === "left"
                     ? (this.lookDirection = "right")
                     : "";
+        }
+        addRidgetBody() {
+            let x = new ƒ.ComponentRigidbody();
+            x.initialization = ƒ.BODY_INIT.TO_PIVOT;
+            x.setScaling(new ƒ.Vector3(1, 1, 1));
+            x.effectGravity = 1;
+            x.mass = 1;
+            x.typeCollider = ƒ.COLLIDER_TYPE.CUBE;
+            x.typeBody = ƒ.BODY_TYPE.DYNAMIC;
+            x.initialize();
+            // x.activate(true);
+            this.addComponent(x);
+            // this.addComponent(new ƒ.ComponentRigidbody)
         }
     }
     Game.Character = Character;
@@ -212,20 +226,21 @@ var Game;
     function start(_event) {
         Game.viewport = _event.detail;
         cmpCamera = Game.viewport.camera;
-        let graph = Game.viewport.getBranch();
+        // let graph: ƒ.Node = viewport.getBranch();
         cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 0, 35));
         cmpCamera.mtxPivot.rotateY(180);
         let charLeft = new Game.Character("left", 0, 0);
         let charRight = new Game.Character("right", 5, 5);
+        // let charX = new Character("left", 7, 7);
         // let charRight = new Character("right");
         // charLeft.mtxLocal.translateY(2);
         // graph.addChild(charRight);
-        console.log(graph);
+        console.log(Game.viewport.getBranch());
         ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
         ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
     }
     function update(_event) {
-        // ƒ.Physics.simulate();  // if physics is included and used
+        ƒ.Physics.simulate(); // if physics is included and used
         Game.viewport.draw();
         ƒ.AudioManager.default.update();
     }

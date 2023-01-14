@@ -124,7 +124,7 @@
                 {
                   "ƒ.ComponentTransform": {
                     "local": {
-                      "translation": "[0, -2, 0]",
+                      "translation": "[0, 0, 0]",
                       "rotation": "[0, 90, 0]",
                       "scaling": "[1, 1, 1]"
                     },
@@ -143,7 +143,7 @@
                     "mass": 1000,
                     "dampTranslation": 0.1,
                     "dampRotation": 0.1,
-                    "effectGravity": 0,
+                    "effectGravity": 1,
                     "typeBody": "DYNAMIC",
                     "typeCollider": "CUBE",
                     "isTrigger": false,
@@ -151,10 +151,10 @@
                     "pivot": {
                       "translation": "[0, 0, 0]",
                       "rotation": "[0, 0, 0]",
-                      "scaling": "[1, 1, 1]"
+                      "scaling": "[4, 2, 4]"
                     },
                     "Component": {
-                      "active": true
+                      "active": false
                     }
                   }
                 }
@@ -162,7 +162,7 @@
               "SpaceShipMovement": [
                 {
                   "Script.SpaceShipMovement": {
-                    "active": true,
+                    "active": false,
                     "message": "SpaceShipMovement added to ",
                     "strafeThrust": 20,
                     "forwardthrust": 10000000000,
