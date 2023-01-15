@@ -34,11 +34,77 @@ var Game;
         // await buildRunAnimation(character);
     }
     Game.buildAllAnimationsForCharacter = buildAllAnimationsForCharacter;
-    async function buildMoveAnimation(character) {
-        character.animationMove = await buildSingleAnimation("assets/Mario/marioSpriteSheet.png", "move", 247, 1, 15, 28, 3, 30);
+    async function buildMoveAnimation(char) {
+        let path;
+        let startX;
+        let startY;
+        let width;
+        let height;
+        let frames;
+        let distanceBetweenSprites;
+        switch (char.instanceId) {
+            case 1: {
+                path = "assets/Mario/marioSpriteSheet.png";
+                startX = 247;
+                startY = 1;
+                width = 15;
+                height = 28;
+                frames = 3;
+                distanceBetweenSprites = 30;
+                break;
+            }
+            case 2: {
+                path = "/assets/sprites/sheets/DinoSprites-doux.png";
+                startX = 247;
+                startY = 1;
+                width = 15;
+                height = 28;
+                frames = 3;
+                distanceBetweenSprites = 30;
+                break;
+            }
+            default: {
+                console.error("no character to generate");
+                return;
+            }
+        }
+        char.animationMove = await buildSingleAnimation(path, "move", startX, startY, width, height, frames, distanceBetweenSprites);
     }
     async function buildIdleAnimation(character) {
-        character.animationIdle = await buildSingleAnimation("assets/Mario/marioSpriteSheet.png", "idle", 247, 1, 15, 28, 1, 0);
+        let path;
+        let startX;
+        let startY;
+        let width;
+        let height;
+        let frames;
+        let distanceBetweenSprites;
+        switch (character.instanceId) {
+            case 1: {
+                path = "assets/Mario/marioSpriteSheet.png";
+                startX = 247;
+                startY = 1;
+                width = 15;
+                height = 28;
+                frames = 1;
+                distanceBetweenSprites = 0;
+                break;
+            }
+            case 2: {
+                path = "/assets/sprites/sheets/DinoSprites-doux.png";
+                startX = 247;
+                startY = 1;
+                width = 15;
+                height = 28;
+                frames = 1;
+                distanceBetweenSprites = 0;
+                break;
+            }
+            default: {
+                console.error("no character to generate");
+                return;
+            }
+        }
+        character.animationIdle = await buildSingleAnimation(path, "idle", startX, startY, width, height, frames, distanceBetweenSprites);
     }
     //   async function buildJumpAnimation(character:Character) {
     //     animationJump = await buildSingleAnimation(
@@ -115,17 +181,16 @@ var Game;
             Game.viewport
                 .getBranch()
                 .addChild(new ƒ.Node("character_" + Character.amountOfInstances.toString()));
+            this.instanceId = ++Character.amountOfInstances;
             this.addComponent(new ƒ.ComponentTransform());
             this.addRidgetBody();
-            this.mtxLocal.translateX(coordinateX);
-            this.mtxLocal.translateY(coordinateY);
-            this.mtxLocal.translateZ(1);
+            this.mtxLocal.translate(new ƒ.Vector3(coordinateX, coordinateY, 0));
+            this.mtxLocal.scale(new ƒ.Vector3(2, 2, 2));
             this.addChild(this.createNewSpriteNode(this.lookDirection));
             await Game.buildAllAnimationsForCharacter(this);
             this.setIdleAnimation();
             lookDirection === "left" ? this.turnCharacter() : "";
             this.lookDirection = lookDirection;
-            this.instanceId = ++Character.amountOfInstances;
             let graph = Game.viewport.getBranch();
             graph.addChild(this);
         }
@@ -158,6 +223,7 @@ var Game;
         }
         turnCharacter() {
             this.getComponent(ƒ.ComponentTransform).mtxLocal.rotateY(180);
+            console.log(this.getComponent(ƒ.ComponentTransform).mtxLocal);
             this.lookDirection === "right"
                 ? (this.lookDirection = "left")
                 : this.lookDirection === "left"
@@ -166,19 +232,54 @@ var Game;
         }
         addRidgetBody() {
             let x = new ƒ.ComponentRigidbody();
-            x.initialization = ƒ.BODY_INIT.TO_PIVOT;
-            x.setScaling(new ƒ.Vector3(1, 1, 1));
-            x.effectGravity = 1;
-            x.mass = 1;
+            x.initialization = ƒ.BODY_INIT.TO_MESH;
+            x.effectGravity = 10;
+            x.mass = 10;
             x.typeCollider = ƒ.COLLIDER_TYPE.CUBE;
             x.typeBody = ƒ.BODY_TYPE.DYNAMIC;
             x.initialize();
-            // x.activate(true);
             this.addComponent(x);
-            // this.addComponent(new ƒ.ComponentRigidbody)
         }
     }
     Game.Character = Character;
+})(Game || (Game = {}));
+var Game;
+(function (Game) {
+    var ƒ = FudgeCore;
+    //   import ƒAid = FudgeAid;
+    function characterControlls(char) {
+        let moveLeft;
+        let moveRight;
+        // let shoot;
+        switch (char.instanceId) {
+            case 1: {
+                moveLeft = ƒ.KEYBOARD_CODE.A;
+                moveRight = ƒ.KEYBOARD_CODE.D;
+                break;
+            }
+            case 2: {
+                moveLeft = ƒ.KEYBOARD_CODE.ARROW_LEFT;
+                moveRight = ƒ.KEYBOARD_CODE.ARROW_RIGHT;
+                break;
+            }
+            default: {
+                console.error("no Char to controll");
+                return;
+            }
+        }
+        if (!ƒ.Keyboard.isPressedOne([moveLeft, moveRight])) {
+            char.animationCurrent !== char.animationIdle
+                ? char.setIdleAnimation()
+                : "";
+        }
+        else if (ƒ.Keyboard.isPressedOne([moveRight])) {
+            char.move("right");
+        }
+        else if (ƒ.Keyboard.isPressedOne([moveLeft])) {
+            char.move("left");
+        }
+    }
+    Game.characterControlls = characterControlls;
 })(Game || (Game = {}));
 var Game;
 (function (Game) {
@@ -222,6 +323,7 @@ var Game;
     var ƒ = FudgeCore;
     ƒ.Debug.info("Main Program Template running!");
     let cmpCamera;
+    let characters = [];
     document.addEventListener("interactiveViewportStarted", start);
     function start(_event) {
         Game.viewport = _event.detail;
@@ -229,8 +331,7 @@ var Game;
         // let graph: ƒ.Node = viewport.getBranch();
         cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 0, 35));
         cmpCamera.mtxPivot.rotateY(180);
-        let charLeft = new Game.Character("left", 0, 0);
-        let charRight = new Game.Character("right", 5, 5);
+        characters.push(new Game.Character("left", 0, 0), new Game.Character("right", 5, 5));
         // let charX = new Character("left", 7, 7);
         // let charRight = new Character("right");
         // charLeft.mtxLocal.translateY(2);
@@ -241,6 +342,10 @@ var Game;
     }
     function update(_event) {
         ƒ.Physics.simulate(); // if physics is included and used
+        characters.forEach((x) => {
+            Game.characterControlls(x);
+        });
+        // CharacterControlls();
         Game.viewport.draw();
         ƒ.AudioManager.default.update();
     }

@@ -38,19 +38,18 @@ namespace Game {
         .addChild(
           new ƒ.Node("character_" + Character.amountOfInstances.toString())
         );
+      this.instanceId = ++Character.amountOfInstances;
 
       this.addComponent(new ƒ.ComponentTransform());
       this.addRidgetBody();
-      this.mtxLocal.translateX(coordinateX);
-      this.mtxLocal.translateY(coordinateY);
-      this.mtxLocal.translateZ(1);
+      this.mtxLocal.translate(new ƒ.Vector3(coordinateX,coordinateY,0))
+      this.mtxLocal.scale(new ƒ.Vector3(2,2,2))
       this.addChild(this.createNewSpriteNode(this.lookDirection));
       await buildAllAnimationsForCharacter(this);
       this.setIdleAnimation();
 
       lookDirection === "left" ? this.turnCharacter() : "";
       this.lookDirection = lookDirection;
-      this.instanceId = ++Character.amountOfInstances;
 
       let graph: ƒ.Node = viewport.getBranch();
       graph.addChild(this);
@@ -97,6 +96,8 @@ namespace Game {
 
     turnCharacter() {
       this.getComponent(ƒ.ComponentTransform).mtxLocal.rotateY(180);
+      console.log(this.getComponent(ƒ.ComponentTransform).mtxLocal);
+      
       this.lookDirection === "right"
         ? (this.lookDirection = "left")
         : this.lookDirection === "left"
@@ -106,16 +107,13 @@ namespace Game {
 
     addRidgetBody() {
       let x = new ƒ.ComponentRigidbody();
-      x.initialization = ƒ.BODY_INIT.TO_PIVOT;
-      x.setScaling(new ƒ.Vector3(1, 1, 1));
-      x.effectGravity = 1;
-      x.mass = 1;
-      x.typeCollider=ƒ.COLLIDER_TYPE.CUBE
-      x.typeBody=ƒ.BODY_TYPE.DYNAMIC
+      x.initialization = ƒ.BODY_INIT.TO_MESH;
+      x.effectGravity = 10;
+      x.mass = 10;
+      x.typeCollider = ƒ.COLLIDER_TYPE.CUBE;
+      x.typeBody = ƒ.BODY_TYPE.DYNAMIC;
       x.initialize();
-      // x.activate(true);
       this.addComponent(x);
-      // this.addComponent(new ƒ.ComponentRigidbody)
     }
   }
 }

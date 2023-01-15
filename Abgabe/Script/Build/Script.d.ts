@@ -22,6 +22,9 @@ declare namespace Game {
     }
 }
 declare namespace Game {
+    function characterControlls(char: Character): void;
+}
+declare namespace Game {
     import ƒ = FudgeCore;
     class CustomComponentScript extends ƒ.ComponentScript {
         static readonly iSubclass: number;

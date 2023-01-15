@@ -1,33 +1,33 @@
 namespace Game {
-//   export let animationCurrent: ƒAid.SpriteSheetAnimation;
-//   export let animationWalk: ƒAid.SpriteSheetAnimation;
-//   export let animationIdle: ƒAid.SpriteSheetAnimation;
-//   export let animationJump: ƒAid.SpriteSheetAnimation;
-//   export let animationFall: ƒAid.SpriteSheetAnimation;
-//   export let animationRun: ƒAid.SpriteSheetAnimation;
+  //   export let animationCurrent: ƒAid.SpriteSheetAnimation;
+  //   export let animationWalk: ƒAid.SpriteSheetAnimation;
+  //   export let animationIdle: ƒAid.SpriteSheetAnimation;
+  //   export let animationJump: ƒAid.SpriteSheetAnimation;
+  //   export let animationFall: ƒAid.SpriteSheetAnimation;
+  //   export let animationRun: ƒAid.SpriteSheetAnimation;
 
-//   export function stetIdleAnimation(
-//     character: ƒ.Node,
-//     currentDirection: ConstructorParameters<typeof Character>[0]
-//   ) {
-//     const sprite =character.getChildrenByName("Sprite")[0] as ƒAid.NodeSprite;
-//     sprite.setAnimation(animationIdle);
-//     animationCurrent = animationIdle;
-//   }
+  //   export function stetIdleAnimation(
+  //     character: ƒ.Node,
+  //     currentDirection: ConstructorParameters<typeof Character>[0]
+  //   ) {
+  //     const sprite =character.getChildrenByName("Sprite")[0] as ƒAid.NodeSprite;
+  //     sprite.setAnimation(animationIdle);
+  //     animationCurrent = animationIdle;
+  //   }
 
-//   export function turnCharacter(
-//     character: ƒ.Node,
-//     currentDirection: "right" | "left"
-//   ) {
-//     character.getComponent(ƒ.ComponentTransform).mtxLocal.rotateY(180);
-//     currentDirection === "right"
-//       ? (currentDirection = "left")
-//       : currentDirection === "left"
-//       ? (currentDirection = "right")
-//       : "";
-//   }
+  //   export function turnCharacter(
+  //     character: ƒ.Node,
+  //     currentDirection: "right" | "left"
+  //   ) {
+  //     character.getComponent(ƒ.ComponentTransform).mtxLocal.rotateY(180);
+  //     currentDirection === "right"
+  //       ? (currentDirection = "left")
+  //       : currentDirection === "left"
+  //       ? (currentDirection = "right")
+  //       : "";
+  //   }
 
-  export async function buildAllAnimationsForCharacter(character:Character) {
+  export async function buildAllAnimationsForCharacter(character: Character) {
     await buildMoveAnimation(character);
     await buildIdleAnimation(character);
     // await buildJumpAnimation(character);
@@ -35,70 +35,139 @@ namespace Game {
     // await buildRunAnimation(character);
   }
 
-  async function buildMoveAnimation(character:Character) {
-    character.animationMove = await buildSingleAnimation(
-      "assets/Mario/marioSpriteSheet.png",
+  async function buildMoveAnimation(char: Character) {
+    let path: string;
+    let startX: number;
+    let startY: number;
+    let width: number;
+    let height: number;
+    let frames: number;
+    let distanceBetweenSprites: number;
+
+    switch (char.instanceId) {
+      case 1: {
+        path = "assets/Mario/marioSpriteSheet.png";
+        startX = 247;
+        startY = 1;
+        width = 15;
+        height = 28;
+        frames = 3;
+        distanceBetweenSprites = 30;
+        break;
+      }
+      case 2: {
+        path = "/assets/sprites/sheets/DinoSprites-doux.png";
+        startX = 247;
+        startY = 1;
+        width = 15;
+        height = 28;
+        frames = 3;
+        distanceBetweenSprites = 30;
+        break;
+      }
+      default: {
+        console.error("no character to generate");
+        return;
+      }
+    }
+
+    char.animationMove = await buildSingleAnimation(
+      path,
       "move",
-      247,
-      1,
-      15,
-      28,
-      3,
-      30
+      startX,
+      startY,
+      width,
+      height,
+      frames,
+      distanceBetweenSprites
     );
   }
 
-  async function buildIdleAnimation(character:Character) {
+  async function buildIdleAnimation(character: Character) {
+    let path: string;
+    let startX: number;
+    let startY: number;
+    let width: number;
+    let height: number;
+    let frames: number;
+    let distanceBetweenSprites: number;
+
+    switch (character.instanceId) {
+      case 1: {
+        path = "assets/Mario/marioSpriteSheet.png";
+        startX = 247;
+        startY = 1;
+        width = 15;
+        height = 28;
+        frames = 1;
+        distanceBetweenSprites = 0;
+        break;
+      }
+      case 2: {
+        path = "/assets/sprites/sheets/DinoSprites-doux.png";
+        startX = 247;
+        startY = 1;
+        width = 15;
+        height = 28;
+        frames = 1;
+        distanceBetweenSprites = 0;
+        break;
+      }
+      default: {
+        console.error("no character to generate");
+        return;
+      }
+    }
     character.animationIdle = await buildSingleAnimation(
-      "assets/Mario/marioSpriteSheet.png",
+      path,
       "idle",
-      247,
-      1,
-      15,
-      28,
-      1,
-      0
+      startX,
+      startY,
+      width,
+      height,
+      frames,
+      distanceBetweenSprites
     );
   }
 
-//   async function buildJumpAnimation(character:Character) {
-//     animationJump = await buildSingleAnimation(
-//       "assets/Mario/marioSpriteSheet.png",
-//       "jump",
-//       335,
-//       1,
-//       18,
-//       28,
-//       1,
-//       0
-//     );
-//   }
+  //   async function buildJumpAnimation(character:Character) {
+  //     animationJump = await buildSingleAnimation(
+  //       "assets/Mario/marioSpriteSheet.png",
+  //       "jump",
+  //       335,
+  //       1,
+  //       18,
+  //       28,
+  //       1,
+  //       0
+  //     );
+  //   }
 
-//   async function buildFallAnimation(character:Character) {
-//     animationFall = await buildSingleAnimation(
-//       "assets/Mario/marioSpriteSheet.png",
-//       "fall",
-//       366,
-//       1,
-//       16,
-//       28,
-//       1,
-//       0
-//     );
-//   }
+  //   async function buildFallAnimation(character:Character) {
+  //     animationFall = await buildSingleAnimation(
+  //       "assets/Mario/marioSpriteSheet.png",
+  //       "fall",
+  //       366,
+  //       1,
+  //       16,
+  //       28,
+  //       1,
+  //       0
+  //     );
+  //   }
 
-//   async function buildRunAnimation(character:Character) {
-//     animationRun = await buildSingleAnimation(
-//       "assets/Mario/marioSpriteSheet.png",
-//       "run",
-//       245,
-//       41,
-//       18,
-//       28,
-//       3,
-//       30
-//     );
-//   }
+  //   async function buildRunAnimation(character:Character) {
+  //     animationRun = await buildSingleAnimation(
+  //       "assets/Mario/marioSpriteSheet.png",
+  //       "run",
+  //       245,
+  //       41,
+  //       18,
+  //       28,
+  //       3,
+  //       30
+  //     );
+  //   }
 
   async function buildSingleAnimation(
     path: string,

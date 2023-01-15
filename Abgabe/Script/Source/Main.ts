@@ -4,6 +4,7 @@ namespace Game {
 
   export let viewport: ƒ.Viewport;
   let cmpCamera: ƒ.ComponentCamera;
+  let characters: Character[]=[];
 
   document.addEventListener("interactiveViewportStarted", <EventListener>start);
 
@@ -15,8 +16,8 @@ namespace Game {
     cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 0, 35));
     cmpCamera.mtxPivot.rotateY(180);
 
-    let charLeft = new Character("left", 0, 0);
-    let charRight = new Character("right", 5, 5);
+   
+    characters.push(new Character("left", 0, 0), new Character("right", 5, 5));
     // let charX = new Character("left", 7, 7);
     // let charRight = new Character("right");
     // charLeft.mtxLocal.translateY(2);
@@ -27,7 +28,11 @@ namespace Game {
   }
 
   function update(_event: Event): void {
-    ƒ.Physics.simulate();  // if physics is included and used
+    ƒ.Physics.simulate(); // if physics is included and used
+    characters.forEach((x) => {
+      characterControlls(x);
+    });
+    // CharacterControlls();
     viewport.draw();
     ƒ.AudioManager.default.update();
   }
