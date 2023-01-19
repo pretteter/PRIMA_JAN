@@ -1,31 +1,4 @@
 namespace Game {
-  //   export let animationCurrent: ƒAid.SpriteSheetAnimation;
-  //   export let animationWalk: ƒAid.SpriteSheetAnimation;
-  //   export let animationIdle: ƒAid.SpriteSheetAnimation;
-  //   export let animationJump: ƒAid.SpriteSheetAnimation;
-  //   export let animationFall: ƒAid.SpriteSheetAnimation;
-  //   export let animationRun: ƒAid.SpriteSheetAnimation;
-
-  //   export function stetIdleAnimation(
-  //     character: ƒ.Node,
-  //     currentDirection: ConstructorParameters<typeof Character>[0]
-  //   ) {
-  //     const sprite =character.getChildrenByName("Sprite")[0] as ƒAid.NodeSprite;
-  //     sprite.setAnimation(animationIdle);
-  //     animationCurrent = animationIdle;
-  //   }
-
-  //   export function turnCharacter(
-  //     character: ƒ.Node,
-  //     currentDirection: "right" | "left"
-  //   ) {
-  //     character.getComponent(ƒ.ComponentTransform).mtxLocal.rotateY(180);
-  //     currentDirection === "right"
-  //       ? (currentDirection = "left")
-  //       : currentDirection === "left"
-  //       ? (currentDirection = "right")
-  //       : "";
-  //   }
 
   export async function buildAllAnimationsForCharacter(character: Character) {
     await buildMoveAnimation(character);

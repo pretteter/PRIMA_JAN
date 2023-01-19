@@ -4,7 +4,7 @@ namespace Game {
 
   export let viewport: ƒ.Viewport;
   let cmpCamera: ƒ.ComponentCamera;
-  let characters: Character[]=[];
+  let characters: Character[] = [];
 
   document.addEventListener("interactiveViewportStarted", <EventListener>start);
 
@@ -13,11 +13,13 @@ namespace Game {
     cmpCamera = viewport.camera;
     // let graph: ƒ.Node = viewport.getBranch();
 
-    cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 0, 35));
+    cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 4, 18));
     cmpCamera.mtxPivot.rotateY(180);
 
-   
-    characters.push(new Character("left", 0, 0), new Character("right", 5, 5));
+    characters.push(
+      new Character("right", -7, 1),
+      new Character("right", 5, 5)
+    );
     // let charX = new Character("left", 7, 7);
     // let charRight = new Character("right");
     // charLeft.mtxLocal.translateY(2);
@@ -31,6 +33,7 @@ namespace Game {
     ƒ.Physics.simulate(); // if physics is included and used
     characters.forEach((x) => {
       characterControlls(x);
+      // console.log(x.getComponent(ƒ.ComponentRigidbody).getPosition().x);
     });
     // CharacterControlls();
     viewport.draw();

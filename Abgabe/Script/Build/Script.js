@@ -1,31 +1,6 @@
 "use strict";
 var Game;
 (function (Game) {
-    //   export let animationCurrent: ƒAid.SpriteSheetAnimation;
-    //   export let animationWalk: ƒAid.SpriteSheetAnimation;
-    //   export let animationIdle: ƒAid.SpriteSheetAnimation;
-    //   export let animationJump: ƒAid.SpriteSheetAnimation;
-    //   export let animationFall: ƒAid.SpriteSheetAnimation;
-    //   export let animationRun: ƒAid.SpriteSheetAnimation;
-    //   export function stetIdleAnimation(
-    //     character: ƒ.Node,
-    //     currentDirection: ConstructorParameters<typeof Character>[0]
-    //   ) {
-    //     const sprite =character.getChildrenByName("Sprite")[0] as ƒAid.NodeSprite;
-    //     sprite.setAnimation(animationIdle);
-    //     animationCurrent = animationIdle;
-    //   }
-    //   export function turnCharacter(
-    //     character: ƒ.Node,
-    //     currentDirection: "right" | "left"
-    //   ) {
-    //     character.getComponent(ƒ.ComponentTransform).mtxLocal.rotateY(180);
-    //     currentDirection === "right"
-    //       ? (currentDirection = "left")
-    //       : currentDirection === "left"
-    //       ? (currentDirection = "right")
-    //       : "";
-    //   }
     async function buildAllAnimationsForCharacter(character) {
         await buildMoveAnimation(character);
         await buildIdleAnimation(character);
@@ -167,40 +142,36 @@ var Game;
         animationCurrent;
         animationMove;
         animationIdle;
+        hasRocket;
+        life = 100;
         //     animationJump: ƒAid.SpriteSheetAnimation;
         //     animationFall: ƒAid.SpriteSheetAnimation;
         // animationRun: ƒAid.SpriteSheetAnimation;
         static amountOfInstances = 0;
         instanceId;
         constructor(lookDirection, coordinateX, coordinateY) {
-            super("Character");
+            super("Character_" + Character.amountOfInstances.toString());
             this.lookDirection = lookDirection;
             this.initAvatar(lookDirection, coordinateX, coordinateY);
         }
         async initAvatar(lookDirection, coordinateX, coordinateY) {
-            Game.viewport
-                .getBranch()
-                .addChild(new ƒ.Node("character_" + Character.amountOfInstances.toString()));
+            // viewport
+            //   .getBranch()
+            //   .addChild(
+            //     new ƒ.Node(null)
+            //   );
             this.instanceId = ++Character.amountOfInstances;
             this.addComponent(new ƒ.ComponentTransform());
             this.addRidgetBody();
+            lookDirection === "left" ? this.turnCharacter() : "";
             this.mtxLocal.translate(new ƒ.Vector3(coordinateX, coordinateY, 0));
-            this.mtxLocal.scale(new ƒ.Vector3(2, 2, 2));
+            this.mtxLocal.scale(new ƒ.Vector3(1, 1, 1));
             this.addChild(this.createNewSpriteNode(this.lookDirection));
             await Game.buildAllAnimationsForCharacter(this);
-            this.setIdleAnimation();
-            lookDirection === "left" ? this.turnCharacter() : "";
+            // this.setIdleAnimation();
             this.lookDirection = lookDirection;
             let graph = Game.viewport.getBranch();
             graph.addChild(this);
-        }
-        createNewSpriteNode(frameDirection) {
-            let spriteNode = new ƒAid.NodeSprite("Sprite");
-            // spriteNode.addComponent(new ƒ.ComponentTransform(new ƒ.Matrix4x4()));
-            spriteNode.setFrameDirection(frameDirection === "left" ? -1 : frameDirection === "right" ? 1 : 1);
-            // spriteNode.mtxLocal.translateY(-0.5);
-            // spriteNode.mtxLocal.translateX(-0.5);
-            return spriteNode;
         }
         // function setJumpSound() {
         //   this.audioJump = new ƒ.Audio("audio/jump.mp3");
@@ -214,7 +185,34 @@ var Game;
             this.animationCurrent !== anmToUse ? sprite.setAnimation(anmToUse) : "";
             this.animationCurrent = anmToUse;
             this.lookDirection !== direction ? this.turnCharacter() : "";
-            this.getComponent(ƒ.ComponentTransform).mtxLocal.translateX((ƒ.Loop.timeFrameGame * this.moveSpeed) / 1000);
+            // this.getComponent(ƒ.ComponentRigidbody).setVelocity(
+            //   new ƒ.Vector3(direction === "right" ? 10 : -10, 0, 0)
+            // );
+            if (this.getComponent(ƒ.ComponentRigidbody).getVelocity().x >= -10 &&
+                this.getComponent(ƒ.ComponentRigidbody).getVelocity().x <= 10) {
+                this.getComponent(ƒ.ComponentRigidbody).applyForce(new ƒ.Vector3(direction === "right" ? 50000 : -50000, 0, 0));
+            }
+        }
+        jump() {
+            console.log(this.getComponent(ƒ.ComponentRigidbody).getVelocity().y);
+            if (this.getComponent(ƒ.ComponentRigidbody).getVelocity().y <= 0.1 &&
+                this.getComponent(ƒ.ComponentRigidbody).getVelocity().y >= -0.1)
+                this.getComponent(ƒ.ComponentRigidbody).applyForce(new ƒ.Vector3(0, this.getComponent(ƒ.ComponentRigidbody).mass * 1600, 0));
+        }
+        attack() {
+            if (!this.hasRocket) {
+                const rocket = new Game.Rocket(this.getComponent(ƒ.ComponentRigidbody).mass * 70, 50);
+                rocket.launch(this, this.lookDirection);
+                this.hasRocket = true;
+                setTimeout(() => {
+                    this.removeRocket(rocket);
+                    this.hasRocket = false;
+                }, 1200);
+            }
+        }
+        removeRocket(rocket) {
+            let graph = Game.viewport.getBranch();
+            graph.removeChild(rocket);
         }
         setIdleAnimation() {
             const sprite = this.getChildrenByName("Sprite")[0];
@@ -222,23 +220,32 @@ var Game;
             this.animationCurrent = this.animationIdle;
         }
         turnCharacter() {
-            this.getComponent(ƒ.ComponentTransform).mtxLocal.rotateY(180);
-            console.log(this.getComponent(ƒ.ComponentTransform).mtxLocal);
+            this.getComponent(ƒ.ComponentRigidbody).rotateBody(new ƒ.Vector3(0, 180, 0));
             this.lookDirection === "right"
                 ? (this.lookDirection = "left")
                 : this.lookDirection === "left"
                     ? (this.lookDirection = "right")
                     : "";
         }
+        createNewSpriteNode(frameDirection) {
+            let spriteNode = new ƒAid.NodeSprite("Sprite");
+            // spriteNode.addComponent(new ƒ.ComponentTransform);
+            spriteNode.addComponent(new ƒ.ComponentTransform(new ƒ.Matrix4x4()));
+            spriteNode.setFrameDirection(frameDirection === "left" ? -1 : frameDirection === "right" ? 1 : 1);
+            spriteNode.mtxLocal.translateY(-0.5);
+            return spriteNode;
+        }
         addRidgetBody() {
-            let x = new ƒ.ComponentRigidbody();
-            x.initialization = ƒ.BODY_INIT.TO_MESH;
-            x.effectGravity = 10;
-            x.mass = 10;
-            x.typeCollider = ƒ.COLLIDER_TYPE.CUBE;
-            x.typeBody = ƒ.BODY_TYPE.DYNAMIC;
-            x.initialize();
-            this.addComponent(x);
+            let ridgetBody = new ƒ.ComponentRigidbody();
+            ridgetBody.initialization = ƒ.BODY_INIT.TO_MESH;
+            ridgetBody.effectGravity = 10;
+            ridgetBody.mass = 1000;
+            ridgetBody.typeCollider = ƒ.COLLIDER_TYPE.CUBE;
+            ridgetBody.typeBody = ƒ.BODY_TYPE.DYNAMIC;
+            ridgetBody.effectRotation = new ƒ.Vector3(0, 0, 0);
+            // ridgetBody.setScaling(new ƒ.Vector3(0.5,0.5,0.5))
+            ridgetBody.initialize();
+            this.addComponent(ridgetBody);
         }
     }
     Game.Character = Character;
@@ -250,16 +257,21 @@ var Game;
     function characterControlls(char) {
         let moveLeft;
         let moveRight;
-        // let shoot;
+        let attack;
+        let jump;
         switch (char.instanceId) {
             case 1: {
                 moveLeft = ƒ.KEYBOARD_CODE.A;
                 moveRight = ƒ.KEYBOARD_CODE.D;
+                attack = ƒ.KEYBOARD_CODE.SPACE;
+                jump = ƒ.KEYBOARD_CODE.W;
                 break;
             }
             case 2: {
                 moveLeft = ƒ.KEYBOARD_CODE.ARROW_LEFT;
                 moveRight = ƒ.KEYBOARD_CODE.ARROW_RIGHT;
+                attack = ƒ.KEYBOARD_CODE.NUMPAD0;
+                jump = ƒ.KEYBOARD_CODE.ARROW_UP;
                 break;
             }
             default: {
@@ -267,16 +279,28 @@ var Game;
                 return;
             }
         }
-        if (!ƒ.Keyboard.isPressedOne([moveLeft, moveRight])) {
-            char.animationCurrent !== char.animationIdle
-                ? char.setIdleAnimation()
-                : "";
+        movement();
+        actions();
+        function movement() {
+            if (!ƒ.Keyboard.isPressedOne([moveLeft, moveRight])) {
+                char.animationCurrent !== char.animationIdle
+                    ? char.setIdleAnimation()
+                    : "";
+            }
+            else if (ƒ.Keyboard.isPressedOne([moveRight])) {
+                char.move("right");
+            }
+            else if (ƒ.Keyboard.isPressedOne([moveLeft])) {
+                char.move("left");
+            }
         }
-        else if (ƒ.Keyboard.isPressedOne([moveRight])) {
-            char.move("right");
-        }
-        else if (ƒ.Keyboard.isPressedOne([moveLeft])) {
-            char.move("left");
+        function actions() {
+            if (ƒ.Keyboard.isPressedOne([attack])) {
+                char.attack();
+            }
+            if (ƒ.Keyboard.isPressedOne([jump])) {
+                char.jump();
+            }
         }
     }
     Game.characterControlls = characterControlls;
@@ -329,9 +353,9 @@ var Game;
         Game.viewport = _event.detail;
         cmpCamera = Game.viewport.camera;
         // let graph: ƒ.Node = viewport.getBranch();
-        cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 0, 35));
+        cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 4, 18));
         cmpCamera.mtxPivot.rotateY(180);
-        characters.push(new Game.Character("left", 0, 0), new Game.Character("right", 5, 5));
+        characters.push(new Game.Character("right", -7, 1), new Game.Character("right", 5, 5));
         // let charX = new Character("left", 7, 7);
         // let charRight = new Character("right");
         // charLeft.mtxLocal.translateY(2);
@@ -344,10 +368,62 @@ var Game;
         ƒ.Physics.simulate(); // if physics is included and used
         characters.forEach((x) => {
             Game.characterControlls(x);
+            // console.log(x.getComponent(ƒ.ComponentRigidbody).getPosition().x);
         });
         // CharacterControlls();
         Game.viewport.draw();
         ƒ.AudioManager.default.update();
     }
+})(Game || (Game = {}));
+var Game;
+(function (Game) {
+    var ƒ = FudgeCore;
+    var ƒAid = FudgeAid;
+    class Rocket extends ƒ.Node {
+        forceStart;
+        mass;
+        static amountOfInstances = 0;
+        instanceId;
+        constructor(forceStart, mass) {
+            super("Rocket_" + Rocket.amountOfInstances.toString());
+            this.forceStart = forceStart;
+            this.mass = mass;
+            this.initRocket();
+        }
+        initRocket() {
+            this.instanceId = ++Rocket.amountOfInstances;
+            this.addComponent(new ƒ.ComponentTransform());
+            this.addRidgetBody();
+            this.addChild(this.createNewSpriteNode("right"));
+        }
+        launch(character, direction) {
+            this.placeRocket(character);
+            this.getComponent(ƒ.ComponentRigidbody).applyForce(new ƒ.Vector3(direction === "right" ? this.forceStart / 2 : -this.forceStart / 2, this.forceStart, 0));
+        }
+        placeRocket(character) {
+            this.mtxLocal.translate(new ƒ.Vector3(character.getComponent(ƒ.ComponentRigidbody).getPosition().x, character.getComponent(ƒ.ComponentRigidbody).getPosition().y + 2, 0));
+            let graph = Game.viewport.getBranch();
+            graph.addChild(this);
+        }
+        createNewSpriteNode(frameDirection) {
+            let spriteNode = new ƒAid.NodeSprite("Sprite");
+            // spriteNode.addComponent(new ƒ.ComponentTransform(new ƒ.Matrix4x4()));
+            spriteNode.setFrameDirection(frameDirection === "left" ? -1 : frameDirection === "right" ? 1 : 1);
+            return spriteNode;
+        }
+        addRidgetBody() {
+            let ridgetBody = new ƒ.ComponentRigidbody();
+            ridgetBody.initialization = ƒ.BODY_INIT.TO_PIVOT;
+            ridgetBody.effectGravity = 10;
+            ridgetBody.mass = this.mass;
+            ridgetBody.typeCollider = ƒ.COLLIDER_TYPE.CUBE;
+            ridgetBody.typeBody = ƒ.BODY_TYPE.DYNAMIC;
+            ridgetBody.effectRotation = new ƒ.Vector3(0, 0, 0);
+            // ridgetBody.setScaling(new ƒ.Vector3(0.5,0.5,0.5))
+            ridgetBody.initialize();
+            this.addComponent(ridgetBody);
+        }
+    }
+    Game.Rocket = Rocket;
 })(Game || (Game = {}));
 //# sourceMappingURL=Script.js.map

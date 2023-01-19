@@ -11,6 +11,8 @@ namespace Game {
     animationCurrent: ƒAid.SpriteSheetAnimation;
     animationMove: ƒAid.SpriteSheetAnimation;
     animationIdle: ƒAid.SpriteSheetAnimation;
+    hasRocket: boolean;
+    life: number = 100;
     //     animationJump: ƒAid.SpriteSheetAnimation;
     //     animationFall: ƒAid.SpriteSheetAnimation;
     // animationRun: ƒAid.SpriteSheetAnimation;
@@ -23,7 +25,7 @@ namespace Game {
       coordinateX: number,
       coordinateY: number
     ) {
-      super("Character");
+      super("Character_" + Character.amountOfInstances.toString());
       this.lookDirection = lookDirection;
       this.initAvatar(lookDirection, coordinateX, coordinateY);
     }
@@ -33,39 +35,27 @@ namespace Game {
       coordinateX: number,
       coordinateY: number
     ) {
-      viewport
-        .getBranch()
-        .addChild(
-          new ƒ.Node("character_" + Character.amountOfInstances.toString())
-        );
+      // viewport
+      //   .getBranch()
+      //   .addChild(
+      //     new ƒ.Node(null)
+      //   );
       this.instanceId = ++Character.amountOfInstances;
 
       this.addComponent(new ƒ.ComponentTransform());
       this.addRidgetBody();
-      this.mtxLocal.translate(new ƒ.Vector3(coordinateX,coordinateY,0))
-      this.mtxLocal.scale(new ƒ.Vector3(2,2,2))
+      lookDirection === "left" ? this.turnCharacter() : "";
+
+      this.mtxLocal.translate(new ƒ.Vector3(coordinateX, coordinateY, 0));
+      this.mtxLocal.scale(new ƒ.Vector3(1, 1, 1));
       this.addChild(this.createNewSpriteNode(this.lookDirection));
       await buildAllAnimationsForCharacter(this);
-      this.setIdleAnimation();
+      // this.setIdleAnimation();
 
-      lookDirection === "left" ? this.turnCharacter() : "";
       this.lookDirection = lookDirection;
 
       let graph: ƒ.Node = viewport.getBranch();
       graph.addChild(this);
-    }
-
-    private createNewSpriteNode(
-      frameDirection: ConstructorParameters<typeof Character>[0]
-    ): ƒAid.NodeSprite {
-      let spriteNode = new ƒAid.NodeSprite("Sprite");
-      // spriteNode.addComponent(new ƒ.ComponentTransform(new ƒ.Matrix4x4()));
-      spriteNode.setFrameDirection(
-        frameDirection === "left" ? -1 : frameDirection === "right" ? 1 : 1
-      );
-      // spriteNode.mtxLocal.translateY(-0.5);
-      // spriteNode.mtxLocal.translateX(-0.5);
-      return spriteNode;
     }
 
     // function setJumpSound() {
@@ -83,9 +73,54 @@ namespace Game {
       this.animationCurrent = anmToUse;
 
       this.lookDirection !== direction ? this.turnCharacter() : "";
-      this.getComponent(ƒ.ComponentTransform).mtxLocal.translateX(
-        (ƒ.Loop.timeFrameGame * this.moveSpeed) / 1000
-      );
+      // this.getComponent(ƒ.ComponentRigidbody).setVelocity(
+      //   new ƒ.Vector3(direction === "right" ? 10 : -10, 0, 0)
+      // );
+
+      if (
+        this.getComponent(ƒ.ComponentRigidbody).getVelocity().x >= -10 &&
+        this.getComponent(ƒ.ComponentRigidbody).getVelocity().x <= 10
+      ) {
+        this.getComponent(ƒ.ComponentRigidbody).applyForce(
+          new ƒ.Vector3(direction === "right" ? 50000 : -50000, 0, 0)
+        );
+      }
+    }
+
+    jump() {
+      console.log(this.getComponent(ƒ.ComponentRigidbody).getVelocity().y);
+
+      if (
+        this.getComponent(ƒ.ComponentRigidbody).getVelocity().y <= 0.1 &&
+        this.getComponent(ƒ.ComponentRigidbody).getVelocity().y >= -0.1
+      )
+        this.getComponent(ƒ.ComponentRigidbody).applyForce(
+          new ƒ.Vector3(
+            0,
+            this.getComponent(ƒ.ComponentRigidbody).mass * 1600,
+            0
+          )
+        );
+    }
+
+    attack() {
+      if (!this.hasRocket) {
+        const rocket: Rocket = new Rocket(
+          this.getComponent(ƒ.ComponentRigidbody).mass * 70,
+          50
+        );
+        rocket.launch(this, this.lookDirection);
+        this.hasRocket = true;
+        setTimeout(() => {
+          this.removeRocket(rocket);
+          this.hasRocket = false;
+        }, 1200);
+      }
+    }
+
+    removeRocket(rocket: Rocket) {
+      let graph: ƒ.Node = viewport.getBranch();
+      graph.removeChild(rocket);
     }
 
     setIdleAnimation() {
@@ -95,9 +130,10 @@ namespace Game {
     }
 
     turnCharacter() {
-      this.getComponent(ƒ.ComponentTransform).mtxLocal.rotateY(180);
-      console.log(this.getComponent(ƒ.ComponentTransform).mtxLocal);
-      
+      this.getComponent(ƒ.ComponentRigidbody).rotateBody(
+        new ƒ.Vector3(0, 180, 0)
+      );
+
       this.lookDirection === "right"
         ? (this.lookDirection = "left")
         : this.lookDirection === "left"
@@ -105,15 +141,30 @@ namespace Game {
         : "";
     }
 
-    addRidgetBody() {
-      let x = new ƒ.ComponentRigidbody();
-      x.initialization = ƒ.BODY_INIT.TO_MESH;
-      x.effectGravity = 10;
-      x.mass = 10;
-      x.typeCollider = ƒ.COLLIDER_TYPE.CUBE;
-      x.typeBody = ƒ.BODY_TYPE.DYNAMIC;
-      x.initialize();
-      this.addComponent(x);
+    private createNewSpriteNode(
+      frameDirection: ConstructorParameters<typeof Character>[0]
+    ): ƒAid.NodeSprite {
+      let spriteNode = new ƒAid.NodeSprite("Sprite");
+      // spriteNode.addComponent(new ƒ.ComponentTransform);
+      spriteNode.addComponent(new ƒ.ComponentTransform(new ƒ.Matrix4x4()));
+      spriteNode.setFrameDirection(
+        frameDirection === "left" ? -1 : frameDirection === "right" ? 1 : 1
+      );
+      spriteNode.mtxLocal.translateY(-0.5);
+      return spriteNode;
+    }
+
+    private addRidgetBody() {
+      let ridgetBody = new ƒ.ComponentRigidbody();
+      ridgetBody.initialization = ƒ.BODY_INIT.TO_MESH;
+      ridgetBody.effectGravity = 10;
+      ridgetBody.mass = 1000;
+      ridgetBody.typeCollider = ƒ.COLLIDER_TYPE.CUBE;
+      ridgetBody.typeBody = ƒ.BODY_TYPE.DYNAMIC;
+      ridgetBody.effectRotation = new ƒ.Vector3(0, 0, 0);
+      // ridgetBody.setScaling(new ƒ.Vector3(0.5,0.5,0.5))
+      ridgetBody.initialize();
+      this.addComponent(ridgetBody);
     }
   }
 }
