@@ -11,31 +11,19 @@ var Game;
     Game.buildAllAnimationsForCharacter = buildAllAnimationsForCharacter;
     async function buildMoveAnimation(char) {
         let path;
-        let startX;
-        let startY;
-        let width;
-        let height;
-        let frames;
-        let distanceBetweenSprites;
+        let startX = 78;
+        let startY = 4;
+        let width = 15;
+        let height = 17;
+        let frames = 8;
+        let distanceBetweenSprites = 24;
         switch (char.instanceId) {
             case 1: {
-                path = "assets/Mario/marioSpriteSheet.png";
-                startX = 247;
-                startY = 1;
-                width = 15;
-                height = 28;
-                frames = 3;
-                distanceBetweenSprites = 30;
+                path = "/assets/sprites/sheets/DinoSprites-mort.png";
                 break;
             }
             case 2: {
                 path = "/assets/sprites/sheets/DinoSprites-doux.png";
-                startX = 247;
-                startY = 1;
-                width = 15;
-                height = 28;
-                frames = 3;
-                distanceBetweenSprites = 30;
                 break;
             }
             default: {
@@ -47,31 +35,19 @@ var Game;
     }
     async function buildIdleAnimation(character) {
         let path;
-        let startX;
-        let startY;
-        let width;
-        let height;
-        let frames;
-        let distanceBetweenSprites;
+        let startX = 6;
+        let startY = 4;
+        let width = 15;
+        let height = 17;
+        let frames = 3;
+        let distanceBetweenSprites = 24;
         switch (character.instanceId) {
             case 1: {
-                path = "assets/Mario/marioSpriteSheet.png";
-                startX = 247;
-                startY = 1;
-                width = 15;
-                height = 28;
-                frames = 1;
-                distanceBetweenSprites = 0;
+                path = "/assets/sprites/sheets/DinoSprites-mort.png";
                 break;
             }
             case 2: {
                 path = "/assets/sprites/sheets/DinoSprites-doux.png";
-                startX = 247;
-                startY = 1;
-                width = 15;
-                height = 28;
-                frames = 1;
-                distanceBetweenSprites = 0;
                 break;
             }
             default: {
@@ -80,6 +56,31 @@ var Game;
             }
         }
         character.animationIdle = await buildSingleAnimation(path, "idle", startX, startY, width, height, frames, distanceBetweenSprites);
+    }
+    async function buildBombAnimation(bomb) {
+        await buildBombIdleAnimation(bomb);
+        await buildBombExplodeAnimation(bomb);
+    }
+    Game.buildBombAnimation = buildBombAnimation;
+    async function buildBombIdleAnimation(bomb) {
+        let path = "assets/sprites/sheets/bomb_character_o_idle.png";
+        let startX = 22;
+        let startY = 21;
+        let width = 22;
+        let height = 30;
+        let frames = 2;
+        let distanceBetweenSprites = 64;
+        bomb.animationIdle = await buildSingleAnimation(path, "idle", startX, startY, width, height, frames, distanceBetweenSprites);
+    }
+    async function buildBombExplodeAnimation(bomb) {
+        let path = "assets/sprites/sheets/bomb_character_o_explode.png";
+        let startX = 22;
+        let startY = 27;
+        let width = 22;
+        let height = 24;
+        let frames = 3;
+        let distanceBetweenSprites = 29;
+        bomb.animationExplode = await buildSingleAnimation(path, "idle", startX, startY, width, height, frames, distanceBetweenSprites);
     }
     //   async function buildJumpAnimation(character:Character) {
     //     animationJump = await buildSingleAnimation(
@@ -133,17 +134,32 @@ var Game;
 var Game;
 (function (Game) {
     var ƒ = FudgeCore;
+    function createSounds() {
+        setShootSound();
+    }
+    Game.createSounds = createSounds;
+    function setShootSound() {
+        Game.audioShoot = new ƒ.Audio("/assets/audio/PUNCH #2.mp3");
+        Game.cmpAudio = new ƒ.ComponentAudio(Game.audioShoot, false, false);
+        Game.cmpAudio.connect(true);
+        Game.cmpAudio.volume = 0.7;
+    }
+})(Game || (Game = {}));
+var Game;
+(function (Game) {
+    var ƒ = FudgeCore;
     var ƒAid = FudgeAid;
     class Character extends ƒ.Node {
         //     audioJump: ƒ.Audio;
         //     cmpAudio: ƒ.ComponentAudio;
-        moveSpeed = 2;
+        // moveSpeed: number = 2;
         lookDirection;
         animationCurrent;
         animationMove;
         animationIdle;
         hasRocket;
         life = 100;
+        mass = 10;
         //     animationJump: ƒAid.SpriteSheetAnimation;
         //     animationFall: ƒAid.SpriteSheetAnimation;
         // animationRun: ƒAid.SpriteSheetAnimation;
@@ -155,20 +171,15 @@ var Game;
             this.initAvatar(lookDirection, coordinateX, coordinateY);
         }
         async initAvatar(lookDirection, coordinateX, coordinateY) {
-            // viewport
-            //   .getBranch()
-            //   .addChild(
-            //     new ƒ.Node(null)
-            //   );
             this.instanceId = ++Character.amountOfInstances;
             this.addComponent(new ƒ.ComponentTransform());
-            this.addRidgetBody();
             lookDirection === "left" ? this.turnCharacter() : "";
             this.mtxLocal.translate(new ƒ.Vector3(coordinateX, coordinateY, 0));
-            this.mtxLocal.scale(new ƒ.Vector3(1, 1, 1));
+            // this.mtxLocal.scale(new ƒ.Vector3(1, 1, 1));
             this.addChild(this.createNewSpriteNode(this.lookDirection));
             await Game.buildAllAnimationsForCharacter(this);
             // this.setIdleAnimation();
+            this.addRigidBody();
             this.lookDirection = lookDirection;
             let graph = Game.viewport.getBranch();
             graph.addChild(this);
@@ -185,34 +196,26 @@ var Game;
             this.animationCurrent !== anmToUse ? sprite.setAnimation(anmToUse) : "";
             this.animationCurrent = anmToUse;
             this.lookDirection !== direction ? this.turnCharacter() : "";
-            // this.getComponent(ƒ.ComponentRigidbody).setVelocity(
-            //   new ƒ.Vector3(direction === "right" ? 10 : -10, 0, 0)
-            // );
             if (this.getComponent(ƒ.ComponentRigidbody).getVelocity().x >= -10 &&
                 this.getComponent(ƒ.ComponentRigidbody).getVelocity().x <= 10) {
-                this.getComponent(ƒ.ComponentRigidbody).applyForce(new ƒ.Vector3(direction === "right" ? 50000 : -50000, 0, 0));
+                this.getComponent(ƒ.ComponentRigidbody).applyForce(new ƒ.Vector3(direction === "right" ? this.mass * 50 : -this.mass * 50, 0, 0));
             }
         }
         jump() {
-            console.log(this.getComponent(ƒ.ComponentRigidbody).getVelocity().y);
             if (this.getComponent(ƒ.ComponentRigidbody).getVelocity().y <= 0.1 &&
                 this.getComponent(ƒ.ComponentRigidbody).getVelocity().y >= -0.1)
-                this.getComponent(ƒ.ComponentRigidbody).applyForce(new ƒ.Vector3(0, this.getComponent(ƒ.ComponentRigidbody).mass * 1600, 0));
+                this.getComponent(ƒ.ComponentRigidbody).applyForce(new ƒ.Vector3(0, this.mass * 1600, 0));
         }
         attack() {
             if (!this.hasRocket) {
-                const rocket = new Game.Rocket(this.getComponent(ƒ.ComponentRigidbody).mass * 70, 50);
+                const rocket = new Game.Bomb(80000, 50);
                 rocket.launch(this, this.lookDirection);
                 this.hasRocket = true;
                 setTimeout(() => {
-                    this.removeRocket(rocket);
+                    rocket.removeRocket();
                     this.hasRocket = false;
                 }, 1200);
             }
-        }
-        removeRocket(rocket) {
-            let graph = Game.viewport.getBranch();
-            graph.removeChild(rocket);
         }
         setIdleAnimation() {
             const sprite = this.getChildrenByName("Sprite")[0];
@@ -230,22 +233,23 @@ var Game;
         createNewSpriteNode(frameDirection) {
             let spriteNode = new ƒAid.NodeSprite("Sprite");
             // spriteNode.addComponent(new ƒ.ComponentTransform);
-            spriteNode.addComponent(new ƒ.ComponentTransform(new ƒ.Matrix4x4()));
+            spriteNode.addComponent(new ƒ.ComponentTransform());
             spriteNode.setFrameDirection(frameDirection === "left" ? -1 : frameDirection === "right" ? 1 : 1);
-            spriteNode.mtxLocal.translateY(-0.5);
+            spriteNode.mtxLocal.translateY(-0.25);
             return spriteNode;
         }
-        addRidgetBody() {
-            let ridgetBody = new ƒ.ComponentRigidbody();
-            ridgetBody.initialization = ƒ.BODY_INIT.TO_MESH;
-            ridgetBody.effectGravity = 10;
-            ridgetBody.mass = 1000;
-            ridgetBody.typeCollider = ƒ.COLLIDER_TYPE.CUBE;
-            ridgetBody.typeBody = ƒ.BODY_TYPE.DYNAMIC;
-            ridgetBody.effectRotation = new ƒ.Vector3(0, 0, 0);
-            // ridgetBody.setScaling(new ƒ.Vector3(0.5,0.5,0.5))
-            ridgetBody.initialize();
-            this.addComponent(ridgetBody);
+        addRigidBody() {
+            let rigidBody = new ƒ.ComponentRigidbody();
+            // rigidBody.initialization = ƒ.BODY_INIT.TO_MESH;
+            rigidBody.effectGravity = 10;
+            rigidBody.mass = this.mass;
+            rigidBody.typeCollider = ƒ.COLLIDER_TYPE.CUBE;
+            rigidBody.typeBody = ƒ.BODY_TYPE.DYNAMIC;
+            rigidBody.effectRotation = new ƒ.Vector3(0, 0, 0);
+            rigidBody.mtxPivot.scale(new ƒ.Vector3(0.5, 0.5, 1));
+            // rigidBody.mtxPivot.scaleX(0.5);
+            rigidBody.initialize();
+            this.addComponent(rigidBody);
         }
     }
     Game.Character = Character;
@@ -348,19 +352,17 @@ var Game;
     ƒ.Debug.info("Main Program Template running!");
     let cmpCamera;
     let characters = [];
+    // let audioJump: ƒ.Audio;
     document.addEventListener("interactiveViewportStarted", start);
     function start(_event) {
         Game.viewport = _event.detail;
+        Game.viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
         cmpCamera = Game.viewport.camera;
         // let graph: ƒ.Node = viewport.getBranch();
         cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 4, 18));
         cmpCamera.mtxPivot.rotateY(180);
-        characters.push(new Game.Character("right", -7, 1), new Game.Character("right", 5, 5));
-        // let charX = new Character("left", 7, 7);
-        // let charRight = new Character("right");
-        // charLeft.mtxLocal.translateY(2);
-        // graph.addChild(charRight);
-        console.log(Game.viewport.getBranch());
+        Game.createSounds();
+        characters.push(new Game.Character("right", -5, 2), new Game.Character("right", 5, 5));
         ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
         ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
     }
@@ -368,9 +370,7 @@ var Game;
         ƒ.Physics.simulate(); // if physics is included and used
         characters.forEach((x) => {
             Game.characterControlls(x);
-            // console.log(x.getComponent(ƒ.ComponentRigidbody).getPosition().x);
         });
-        // CharacterControlls();
         Game.viewport.draw();
         ƒ.AudioManager.default.update();
     }
@@ -379,36 +379,42 @@ var Game;
 (function (Game) {
     var ƒ = FudgeCore;
     var ƒAid = FudgeAid;
-    class Rocket extends ƒ.Node {
+    class Bomb extends ƒ.Node {
         forceStart;
         mass;
+        animationIdle;
+        animationExplode;
         static amountOfInstances = 0;
         instanceId;
         constructor(forceStart, mass) {
-            super("Rocket_" + Rocket.amountOfInstances.toString());
+            super("Bomb_" + Bomb.amountOfInstances.toString());
             this.forceStart = forceStart;
             this.mass = mass;
-            this.initRocket();
+            this.initBomb();
         }
-        initRocket() {
-            this.instanceId = ++Rocket.amountOfInstances;
+        async initBomb() {
+            this.instanceId = ++Bomb.amountOfInstances;
             this.addComponent(new ƒ.ComponentTransform());
             this.addRidgetBody();
             this.addChild(this.createNewSpriteNode("right"));
+            await Game.buildBombAnimation(this);
+            this.setIdleAnimation();
         }
         launch(character, direction) {
-            this.placeRocket(character);
+            this.placeBomb(character);
+            Game.cmpAudio.play(true);
             this.getComponent(ƒ.ComponentRigidbody).applyForce(new ƒ.Vector3(direction === "right" ? this.forceStart / 2 : -this.forceStart / 2, this.forceStart, 0));
         }
-        placeRocket(character) {
+        placeBomb(character) {
             this.mtxLocal.translate(new ƒ.Vector3(character.getComponent(ƒ.ComponentRigidbody).getPosition().x, character.getComponent(ƒ.ComponentRigidbody).getPosition().y + 2, 0));
             let graph = Game.viewport.getBranch();
             graph.addChild(this);
         }
         createNewSpriteNode(frameDirection) {
             let spriteNode = new ƒAid.NodeSprite("Sprite");
-            // spriteNode.addComponent(new ƒ.ComponentTransform(new ƒ.Matrix4x4()));
+            spriteNode.addComponent(new ƒ.ComponentTransform());
             spriteNode.setFrameDirection(frameDirection === "left" ? -1 : frameDirection === "right" ? 1 : 1);
+            spriteNode.mtxLocal.translateY(-0.5);
             return spriteNode;
         }
         addRidgetBody() {
@@ -423,7 +429,20 @@ var Game;
             ridgetBody.initialize();
             this.addComponent(ridgetBody);
         }
+        setIdleAnimation() {
+            const sprite = this.getChildrenByName("Sprite")[0];
+            sprite.setAnimation(this.animationIdle);
+            // this.animationCurrent = this.animationIdle;
+        }
+        removeRocket() {
+            const sprite = this.getChildrenByName("Sprite")[0];
+            sprite.setAnimation(this.animationExplode);
+            setTimeout(() => {
+                let graph = Game.viewport.getBranch();
+                graph.removeChild(this);
+            }, 250);
+        }
     }
-    Game.Rocket = Rocket;
+    Game.Bomb = Bomb;
 })(Game || (Game = {}));
 //# sourceMappingURL=Script.js.map

@@ -1,5 +1,4 @@
 namespace Game {
-
   export async function buildAllAnimationsForCharacter(character: Character) {
     await buildMoveAnimation(character);
     await buildIdleAnimation(character);
@@ -10,32 +9,20 @@ namespace Game {
 
   async function buildMoveAnimation(char: Character) {
     let path: string;
-    let startX: number;
-    let startY: number;
-    let width: number;
-    let height: number;
-    let frames: number;
-    let distanceBetweenSprites: number;
+    let startX: number = 78;
+    let startY: number = 4;
+    let width: number = 15;
+    let height: number = 17;
+    let frames: number = 8;
+    let distanceBetweenSprites: number = 24;
 
     switch (char.instanceId) {
       case 1: {
-        path = "assets/Mario/marioSpriteSheet.png";
-        startX = 247;
-        startY = 1;
-        width = 15;
-        height = 28;
-        frames = 3;
-        distanceBetweenSprites = 30;
+        path = "/assets/sprites/sheets/DinoSprites-mort.png";
         break;
       }
       case 2: {
         path = "/assets/sprites/sheets/DinoSprites-doux.png";
-        startX = 247;
-        startY = 1;
-        width = 15;
-        height = 28;
-        frames = 3;
-        distanceBetweenSprites = 30;
         break;
       }
       default: {
@@ -58,32 +45,20 @@ namespace Game {
 
   async function buildIdleAnimation(character: Character) {
     let path: string;
-    let startX: number;
-    let startY: number;
-    let width: number;
-    let height: number;
-    let frames: number;
-    let distanceBetweenSprites: number;
+    let startX: number = 6;
+    let startY: number = 4;
+    let width: number = 15;
+    let height: number = 17;
+    let frames: number = 3;
+    let distanceBetweenSprites: number = 24;
 
     switch (character.instanceId) {
       case 1: {
-        path = "assets/Mario/marioSpriteSheet.png";
-        startX = 247;
-        startY = 1;
-        width = 15;
-        height = 28;
-        frames = 1;
-        distanceBetweenSprites = 0;
+        path = "/assets/sprites/sheets/DinoSprites-mort.png";
         break;
       }
       case 2: {
         path = "/assets/sprites/sheets/DinoSprites-doux.png";
-        startX = 247;
-        startY = 1;
-        width = 15;
-        height = 28;
-        frames = 1;
-        distanceBetweenSprites = 0;
         break;
       }
       default: {
@@ -92,6 +67,53 @@ namespace Game {
       }
     }
     character.animationIdle = await buildSingleAnimation(
+      path,
+      "idle",
+      startX,
+      startY,
+      width,
+      height,
+      frames,
+      distanceBetweenSprites
+    );
+  }
+
+  export async function buildBombAnimation(bomb: Bomb) {
+    await buildBombIdleAnimation(bomb);
+    await buildBombExplodeAnimation(bomb)
+  }
+
+  async function buildBombIdleAnimation(bomb: Bomb) {
+    let path: string = "assets/sprites/sheets/bomb_character_o_idle.png";
+    let startX: number = 22;
+    let startY: number = 21;
+    let width: number = 22;
+    let height: number = 30;
+    let frames: number = 2;
+    let distanceBetweenSprites: number = 64;
+
+    bomb.animationIdle = await buildSingleAnimation(
+      path,
+      "idle",
+      startX,
+      startY,
+      width,
+      height,
+      frames,
+      distanceBetweenSprites
+    );
+  }
+
+  async function buildBombExplodeAnimation(bomb: Bomb) {
+    let path: string = "assets/sprites/sheets/bomb_character_o_explode.png";
+    let startX: number = 22;
+    let startY: number = 27;
+    let width: number = 22;
+    let height: number = 24;
+    let frames: number = 3;
+    let distanceBetweenSprites: number = 29;
+
+    bomb.animationExplode = await buildSingleAnimation(
       path,
       "idle",
       startX,

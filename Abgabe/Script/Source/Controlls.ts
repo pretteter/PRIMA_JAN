@@ -14,7 +14,6 @@ namespace Game {
         moveRight = ƒ.KEYBOARD_CODE.D;
         attack = ƒ.KEYBOARD_CODE.SPACE;
         jump = ƒ.KEYBOARD_CODE.W;
-
         break;
       }
       case 2: {
@@ -22,7 +21,6 @@ namespace Game {
         moveRight = ƒ.KEYBOARD_CODE.ARROW_RIGHT;
         attack = ƒ.KEYBOARD_CODE.NUMPAD0;
         jump = ƒ.KEYBOARD_CODE.ARROW_UP;
-
         break;
       }
       default: {

@@ -1,17 +1,23 @@
 declare namespace Game {
     function buildAllAnimationsForCharacter(character: Character): Promise<void>;
+    function buildBombAnimation(bomb: Bomb): Promise<void>;
+}
+declare namespace Game {
+    import ƒ = FudgeCore;
+    let audioShoot: ƒ.Audio;
+    function createSounds(): void;
 }
 declare namespace Game {
     import ƒ = FudgeCore;
     import ƒAid = FudgeAid;
     class Character extends ƒ.Node {
-        moveSpeed: number;
         lookDirection: ConstructorParameters<typeof Character>[0];
         animationCurrent: ƒAid.SpriteSheetAnimation;
         animationMove: ƒAid.SpriteSheetAnimation;
         animationIdle: ƒAid.SpriteSheetAnimation;
         hasRocket: boolean;
         life: number;
+        mass: number;
         static amountOfInstances: number;
         instanceId: number;
         constructor(lookDirection: "right" | "left", coordinateX: number, coordinateY: number);
@@ -19,11 +25,10 @@ declare namespace Game {
         move(direction: ConstructorParameters<typeof Character>[0]): void;
         jump(): void;
         attack(): void;
-        removeRocket(rocket: Rocket): void;
         setIdleAnimation(): void;
         turnCharacter(): void;
         private createNewSpriteNode;
-        private addRidgetBody;
+        private addRigidBody;
     }
 }
 declare namespace Game {
@@ -41,19 +46,25 @@ declare namespace Game {
 declare namespace Game {
     import ƒ = FudgeCore;
     let viewport: ƒ.Viewport;
+    let cmpAudio: ƒ.ComponentAudio;
 }
 declare namespace Game {
     import ƒ = FudgeCore;
-    class Rocket extends ƒ.Node {
+    import ƒAid = FudgeAid;
+    class Bomb extends ƒ.Node {
         forceStart: number;
         mass: number;
+        animationIdle: ƒAid.SpriteSheetAnimation;
+        animationExplode: ƒAid.SpriteSheetAnimation;
         static amountOfInstances: number;
         instanceId: number;
         constructor(forceStart: number, mass: number);
-        private initRocket;
+        private initBomb;
         launch(character: Character, direction: "right" | "left"): void;
-        private placeRocket;
+        private placeBomb;
         private createNewSpriteNode;
         private addRidgetBody;
+        setIdleAnimation(): void;
+        removeRocket(): void;
     }
 }
