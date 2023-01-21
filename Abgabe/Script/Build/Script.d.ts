@@ -4,7 +4,8 @@ declare namespace Game {
 }
 declare namespace Game {
     import ƒ = FudgeCore;
-    let audioShoot: ƒ.Audio;
+    let audioShoot: ƒ.ComponentAudio;
+    let audioBackground: ƒ.ComponentAudio;
     function createSounds(): void;
 }
 declare namespace Game {
@@ -46,7 +47,6 @@ declare namespace Game {
 declare namespace Game {
     import ƒ = FudgeCore;
     let viewport: ƒ.Viewport;
-    let cmpAudio: ƒ.ComponentAudio;
 }
 declare namespace Game {
     import ƒ = FudgeCore;

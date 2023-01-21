@@ -140,12 +140,17 @@ var Game;
     }
     Game.createSounds = createSounds;
     function setShootSound() {
-        Game.audioShoot = new ƒ.Audio("assets/audio/PUNCH.mp3");
-        Game.cmpAudio = new ƒ.ComponentAudio(Game.audioShoot, false, false);
-        Game.cmpAudio.connect(true);
-        Game.cmpAudio.volume = 0.3;
+        let audio = new ƒ.Audio("assets/audio/PUNCH.mp3");
+        Game.audioShoot = new ƒ.ComponentAudio(audio, false, false);
+        Game.audioShoot.connect(true);
+        Game.audioShoot.volume = 0.2;
     }
-    function setBackgroundSound() { }
+    function setBackgroundSound() {
+        let audio = new ƒ.Audio("assets/audio/Prepare_for_Battle_looped.mp3");
+        Game.audioShoot = new ƒ.ComponentAudio(audio, true, false);
+        Game.audioShoot.connect(true);
+        Game.audioShoot.volume = 0.1;
+    }
 })(Game || (Game = {}));
 var Game;
 (function (Game) {
@@ -363,11 +368,8 @@ var Game;
         // let graph: ƒ.Node = viewport.getBranch();
         cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 4, 18));
         cmpCamera.mtxPivot.rotateY(180);
-        let audio = Game.viewport
-            .getBranch()
-            .getComponent(ƒ.ComponentAudio);
-        console.log(audio);
         Game.createSounds();
+        Game.audioBackground.play();
         characters.push(new Game.Character("right", -5, 2), new Game.Character("right", 5, 5));
         ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
         ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
@@ -407,7 +409,7 @@ var Game;
             this.setIdleAnimation();
         }
         launch(character, direction) {
-            Game.cmpAudio.play(true);
+            Game.audioShoot.play(true);
             this.placeBomb(character);
             this.getComponent(ƒ.ComponentRigidbody).applyForce(new ƒ.Vector3(direction === "right" ? this.forceStart / 2 : -this.forceStart / 2, this.forceStart, 0));
         }

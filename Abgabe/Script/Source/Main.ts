@@ -6,7 +6,6 @@ namespace Game {
   let cmpCamera: ƒ.ComponentCamera;
   let characters: Character[] = [];
 
-  export let cmpAudio: ƒ.ComponentAudio;
   // let audioJump: ƒ.Audio;
 
   document.addEventListener("interactiveViewportStarted", <EventListener>start);
@@ -19,11 +18,9 @@ namespace Game {
 
     cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 4, 18));
     cmpCamera.mtxPivot.rotateY(180);
-    let audio: ƒ.ComponentAudio = viewport
-      .getBranch()
-      .getComponent(ƒ.ComponentAudio);
-    console.log(audio);
+
     createSounds();
+    audioBackground.play();
     characters.push(
       new Character("right", -5, 2),
       new Character("right", 5, 5)
