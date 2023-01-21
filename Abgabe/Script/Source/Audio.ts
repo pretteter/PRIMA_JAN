@@ -1,10 +1,11 @@
 namespace Game {
   import ƒ = FudgeCore;
-//   import ƒAid = FudgeAid;
+  //   import ƒAid = FudgeAid;
 
   export let audioShoot: ƒ.Audio;
 
   export function createSounds() {
+    setBackgroundSound();
     setShootSound();
   }
 
@@ -14,4 +15,6 @@ namespace Game {
     cmpAudio.connect(true);
     cmpAudio.volume = 0.7;
   }
+
+  function setBackgroundSound() {}
 }

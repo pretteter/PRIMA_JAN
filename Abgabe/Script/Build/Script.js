@@ -135,6 +135,7 @@ var Game;
 (function (Game) {
     var ƒ = FudgeCore;
     function createSounds() {
+        setBackgroundSound();
         setShootSound();
     }
     Game.createSounds = createSounds;
@@ -144,6 +145,7 @@ var Game;
         Game.cmpAudio.connect(true);
         Game.cmpAudio.volume = 0.7;
     }
+    function setBackgroundSound() { }
 })(Game || (Game = {}));
 var Game;
 (function (Game) {
@@ -361,6 +363,10 @@ var Game;
         // let graph: ƒ.Node = viewport.getBranch();
         cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 4, 18));
         cmpCamera.mtxPivot.rotateY(180);
+        let audio = Game.viewport
+            .getBranch()
+            .getComponent(ƒ.ComponentAudio);
+        console.log(audio);
         Game.createSounds();
         characters.push(new Game.Character("right", -5, 2), new Game.Character("right", 5, 5));
         ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
