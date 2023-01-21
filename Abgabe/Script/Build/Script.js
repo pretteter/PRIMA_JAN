@@ -407,8 +407,8 @@ var Game;
             this.setIdleAnimation();
         }
         launch(character, direction) {
-            this.placeBomb(character);
             Game.cmpAudio.play(true);
+            this.placeBomb(character);
             this.getComponent(ƒ.ComponentRigidbody).applyForce(new ƒ.Vector3(direction === "right" ? this.forceStart / 2 : -this.forceStart / 2, this.forceStart, 0));
         }
         placeBomb(character) {

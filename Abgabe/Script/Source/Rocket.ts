@@ -30,8 +30,8 @@ namespace Game {
     }
 
     launch(character: Character, direction: "right" | "left") {
-      this.placeBomb(character);
       cmpAudio.play(true);
+      this.placeBomb(character);
       this.getComponent(ƒ.ComponentRigidbody).applyForce(
         new ƒ.Vector3(
           direction === "right" ? this.forceStart / 2 : -this.forceStart / 2,
