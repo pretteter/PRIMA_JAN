@@ -143,7 +143,7 @@ var Game;
         Game.audioShoot = new ƒ.Audio("assets/audio/PUNCH.mp3");
         Game.cmpAudio = new ƒ.ComponentAudio(Game.audioShoot, false, false);
         Game.cmpAudio.connect(true);
-        Game.cmpAudio.volume = 0.7;
+        Game.cmpAudio.volume = 0.3;
     }
     function setBackgroundSound() { }
 })(Game || (Game = {}));

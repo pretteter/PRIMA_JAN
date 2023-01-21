@@ -13,7 +13,7 @@ namespace Game {
     audioShoot = new ƒ.Audio("assets/audio/PUNCH.mp3");
     cmpAudio = new ƒ.ComponentAudio(audioShoot, false, false);
     cmpAudio.connect(true);
-    cmpAudio.volume = 0.7;
+    cmpAudio.volume = 0.3;
   }
 
   function setBackgroundSound() {}
