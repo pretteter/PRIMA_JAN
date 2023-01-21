@@ -369,7 +369,7 @@ var Game;
         cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 4, 18));
         cmpCamera.mtxPivot.rotateY(180);
         Game.createSounds();
-        // audioBackground.play(true);
+        Game.audioBackground.play(true);
         characters.push(new Game.Character("right", -5, 2), new Game.Character("right", 5, 5));
         ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
         ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
