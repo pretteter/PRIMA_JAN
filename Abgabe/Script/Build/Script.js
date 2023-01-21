@@ -147,9 +147,9 @@ var Game;
     }
     function setBackgroundSound() {
         let audio = new ƒ.Audio("assets/audio/Prepare_for_Battle_looped.mp3");
-        Game.audioShoot = new ƒ.ComponentAudio(audio, true, false);
-        Game.audioShoot.connect(true);
-        Game.audioShoot.volume = 0.1;
+        Game.audioBackground = new ƒ.ComponentAudio(audio, true, false);
+        Game.audioBackground.connect(true);
+        Game.audioBackground.volume = 0.1;
     }
 })(Game || (Game = {}));
 var Game;
@@ -369,7 +369,7 @@ var Game;
         cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 4, 18));
         cmpCamera.mtxPivot.rotateY(180);
         Game.createSounds();
-        Game.audioBackground.play();
+        // audioBackground.play(true);
         characters.push(new Game.Character("right", -5, 2), new Game.Character("right", 5, 5));
         ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
         ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a

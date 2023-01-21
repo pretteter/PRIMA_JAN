@@ -20,7 +20,7 @@ namespace Game {
     cmpCamera.mtxPivot.rotateY(180);
 
     createSounds();
-    audioBackground.play();
+    // audioBackground.play(true);
     characters.push(
       new Character("right", -5, 2),
       new Character("right", 5, 5)

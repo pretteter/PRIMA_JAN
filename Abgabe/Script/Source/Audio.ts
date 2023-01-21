@@ -20,8 +20,8 @@ namespace Game {
 
   function setBackgroundSound() {
     let audio = new ƒ.Audio("assets/audio/Prepare_for_Battle_looped.mp3");
-    audioShoot = new ƒ.ComponentAudio(audio, true, false);
-    audioShoot.connect(true);
-    audioShoot.volume = 0.1;
+    audioBackground = new ƒ.ComponentAudio(audio, true, false);
+    audioBackground.connect(true);
+    audioBackground.volume = 0.1;
   }
 }
