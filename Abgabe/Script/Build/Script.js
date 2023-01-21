@@ -19,11 +19,11 @@ var Game;
         let distanceBetweenSprites = 24;
         switch (char.instanceId) {
             case 1: {
-                path = "/assets/sprites/sheets/DinoSprites-mort.png";
+                path = "assets/sprites/sheets/DinoSprites-mort.png";
                 break;
             }
             case 2: {
-                path = "/assets/sprites/sheets/DinoSprites-doux.png";
+                path = "assets/sprites/sheets/DinoSprites-doux.png";
                 break;
             }
             default: {
@@ -43,11 +43,11 @@ var Game;
         let distanceBetweenSprites = 24;
         switch (character.instanceId) {
             case 1: {
-                path = "/assets/sprites/sheets/DinoSprites-mort.png";
+                path = "assets/sprites/sheets/DinoSprites-mort.png";
                 break;
             }
             case 2: {
-                path = "/assets/sprites/sheets/DinoSprites-doux.png";
+                path = "assets/sprites/sheets/DinoSprites-doux.png";
                 break;
             }
             default: {
@@ -139,7 +139,7 @@ var Game;
     }
     Game.createSounds = createSounds;
     function setShootSound() {
-        Game.audioShoot = new ƒ.Audio("/assets/audio/PUNCH #2.mp3");
+        Game.audioShoot = new ƒ.Audio("assets/audio/PUNCH #2.mp3");
         Game.cmpAudio = new ƒ.ComponentAudio(Game.audioShoot, false, false);
         Game.cmpAudio.connect(true);
         Game.cmpAudio.volume = 0.7;

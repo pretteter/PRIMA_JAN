@@ -9,7 +9,7 @@ namespace Game {
   }
 
   function setShootSound() {
-    audioShoot = new ƒ.Audio("/assets/audio/PUNCH #2.mp3");
+    audioShoot = new ƒ.Audio("assets/audio/PUNCH #2.mp3");
     cmpAudio = new ƒ.ComponentAudio(audioShoot, false, false);
     cmpAudio.connect(true);
     cmpAudio.volume = 0.7;

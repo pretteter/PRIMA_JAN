@@ -18,11 +18,11 @@ namespace Game {
 
     switch (char.instanceId) {
       case 1: {
-        path = "/assets/sprites/sheets/DinoSprites-mort.png";
+        path = "assets/sprites/sheets/DinoSprites-mort.png";
         break;
       }
       case 2: {
-        path = "/assets/sprites/sheets/DinoSprites-doux.png";
+        path = "assets/sprites/sheets/DinoSprites-doux.png";
         break;
       }
       default: {
@@ -54,11 +54,11 @@ namespace Game {
 
     switch (character.instanceId) {
       case 1: {
-        path = "/assets/sprites/sheets/DinoSprites-mort.png";
+        path = "assets/sprites/sheets/DinoSprites-mort.png";
         break;
       }
       case 2: {
-        path = "/assets/sprites/sheets/DinoSprites-doux.png";
+        path = "assets/sprites/sheets/DinoSprites-doux.png";
         break;
       }
       default: {
