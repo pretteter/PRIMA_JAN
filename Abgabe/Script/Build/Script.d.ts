@@ -21,12 +21,12 @@ declare namespace Game {
         mass: number;
         static amountOfInstances: number;
         instanceId: number;
-        constructor(lookDirection: "right" | "left", coordinateX: number, coordinateY: number);
-        initAvatar(lookDirection: ConstructorParameters<typeof Character>[0], coordinateX: number, coordinateY: number): Promise<void>;
+        constructor(lookDirection: "right" | "left", coordinateX: number, coordinateY: number, mass: number);
+        initAvatar(lookDirection: ConstructorParameters<typeof Character>[0], coordinateX: number, coordinateY: number, mass: number): Promise<void>;
         move(direction: ConstructorParameters<typeof Character>[0]): void;
         jump(): void;
         attack(): void;
-        setIdleAnimation(): void;
+        setIdleAnimation(initDirechtion?: ConstructorParameters<typeof Character>[0]): void;
         turnCharacter(): void;
         private createNewSpriteNode;
         private addRigidBody;
@@ -45,23 +45,24 @@ declare namespace Game {
     }
 }
 declare namespace Game {
-    export interface Config {
-        character: Character[];
+    export interface iConfig {
+        character: iCharacter[];
     }
-    interface Character {
+    interface iCharacter {
         moveLeft: ƒ.KEYBOARD_CODE;
         moveRight: ƒ.KEYBOARD_CODE;
         attack: ƒ.KEYBOARD_CODE;
         jump: ƒ.KEYBOARD_CODE;
         startX: number;
         startY: number;
+        mass: number;
     }
     export {};
 }
 declare namespace Game {
     import ƒ = FudgeCore;
     let viewport: ƒ.Viewport;
-    let config: Config;
+    let config: iConfig;
 }
 declare namespace Game {
     import ƒ = FudgeCore;

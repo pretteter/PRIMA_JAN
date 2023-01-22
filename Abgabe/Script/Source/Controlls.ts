@@ -27,9 +27,7 @@ namespace Game {
 
     function movement() {
       if (!ƒ.Keyboard.isPressedOne([moveLeft, moveRight])) {
-        char.animationCurrent !== char.animationIdle
-          ? char.setIdleAnimation()
-          : "";
+        char.setIdleAnimation();
       } else if (ƒ.Keyboard.isPressedOne([moveRight])) {
         char.move("right");
       } else if (ƒ.Keyboard.isPressedOne([moveLeft])) {

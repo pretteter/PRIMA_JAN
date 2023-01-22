@@ -32,11 +32,11 @@ var Game;
                 break;
             }
             case 3: {
-                path = "assets/sprites/sheets/DinoSprites_doux.png";
+                path = "assets/sprites/sheets/DinoSprites_tard.png";
                 break;
             }
             case 4: {
-                path = "assets/sprites/sheets/DinoSprites_doux.png";
+                path = "assets/sprites/sheets/DinoSprites_vita.png";
                 break;
             }
             default: {
@@ -64,11 +64,11 @@ var Game;
                 break;
             }
             case 3: {
-                path = "assets/sprites/sheets/DinoSprites_doux.png";
+                path = "assets/sprites/sheets/DinoSprites_tard.png";
                 break;
             }
             case 4: {
-                path = "assets/sprites/sheets/DinoSprites_doux.png";
+                path = "assets/sprites/sheets/DinoSprites_vita.png";
                 break;
             }
             default: {
@@ -182,37 +182,31 @@ var Game;
         animationIdle;
         hasRocket;
         life = 100;
-        mass = 10;
+        mass;
         //     animationJump: ƒAid.SpriteSheetAnimation;
         //     animationFall: ƒAid.SpriteSheetAnimation;
         // animationRun: ƒAid.SpriteSheetAnimation;
         static amountOfInstances = 0;
         instanceId;
-        constructor(lookDirection, coordinateX, coordinateY) {
+        constructor(lookDirection, coordinateX, coordinateY, mass) {
             super("Character_" + Character.amountOfInstances.toString());
             this.lookDirection = lookDirection;
-            this.initAvatar(lookDirection, coordinateX, coordinateY);
+            this.initAvatar(lookDirection, coordinateX, coordinateY, mass);
         }
-        async initAvatar(lookDirection, coordinateX, coordinateY) {
+        async initAvatar(lookDirection, coordinateX, coordinateY, mass) {
             this.instanceId = ++Character.amountOfInstances;
+            this.mass = mass;
             this.addComponent(new ƒ.ComponentTransform());
-            lookDirection === "left" ? this.turnCharacter() : "";
             this.mtxLocal.translate(new ƒ.Vector3(coordinateX, coordinateY, 0));
             // this.mtxLocal.scale(new ƒ.Vector3(1, 1, 1));
             this.addChild(this.createNewSpriteNode(this.lookDirection));
-            await Game.buildAllAnimationsForCharacter(this);
-            // this.setIdleAnimation();
+            // await buildAllAnimationsForCharacter(this);
             this.addRigidBody();
             this.lookDirection = lookDirection;
             let graph = Game.viewport.getBranch();
             graph.addChild(this);
+            this.setIdleAnimation(lookDirection);
         }
-        // function setJumpSound() {
-        //   this.audioJump = new ƒ.Audio("audio/jump.mp3");
-        //   this.cmpAudio = new ƒ.ComponentAudio(this.audioJump, false, false);
-        //   this.cmpAudio.connect(true);
-        //   this.cmpAudio.volume = 0.7;
-        // }
         move(direction) {
             const sprite = this.getChildrenByName("Sprite")[0];
             const anmToUse = this.animationMove;
@@ -240,10 +234,14 @@ var Game;
                 }, 1200);
             }
         }
-        setIdleAnimation() {
+        setIdleAnimation(initDirechtion) {
+            if (this.animationCurrent === this.animationIdle) {
+                return;
+            }
             const sprite = this.getChildrenByName("Sprite")[0];
             sprite.setAnimation(this.animationIdle);
             this.animationCurrent = this.animationIdle;
+            initDirechtion === this.lookDirection ? this.turnCharacter() : "";
         }
         turnCharacter() {
             this.getComponent(ƒ.ComponentRigidbody).rotateBody(new ƒ.Vector3(0, 180, 0));
@@ -294,9 +292,7 @@ var Game;
         actions();
         function movement() {
             if (!ƒ.Keyboard.isPressedOne([moveLeft, moveRight])) {
-                char.animationCurrent !== char.animationIdle
-                    ? char.setIdleAnimation()
-                    : "";
+                char.setIdleAnimation();
             }
             else if (ƒ.Keyboard.isPressedOne([moveRight])) {
                 char.move("right");
@@ -371,9 +367,9 @@ var Game;
         // let graph: ƒ.Node = viewport.getBranch();
         cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 4, 18));
         cmpCamera.mtxPivot.rotateY(180);
+        await hndLoad(_event);
         Game.createSounds();
         Game.audioBackground.play(true);
-        await hndLoad(_event);
         ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
         ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
     }
@@ -389,9 +385,12 @@ var Game;
     async function hndLoad(_event) {
         // Load config
         Game.config = await (await fetch("Script/Source/config.json")).json();
-        Game.config.character.forEach((c, i) => {
-            if (i <= 3)
-                characters.push(new Game.Character("right", c.startX, c.startY));
+        Game.config.character.forEach(async (c, i) => {
+            if (i <= 3) {
+                characters.push(new Game.Character("right", c.startX | 5, c.startY | 5, c.mass | 10));
+                await Game.buildAllAnimationsForCharacter(characters[i]);
+                // characters[i].setIdleAnimation("left");
+            }
             else
                 return;
         });

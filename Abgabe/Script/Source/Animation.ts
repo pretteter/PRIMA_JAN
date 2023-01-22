@@ -31,11 +31,11 @@ namespace Game {
         break;
       }
       case 3: {
-        path = "assets/sprites/sheets/DinoSprites_doux.png";
+        path = "assets/sprites/sheets/DinoSprites_tard.png";
         break;
       }
       case 4: {
-        path = "assets/sprites/sheets/DinoSprites_doux.png";
+        path = "assets/sprites/sheets/DinoSprites_vita.png";
         break;
       }
       default: {
@@ -75,11 +75,11 @@ namespace Game {
         break;
       }
       case 3: {
-        path = "assets/sprites/sheets/DinoSprites_doux.png";
+        path = "assets/sprites/sheets/DinoSprites_tard.png";
         break;
       }
       case 4: {
-        path = "assets/sprites/sheets/DinoSprites_doux.png";
+        path = "assets/sprites/sheets/DinoSprites_vita.png";
         break;
       }
       default: {

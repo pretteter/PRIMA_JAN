@@ -1,5 +1,5 @@
 {
-  "_comment": "Bis zu 4 Charakteren können so eingefügt werden",
+  "_comment": "Bis zu 4 Charakteren können so eingefügt werden. Mehr werden ignoriert",
   "character": [
     {
       "moveLeft": "A",
@@ -7,15 +7,8 @@
       "attack": "SPACE",
       "jump": "W",
       "startX": "-5",
-      "startY": "5"
-    },
-    {
-      "moveLeft": "ARROW_LEFT",
-      "moveRight": "ARROW_RIGHT",
-      "attack": "NUMPAD0",
-      "jump": "ARROW_UP",
-      "startX": "5",
-      "startY": "5"
+      "startY": "5",
+      "mass":"1000"
     },
     {
       "moveLeft": "ARROW_LEFT",
@@ -23,7 +16,8 @@
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
       "startX": "-5",
-      "startY": "5"
+      "startY": "5",
+      "mass":"10"
     },
     {
       "moveLeft": "ARROW_LEFT",
@@ -31,7 +25,8 @@
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
       "startX": "-5",
-      "startY": "5"
+      "startY": "5",
+      "mass":"10"
     },
     {
       "moveLeft": "ARROW_LEFT",
@@ -39,7 +34,8 @@
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
       "startX": "-5",
-      "startY": "5"
+      "startY": "5",
+      "mass":"10"
     }
   ]
 }

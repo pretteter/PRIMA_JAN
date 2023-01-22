@@ -6,7 +6,7 @@ namespace Game {
   let cmpCamera: ƒ.ComponentCamera;
   let characters: Character[] = [];
 
-  export let config: Config;
+  export let config: iConfig;
 
   // let audioJump: ƒ.Audio;
 
@@ -24,9 +24,9 @@ namespace Game {
     cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 4, 18));
     cmpCamera.mtxPivot.rotateY(180);
 
+    await hndLoad(_event);
     createSounds();
     audioBackground.play(true);
-    await hndLoad(_event);
 
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
     ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
@@ -47,9 +47,15 @@ namespace Game {
     // Load config
     config = await (await fetch("Script/Source/config.json")).json();
 
-    config.character.forEach((c, i) => {
-      if (i <= 3) characters.push(new Character("right", c.startX, c.startY));
-      else return;
+    config.character.forEach(async (c, i) => {
+      if (i <= 3) {
+        characters.push(
+          new Character("right", c.startX | 5, c.startY | 5, c.mass | 10)
+
+        );
+        await buildAllAnimationsForCharacter(characters[i]);
+        // characters[i].setIdleAnimation("left");
+      } else return;
     });
   }
 }

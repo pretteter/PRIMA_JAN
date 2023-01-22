@@ -13,7 +13,7 @@ namespace Game {
     animationIdle: ƒAid.SpriteSheetAnimation;
     hasRocket: boolean;
     life: number = 100;
-    mass: number = 10;
+    mass: number;
     //     animationJump: ƒAid.SpriteSheetAnimation;
     //     animationFall: ƒAid.SpriteSheetAnimation;
     // animationRun: ƒAid.SpriteSheetAnimation;
@@ -24,42 +24,36 @@ namespace Game {
     public constructor(
       lookDirection: "right" | "left",
       coordinateX: number,
-      coordinateY: number
+      coordinateY: number,
+      mass: number
     ) {
       super("Character_" + Character.amountOfInstances.toString());
       this.lookDirection = lookDirection;
-      this.initAvatar(lookDirection, coordinateX, coordinateY);
+      this.initAvatar(lookDirection, coordinateX, coordinateY, mass);
     }
 
     async initAvatar(
       lookDirection: ConstructorParameters<typeof Character>[0],
       coordinateX: number,
-      coordinateY: number
+      coordinateY: number,
+      mass: number
     ) {
       this.instanceId = ++Character.amountOfInstances;
-
+      this.mass = mass;
       this.addComponent(new ƒ.ComponentTransform());
-      lookDirection === "left" ? this.turnCharacter() : "";
 
       this.mtxLocal.translate(new ƒ.Vector3(coordinateX, coordinateY, 0));
       // this.mtxLocal.scale(new ƒ.Vector3(1, 1, 1));
       this.addChild(this.createNewSpriteNode(this.lookDirection));
-      await buildAllAnimationsForCharacter(this);
-      // this.setIdleAnimation();
+      // await buildAllAnimationsForCharacter(this);
       this.addRigidBody();
 
       this.lookDirection = lookDirection;
 
       let graph: ƒ.Node = viewport.getBranch();
       graph.addChild(this);
+      this.setIdleAnimation(lookDirection)
     }
-
-    // function setJumpSound() {
-    //   this.audioJump = new ƒ.Audio("audio/jump.mp3");
-    //   this.cmpAudio = new ƒ.ComponentAudio(this.audioJump, false, false);
-    //   this.cmpAudio.connect(true);
-    //   this.cmpAudio.volume = 0.7;
-    // }
 
     move(direction: ConstructorParameters<typeof Character>[0]) {
       const sprite = this.getChildrenByName("Sprite")[0] as ƒAid.NodeSprite;
@@ -98,7 +92,7 @@ namespace Game {
       if (!this.hasRocket) {
         const rocket: Bomb = new Bomb(80000, 50);
         rocket.launch(this, this.lookDirection);
-        this.hasRocket = true;   
+        this.hasRocket = true;
         setTimeout(() => {
           rocket.removeRocket();
           this.hasRocket = false;
@@ -106,10 +100,16 @@ namespace Game {
       }
     }
 
-    setIdleAnimation() {
+    setIdleAnimation(
+      initDirechtion?: ConstructorParameters<typeof Character>[0]
+    ) {
+      if (this.animationCurrent === this.animationIdle) {
+        return;
+      }
       const sprite = this.getChildrenByName("Sprite")[0] as ƒAid.NodeSprite;
       sprite.setAnimation(this.animationIdle);
       this.animationCurrent = this.animationIdle;
+      initDirechtion === this.lookDirection ? this.turnCharacter() : "";
     }
 
     turnCharacter() {

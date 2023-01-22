@@ -1,14 +1,15 @@
 namespace Game {
-  export interface Config {
-    character: Character[];
+  export interface iConfig {
+    character: iCharacter[];
   }
 
-  interface Character {
+  interface iCharacter {
     moveLeft: ƒ.KEYBOARD_CODE;
     moveRight: ƒ.KEYBOARD_CODE;
     attack: ƒ.KEYBOARD_CODE;
     jump: ƒ.KEYBOARD_CODE;
     startX: number;
     startY: number;
+    mass:number
   }
 }
