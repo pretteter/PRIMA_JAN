@@ -9,6 +9,11 @@ var Game;
         // await buildRunAnimation(character);
     }
     Game.buildAllAnimationsForCharacter = buildAllAnimationsForCharacter;
+    async function buildBombAnimation(bomb) {
+        await buildBombIdleAnimation(bomb);
+        await buildBombExplodeAnimation(bomb);
+    }
+    Game.buildBombAnimation = buildBombAnimation;
     async function buildMoveAnimation(char) {
         let path;
         let startX = 78;
@@ -23,6 +28,14 @@ var Game;
                 break;
             }
             case 2: {
+                path = "assets/sprites/sheets/DinoSprites_doux.png";
+                break;
+            }
+            case 3: {
+                path = "assets/sprites/sheets/DinoSprites_doux.png";
+                break;
+            }
+            case 4: {
                 path = "assets/sprites/sheets/DinoSprites_doux.png";
                 break;
             }
@@ -50,6 +63,14 @@ var Game;
                 path = "assets/sprites/sheets/DinoSprites_doux.png";
                 break;
             }
+            case 3: {
+                path = "assets/sprites/sheets/DinoSprites_doux.png";
+                break;
+            }
+            case 4: {
+                path = "assets/sprites/sheets/DinoSprites_doux.png";
+                break;
+            }
             default: {
                 console.error("no character to generate");
                 return;
@@ -57,11 +78,6 @@ var Game;
         }
         character.animationIdle = await buildSingleAnimation(path, "idle", startX, startY, width, height, frames, distanceBetweenSprites);
     }
-    async function buildBombAnimation(bomb) {
-        await buildBombIdleAnimation(bomb);
-        await buildBombExplodeAnimation(bomb);
-    }
-    Game.buildBombAnimation = buildBombAnimation;
     async function buildBombIdleAnimation(bomb) {
         let path = "assets/sprites/sheets/bomb_character_o_idle.png";
         let startX = 22;
@@ -270,26 +286,10 @@ var Game;
         let moveRight;
         let attack;
         let jump;
-        switch (char.instanceId) {
-            case 1: {
-                moveLeft = ƒ.KEYBOARD_CODE.A;
-                moveRight = ƒ.KEYBOARD_CODE.D;
-                attack = ƒ.KEYBOARD_CODE.SPACE;
-                jump = ƒ.KEYBOARD_CODE.W;
-                break;
-            }
-            case 2: {
-                moveLeft = ƒ.KEYBOARD_CODE.ARROW_LEFT;
-                moveRight = ƒ.KEYBOARD_CODE.ARROW_RIGHT;
-                attack = ƒ.KEYBOARD_CODE.NUMPAD0;
-                jump = ƒ.KEYBOARD_CODE.ARROW_UP;
-                break;
-            }
-            default: {
-                console.error("no Char to controll");
-                return;
-            }
-        }
+        moveLeft = index(ƒ.KEYBOARD_CODE, Game.config.character[char.instanceId - 1].moveLeft);
+        moveRight = index(ƒ.KEYBOARD_CODE, Game.config.character[char.instanceId - 1].moveRight);
+        attack = index(ƒ.KEYBOARD_CODE, Game.config.character[char.instanceId - 1].attack);
+        jump = index(ƒ.KEYBOARD_CODE, Game.config.character[char.instanceId - 1].jump);
         movement();
         actions();
         function movement() {
@@ -312,6 +312,9 @@ var Game;
             if (ƒ.Keyboard.isPressedOne([jump])) {
                 char.jump();
             }
+        }
+        function index(obj, i) {
+            return obj[i];
         }
     }
     Game.characterControlls = characterControlls;
@@ -361,7 +364,7 @@ var Game;
     let characters = [];
     // let audioJump: ƒ.Audio;
     document.addEventListener("interactiveViewportStarted", start);
-    function start(_event) {
+    async function start(_event) {
         Game.viewport = _event.detail;
         Game.viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
         cmpCamera = Game.viewport.camera;
@@ -370,17 +373,28 @@ var Game;
         cmpCamera.mtxPivot.rotateY(180);
         Game.createSounds();
         Game.audioBackground.play(true);
-        characters.push(new Game.Character("right", -5, 2), new Game.Character("right", 5, 5));
+        await hndLoad(_event);
         ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
         ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
     }
     function update(_event) {
         ƒ.Physics.simulate(); // if physics is included and used
+        // console.log(config?.character);
         characters.forEach((x) => {
             Game.characterControlls(x);
         });
         Game.viewport.draw();
         ƒ.AudioManager.default.update();
+    }
+    async function hndLoad(_event) {
+        // Load config
+        Game.config = await (await fetch("Script/Source/config.json")).json();
+        Game.config.character.forEach((c, i) => {
+            if (i <= 3)
+                characters.push(new Game.Character("right", c.startX, c.startY));
+            else
+                return;
+        });
     }
 })(Game || (Game = {}));
 var Game;

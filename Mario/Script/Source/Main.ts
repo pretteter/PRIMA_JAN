@@ -39,6 +39,8 @@ namespace Script {
 
     setJumpSound();
 
+    hndLoad(_event);
+
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
     ƒ.Loop.start();
     // ƒ.Loop.timeFrameGame
@@ -110,5 +112,10 @@ namespace Script {
     cmpAudio = new ƒ.ComponentAudio(audioJump, false, false);
     cmpAudio.connect(true);
     cmpAudio.volume = 0.7;
+  }
+
+  async function hndLoad(_event: Event): Promise<void> {
+    // Load config
+    config = await (await fetch("./config.json")).json();
   }
 }

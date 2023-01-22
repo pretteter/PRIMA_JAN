@@ -8,26 +8,19 @@ namespace Game {
     let attack: ƒ.KEYBOARD_CODE;
     let jump: ƒ.KEYBOARD_CODE;
 
-    switch (char.instanceId) {
-      case 1: {
-        moveLeft = ƒ.KEYBOARD_CODE.A;
-        moveRight = ƒ.KEYBOARD_CODE.D;
-        attack = ƒ.KEYBOARD_CODE.SPACE;
-        jump = ƒ.KEYBOARD_CODE.W;
-        break;
-      }
-      case 2: {
-        moveLeft = ƒ.KEYBOARD_CODE.ARROW_LEFT;
-        moveRight = ƒ.KEYBOARD_CODE.ARROW_RIGHT;
-        attack = ƒ.KEYBOARD_CODE.NUMPAD0;
-        jump = ƒ.KEYBOARD_CODE.ARROW_UP;
-        break;
-      }
-      default: {
-        console.error("no Char to controll");
-        return;
-      }
-    }
+    moveLeft = index(
+      ƒ.KEYBOARD_CODE,
+      config.character[char.instanceId - 1].moveLeft
+    );
+    moveRight = index(
+      ƒ.KEYBOARD_CODE,
+      config.character[char.instanceId - 1].moveRight
+    );
+    attack = index(
+      ƒ.KEYBOARD_CODE,
+      config.character[char.instanceId - 1].attack
+    );
+    jump = index(ƒ.KEYBOARD_CODE, config.character[char.instanceId - 1].jump);
 
     movement();
     actions();
@@ -51,6 +44,10 @@ namespace Game {
       if (ƒ.Keyboard.isPressedOne([jump])) {
         char.jump();
       }
+    }
+
+    function index(obj: any, i: any) {
+      return obj[i];
     }
   }
 }

@@ -7,6 +7,11 @@ namespace Game {
     // await buildRunAnimation(character);
   }
 
+  export async function buildBombAnimation(bomb: Bomb) {
+    await buildBombIdleAnimation(bomb);
+    await buildBombExplodeAnimation(bomb);
+  }
+
   async function buildMoveAnimation(char: Character) {
     let path: string;
     let startX: number = 78;
@@ -22,6 +27,14 @@ namespace Game {
         break;
       }
       case 2: {
+        path = "assets/sprites/sheets/DinoSprites_doux.png";
+        break;
+      }
+      case 3: {
+        path = "assets/sprites/sheets/DinoSprites_doux.png";
+        break;
+      }
+      case 4: {
         path = "assets/sprites/sheets/DinoSprites_doux.png";
         break;
       }
@@ -61,6 +74,14 @@ namespace Game {
         path = "assets/sprites/sheets/DinoSprites_doux.png";
         break;
       }
+      case 3: {
+        path = "assets/sprites/sheets/DinoSprites_doux.png";
+        break;
+      }
+      case 4: {
+        path = "assets/sprites/sheets/DinoSprites_doux.png";
+        break;
+      }
       default: {
         console.error("no character to generate");
         return;
@@ -76,11 +97,6 @@ namespace Game {
       frames,
       distanceBetweenSprites
     );
-  }
-
-  export async function buildBombAnimation(bomb: Bomb) {
-    await buildBombIdleAnimation(bomb);
-    await buildBombExplodeAnimation(bomb)
   }
 
   async function buildBombIdleAnimation(bomb: Bomb) {

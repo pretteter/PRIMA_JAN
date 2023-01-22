@@ -45,8 +45,23 @@ declare namespace Game {
     }
 }
 declare namespace Game {
+    export interface Config {
+        character: Character[];
+    }
+    interface Character {
+        moveLeft: ƒ.KEYBOARD_CODE;
+        moveRight: ƒ.KEYBOARD_CODE;
+        attack: ƒ.KEYBOARD_CODE;
+        jump: ƒ.KEYBOARD_CODE;
+        startX: number;
+        startY: number;
+    }
+    export {};
+}
+declare namespace Game {
     import ƒ = FudgeCore;
     let viewport: ƒ.Viewport;
+    let config: Config;
 }
 declare namespace Game {
     import ƒ = FudgeCore;
