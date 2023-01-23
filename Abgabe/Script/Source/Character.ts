@@ -28,7 +28,7 @@ namespace Game {
       mass: number
     ) {
       super("Character_" + Character.amountOfInstances.toString());
-      this.lookDirection = lookDirection;
+      // this.lookDirection = lookDirection;
       this.initAvatar(lookDirection, coordinateX, coordinateY, mass);
     }
 
@@ -40,19 +40,15 @@ namespace Game {
     ) {
       this.instanceId = ++Character.amountOfInstances;
       this.mass = mass;
-      this.addComponent(new ƒ.ComponentTransform());
-
-      this.mtxLocal.translate(new ƒ.Vector3(coordinateX, coordinateY, 0));
-      // this.mtxLocal.scale(new ƒ.Vector3(1, 1, 1));
-      this.addChild(this.createNewSpriteNode(this.lookDirection));
-      // await buildAllAnimationsForCharacter(this);
-      this.addRigidBody();
-
       this.lookDirection = lookDirection;
+      this.addComponent(new ƒ.ComponentTransform());
+      this.mtxLocal.translate(new ƒ.Vector3(coordinateX, coordinateY, 0));
+      this.addChild(this.createNewSpriteNode(this.lookDirection));
+      this.addRigidBody();
 
       let graph: ƒ.Node = viewport.getBranch();
       graph.addChild(this);
-      this.setIdleAnimation(lookDirection)
+      // this.setIdleAnimation(lookDirection)
     }
 
     move(direction: ConstructorParameters<typeof Character>[0]) {
@@ -100,23 +96,25 @@ namespace Game {
       }
     }
 
-    setIdleAnimation(
-      initDirechtion?: ConstructorParameters<typeof Character>[0]
-    ) {
+    setIdleAnimation(otherDirectionThanSprite?: boolean) {
       if (this.animationCurrent === this.animationIdle) {
         return;
       }
       const sprite = this.getChildrenByName("Sprite")[0] as ƒAid.NodeSprite;
       sprite.setAnimation(this.animationIdle);
+      sprite.activate(true);
       this.animationCurrent = this.animationIdle;
-      initDirechtion === this.lookDirection ? this.turnCharacter() : "";
+
+      if (otherDirectionThanSprite) {
+        this.turnCharacter(otherDirectionThanSprite);
+      }
     }
 
-    turnCharacter() {
+    turnCharacter(otherDirectionThanSprite?: boolean) {
       this.getComponent(ƒ.ComponentRigidbody).rotateBody(
         new ƒ.Vector3(0, 180, 0)
       );
-
+      if (otherDirectionThanSprite) return;
       this.lookDirection === "right"
         ? (this.lookDirection = "left")
         : this.lookDirection === "left"
@@ -128,25 +126,23 @@ namespace Game {
       frameDirection: ConstructorParameters<typeof Character>[0]
     ): ƒAid.NodeSprite {
       let spriteNode = new ƒAid.NodeSprite("Sprite");
-      // spriteNode.addComponent(new ƒ.ComponentTransform);
       spriteNode.addComponent(new ƒ.ComponentTransform());
       spriteNode.setFrameDirection(
         frameDirection === "left" ? -1 : frameDirection === "right" ? 1 : 1
       );
       spriteNode.mtxLocal.translateY(-0.25);
+      spriteNode.activate(false);
       return spriteNode;
     }
 
     private addRigidBody() {
       let rigidBody = new ƒ.ComponentRigidbody();
-      // rigidBody.initialization = ƒ.BODY_INIT.TO_MESH;
       rigidBody.effectGravity = 10;
       rigidBody.mass = this.mass;
       rigidBody.typeCollider = ƒ.COLLIDER_TYPE.CUBE;
       rigidBody.typeBody = ƒ.BODY_TYPE.DYNAMIC;
       rigidBody.effectRotation = new ƒ.Vector3(0, 0, 0);
       rigidBody.mtxPivot.scale(new ƒ.Vector3(0.5, 0.5, 1));
-      // rigidBody.mtxPivot.scaleX(0.5);
       rigidBody.initialize();
       this.addComponent(rigidBody);
     }

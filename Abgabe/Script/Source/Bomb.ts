@@ -45,7 +45,7 @@ namespace Game {
       this.mtxLocal.translate(
         new ƒ.Vector3(
           character.getComponent(ƒ.ComponentRigidbody).getPosition().x,
-          character.getComponent(ƒ.ComponentRigidbody).getPosition().y + 2,
+          character.getComponent(ƒ.ComponentRigidbody).getPosition().y + 0.6,
           0
         )
       );
@@ -63,6 +63,7 @@ namespace Game {
         frameDirection === "left" ? -1 : frameDirection === "right" ? 1 : 1
       );
       spriteNode.mtxLocal.translateY(-0.5);
+      spriteNode.activate(false);
       return spriteNode;
     }
 
@@ -82,6 +83,7 @@ namespace Game {
     setIdleAnimation() {
       const sprite = this.getChildrenByName("Sprite")[0] as ƒAid.NodeSprite;
       sprite.setAnimation(this.animationIdle);
+      sprite.activate(true);
       // this.animationCurrent = this.animationIdle;
     }
 

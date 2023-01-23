@@ -11,6 +11,26 @@ declare namespace Game {
 declare namespace Game {
     import ƒ = FudgeCore;
     import ƒAid = FudgeAid;
+    class Bomb extends ƒ.Node {
+        forceStart: number;
+        mass: number;
+        animationIdle: ƒAid.SpriteSheetAnimation;
+        animationExplode: ƒAid.SpriteSheetAnimation;
+        static amountOfInstances: number;
+        instanceId: number;
+        constructor(forceStart: number, mass: number);
+        private initBomb;
+        launch(character: Character, direction: "right" | "left"): void;
+        private placeBomb;
+        private createNewSpriteNode;
+        private addRidgetBody;
+        setIdleAnimation(): void;
+        removeRocket(): void;
+    }
+}
+declare namespace Game {
+    import ƒ = FudgeCore;
+    import ƒAid = FudgeAid;
     class Character extends ƒ.Node {
         lookDirection: ConstructorParameters<typeof Character>[0];
         animationCurrent: ƒAid.SpriteSheetAnimation;
@@ -26,8 +46,8 @@ declare namespace Game {
         move(direction: ConstructorParameters<typeof Character>[0]): void;
         jump(): void;
         attack(): void;
-        setIdleAnimation(initDirechtion?: ConstructorParameters<typeof Character>[0]): void;
-        turnCharacter(): void;
+        setIdleAnimation(otherDirectionThanSprite?: boolean): void;
+        turnCharacter(otherDirectionThanSprite?: boolean): void;
         private createNewSpriteNode;
         private addRigidBody;
     }
@@ -49,6 +69,7 @@ declare namespace Game {
         character: iCharacter[];
     }
     interface iCharacter {
+        lookDirection: ConstructorParameters<typeof Character>[0];
         moveLeft: ƒ.KEYBOARD_CODE;
         moveRight: ƒ.KEYBOARD_CODE;
         attack: ƒ.KEYBOARD_CODE;
@@ -63,24 +84,4 @@ declare namespace Game {
     import ƒ = FudgeCore;
     let viewport: ƒ.Viewport;
     let config: iConfig;
-}
-declare namespace Game {
-    import ƒ = FudgeCore;
-    import ƒAid = FudgeAid;
-    class Bomb extends ƒ.Node {
-        forceStart: number;
-        mass: number;
-        animationIdle: ƒAid.SpriteSheetAnimation;
-        animationExplode: ƒAid.SpriteSheetAnimation;
-        static amountOfInstances: number;
-        instanceId: number;
-        constructor(forceStart: number, mass: number);
-        private initBomb;
-        launch(character: Character, direction: "right" | "left"): void;
-        private placeBomb;
-        private createNewSpriteNode;
-        private addRidgetBody;
-        setIdleAnimation(): void;
-        removeRocket(): void;
-    }
 }
