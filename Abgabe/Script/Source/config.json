@@ -40,6 +40,446 @@
       "startX": "-5",
       "startY": "5",
       "mass": "10"
+    },
+    {
+      "lookDirection": "left",
+      "moveLeft": "A",
+      "moveRight": "D",
+      "attack": "SPACE",
+      "jump": "W",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "1000"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
+    },
+    {
+      "lookDirection": "left",
+      "moveLeft": "A",
+      "moveRight": "D",
+      "attack": "SPACE",
+      "jump": "W",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "1000"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
+    },
+    {
+      "lookDirection": "left",
+      "moveLeft": "A",
+      "moveRight": "D",
+      "attack": "SPACE",
+      "jump": "W",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "1000"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
+    },
+    {
+      "lookDirection": "left",
+      "moveLeft": "A",
+      "moveRight": "D",
+      "attack": "SPACE",
+      "jump": "W",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "1000"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
+    },
+    {
+      "lookDirection": "left",
+      "moveLeft": "A",
+      "moveRight": "D",
+      "attack": "SPACE",
+      "jump": "W",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "1000"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
+    },
+    {
+      "lookDirection": "left",
+      "moveLeft": "A",
+      "moveRight": "D",
+      "attack": "SPACE",
+      "jump": "W",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "1000"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
+    },
+    {
+      "lookDirection": "left",
+      "moveLeft": "A",
+      "moveRight": "D",
+      "attack": "SPACE",
+      "jump": "W",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "1000"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
+    },
+    {
+      "lookDirection": "left",
+      "moveLeft": "A",
+      "moveRight": "D",
+      "attack": "SPACE",
+      "jump": "W",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "1000"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
+    },
+    {
+      "lookDirection": "left",
+      "moveLeft": "A",
+      "moveRight": "D",
+      "attack": "SPACE",
+      "jump": "W",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "1000"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
+    },
+    {
+      "lookDirection": "left",
+      "moveLeft": "A",
+      "moveRight": "D",
+      "attack": "SPACE",
+      "jump": "W",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "1000"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
+    },
+    {
+      "lookDirection": "left",
+      "moveLeft": "A",
+      "moveRight": "D",
+      "attack": "SPACE",
+      "jump": "W",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "1000"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
+    },
+    {
+      "lookDirection": "right",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-5",
+      "startY": "5",
+      "mass": "10"
     }
   ]
 }

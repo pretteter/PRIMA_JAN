@@ -72,7 +72,7 @@ namespace Game {
       ridgetBody.initialization = ƒ.BODY_INIT.TO_PIVOT;
       ridgetBody.effectGravity = 10;
       ridgetBody.mass = this.mass;
-      ridgetBody.typeCollider = ƒ.COLLIDER_TYPE.CUBE;
+      ridgetBody.typeCollider = ƒ.COLLIDER_TYPE.SPHERE;
       ridgetBody.typeBody = ƒ.BODY_TYPE.DYNAMIC;
       ridgetBody.effectRotation = new ƒ.Vector3(0, 0, 0);
       // ridgetBody.setScaling(new ƒ.Vector3(0.5,0.5,0.5))

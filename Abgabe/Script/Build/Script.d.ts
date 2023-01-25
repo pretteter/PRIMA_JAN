@@ -84,4 +84,33 @@ declare namespace Game {
     import ƒ = FudgeCore;
     let viewport: ƒ.Viewport;
     let config: iConfig;
+    let gameState: State;
+    let characters: Character[];
+}
+declare namespace Game {
+    import ƒ = FudgeCore;
+    class RotateSprite extends ƒ.ComponentScript {
+        static readonly iSubclass: number;
+        rotSpeed: number;
+        constructor();
+        hndEvent: (_event: Event) => void;
+        update: (_event: Event) => void;
+    }
+}
+declare namespace Game {
+    import ƒ = FudgeCore;
+    class State extends ƒ.Mutable {
+        protected reduceMutator(_mutator: ƒ.Mutator): void;
+        test: string;
+        lifeChar: {
+            char: Character["name"];
+            life: Character["life"];
+        }[];
+        testArray: number[];
+        lifeChar1: number;
+        private controller;
+        constructor();
+        fillLife(): void;
+        createInputs(): void;
+    }
 }

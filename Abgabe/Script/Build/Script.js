@@ -22,7 +22,7 @@ var Game;
         let height = 17;
         let frames = 8;
         let distanceBetweenSprites = 24;
-        switch (char.instanceId) {
+        switch (char.instanceId % 4) {
             case 1: {
                 path = "assets/sprites/sheets/DinoSprites_mort.png";
                 break;
@@ -35,7 +35,7 @@ var Game;
                 path = "assets/sprites/sheets/DinoSprites_tard.png";
                 break;
             }
-            case 4: {
+            case 0: {
                 path = "assets/sprites/sheets/DinoSprites_vita.png";
                 break;
             }
@@ -54,7 +54,7 @@ var Game;
         let height = 17;
         let frames = 3;
         let distanceBetweenSprites = 24;
-        switch (character.instanceId) {
+        switch (character.instanceId % 4) {
             case 1: {
                 path = "assets/sprites/sheets/DinoSprites_mort.png";
                 break;
@@ -67,7 +67,7 @@ var Game;
                 path = "assets/sprites/sheets/DinoSprites_tard.png";
                 break;
             }
-            case 4: {
+            case 0: {
                 path = "assets/sprites/sheets/DinoSprites_vita.png";
                 break;
             }
@@ -216,7 +216,7 @@ var Game;
             ridgetBody.initialization = ƒ.BODY_INIT.TO_PIVOT;
             ridgetBody.effectGravity = 10;
             ridgetBody.mass = this.mass;
-            ridgetBody.typeCollider = ƒ.COLLIDER_TYPE.CUBE;
+            ridgetBody.typeCollider = ƒ.COLLIDER_TYPE.SPHERE;
             ridgetBody.typeBody = ƒ.BODY_TYPE.DYNAMIC;
             ridgetBody.effectRotation = new ƒ.Vector3(0, 0, 0);
             // ridgetBody.setScaling(new ƒ.Vector3(0.5,0.5,0.5))
@@ -261,7 +261,7 @@ var Game;
         static amountOfInstances = 0;
         instanceId;
         constructor(lookDirection, coordinateX, coordinateY, mass) {
-            super("Character_" + Character.amountOfInstances.toString());
+            super("Character_" + (Character.amountOfInstances + 1).toString());
             // this.lookDirection = lookDirection;
             this.initAvatar(lookDirection, coordinateX, coordinateY, mass);
         }
@@ -273,9 +273,11 @@ var Game;
             this.mtxLocal.translate(new ƒ.Vector3(coordinateX, coordinateY, 0));
             this.addChild(this.createNewSpriteNode(this.lookDirection));
             this.addRigidBody();
+            Character.amountOfInstances % 4 === 0
+                ? this.addComponent(new Game.RotateSprite())
+                : "";
             let graph = Game.viewport.getBranch();
             graph.addChild(this);
-            // this.setIdleAnimation(lookDirection)
         }
         move(direction) {
             const sprite = this.getChildrenByName("Sprite")[0];
@@ -430,15 +432,16 @@ var Game;
     var ƒ = FudgeCore;
     ƒ.Debug.info("Main Program Template running!");
     let cmpCamera;
-    let characters = [];
+    Game.characters = [];
     document.addEventListener("interactiveViewportStarted", start);
     async function start(_event) {
         Game.viewport = _event.detail;
-        // viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
+        Game.viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
         cmpCamera = Game.viewport.camera;
         cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 4, 18));
         cmpCamera.mtxPivot.rotateY(180);
         await hndLoad(_event);
+        console.log(Game.characters[3]);
         Game.createSounds();
         Game.audioBackground.play(true);
         ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
@@ -446,7 +449,7 @@ var Game;
     }
     function update(_event) {
         ƒ.Physics.simulate(); // if physics is included and used
-        characters.forEach((x) => {
+        Game.characters.forEach((x) => {
             Game.characterControlls(x);
         });
         Game.viewport.draw();
@@ -455,16 +458,86 @@ var Game;
     async function hndLoad(_event) {
         Game.config = await (await fetch("Script/Source/config.json")).json();
         Game.config.character.forEach(async (c, i) => {
-            if (i <= 3) {
-                characters.push(new Game.Character(c.lookDirection, c.startX | 5, c.startY | 5, c.mass | 10));
-                await Game.buildAllAnimationsForCharacter(characters[i]);
-                c.lookDirection === "left"
-                    ? characters[i].setIdleAnimation(true)
-                    : characters[i].setIdleAnimation();
-            }
-            else
-                return;
+            // if (i <= 3) {
+            Game.characters.push(new Game.Character(c.lookDirection || "right", c.startX || 5, c.startY || 5, c.mass || 10));
+            await Game.buildAllAnimationsForCharacter(Game.characters[i]);
+            c.lookDirection === "left"
+                ? Game.characters[i].setIdleAnimation(true)
+                : Game.characters[i].setIdleAnimation();
+            // } else return;
         });
+        Game.gameState = new Game.State();
     }
+})(Game || (Game = {}));
+var Game;
+(function (Game) {
+    var ƒ = FudgeCore;
+    ƒ.Project.registerScriptNamespace(Game);
+    class RotateSprite extends ƒ.ComponentScript {
+        static iSubclass = ƒ.Component.registerSubclass(RotateSprite);
+        rotSpeed = 100;
+        constructor() {
+            super();
+            if (ƒ.Project.mode == ƒ.MODE.EDITOR)
+                return;
+            this.addEventListener("componentAdd" /* ƒ.EVENT.COMPONENT_ADD */, this.hndEvent);
+            this.addEventListener("componentRemove" /* ƒ.EVENT.COMPONENT_REMOVE */, this.hndEvent);
+        }
+        hndEvent = (_event) => {
+            switch (_event.type) {
+                case "componentAdd" /* ƒ.EVENT.COMPONENT_ADD */:
+                    ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, this.update);
+                    break;
+                case "componentRemove" /* ƒ.EVENT.COMPONENT_REMOVE */:
+                    this.removeEventListener("componentAdd" /* ƒ.EVENT.COMPONENT_ADD */, this.hndEvent);
+                    this.removeEventListener("componentRemove" /* ƒ.EVENT.COMPONENT_REMOVE */, this.hndEvent);
+                    break;
+            }
+        };
+        update = (_event) => {
+            this.node
+                .getComponent(ƒ.ComponentRigidbody)
+                .rotateBody(new ƒ.Vector3(0, 0, (100 * ƒ.Loop.timeFrameGame) / 1000));
+        };
+    }
+    Game.RotateSprite = RotateSprite;
+})(Game || (Game = {}));
+var Game;
+(function (Game) {
+    var ƒ = FudgeCore;
+    var ƒui = FudgeUserInterface;
+    class State extends ƒ.Mutable {
+        reduceMutator(_mutator) {
+            /**/
+        }
+        test = "abc";
+        lifeChar = [];
+        testArray = [1, 2];
+        lifeChar1;
+        controller;
+        constructor() {
+            super();
+            this.fillLife();
+            this.controller = new ƒui.Controller(this, document.querySelector("#vui"));
+            this.lifeChar1 = this.lifeChar[0].life;
+            this.lifeChar[0].life = 50;
+            console.log(this.controller);
+            this.createInputs();
+        }
+        fillLife() {
+            Game.characters.forEach((c) => {
+                this.lifeChar.push({ char: c.name, life: c.life });
+            });
+            console.log(this.lifeChar[0].life);
+        }
+        createInputs() {
+            //   let e = document.getElementById("vui") as HTMLDivElement;
+            //   characters.forEach(() => {
+            //     e.innerHTML =
+            //       e.innerHTML + "<input type='text' key='lifeChar1' disabled=''/>";
+            //   });
+        }
+    }
+    Game.State = State;
 })(Game || (Game = {}));
 //# sourceMappingURL=Script.js.map

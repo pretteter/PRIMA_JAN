@@ -27,7 +27,7 @@ namespace Game {
       coordinateY: number,
       mass: number
     ) {
-      super("Character_" + Character.amountOfInstances.toString());
+      super("Character_" + (Character.amountOfInstances + 1).toString());
       // this.lookDirection = lookDirection;
       this.initAvatar(lookDirection, coordinateX, coordinateY, mass);
     }
@@ -46,18 +46,19 @@ namespace Game {
       this.addChild(this.createNewSpriteNode(this.lookDirection));
       this.addRigidBody();
 
+      Character.amountOfInstances % 4  === 0
+        ? this.addComponent(new RotateSprite())
+        : "";
+
       let graph: ƒ.Node = viewport.getBranch();
       graph.addChild(this);
-      // this.setIdleAnimation(lookDirection)
     }
 
     move(direction: ConstructorParameters<typeof Character>[0]) {
       const sprite = this.getChildrenByName("Sprite")[0] as ƒAid.NodeSprite;
-
       const anmToUse = this.animationMove;
       this.animationCurrent !== anmToUse ? sprite.setAnimation(anmToUse) : "";
       this.animationCurrent = anmToUse;
-
       this.lookDirection !== direction ? this.turnCharacter() : "";
 
       if (

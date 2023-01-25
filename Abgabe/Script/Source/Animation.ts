@@ -21,7 +21,7 @@ namespace Game {
     let frames: number = 8;
     let distanceBetweenSprites: number = 24;
 
-    switch (char.instanceId) {
+    switch (char.instanceId % 4) {
       case 1: {
         path = "assets/sprites/sheets/DinoSprites_mort.png";
         break;
@@ -34,7 +34,7 @@ namespace Game {
         path = "assets/sprites/sheets/DinoSprites_tard.png";
         break;
       }
-      case 4: {
+      case 0: {
         path = "assets/sprites/sheets/DinoSprites_vita.png";
         break;
       }
@@ -65,7 +65,7 @@ namespace Game {
     let frames: number = 3;
     let distanceBetweenSprites: number = 24;
 
-    switch (character.instanceId) {
+    switch (character.instanceId % 4) {
       case 1: {
         path = "assets/sprites/sheets/DinoSprites_mort.png";
         break;
@@ -78,7 +78,7 @@ namespace Game {
         path = "assets/sprites/sheets/DinoSprites_tard.png";
         break;
       }
-      case 4: {
+      case 0: {
         path = "assets/sprites/sheets/DinoSprites_vita.png";
         break;
       }
