@@ -22,7 +22,7 @@ namespace Game {
       this.lifeChar1 = this.lifeChar[0].life;
       this.lifeChar[0].life = 50;
       const x: HTMLDivElement = ƒui.Generator.createInterfaceFromMutator(
-        this.testArray[0]
+        this.testArray
       );
       document.getElementById("vui").appendChild(x);
       this.createInputs();

@@ -523,7 +523,7 @@ var Game;
             this.controller = new ƒui.Controller(this, document.querySelector("#vui"));
             this.lifeChar1 = this.lifeChar[0].life;
             this.lifeChar[0].life = 50;
-            const x = ƒui.Generator.createInterfaceFromMutator(this.testArray[0]);
+            const x = ƒui.Generator.createInterfaceFromMutator(this.testArray);
             document.getElementById("vui").appendChild(x);
             this.createInputs();
         }
