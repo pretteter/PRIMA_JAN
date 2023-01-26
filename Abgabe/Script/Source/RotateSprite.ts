@@ -3,9 +3,9 @@ namespace Game {
   ƒ.Project.registerScriptNamespace(Game);
 
   export class RotateSprite extends ƒ.ComponentScript {
-    public static readonly iSubclass: number =
+    static readonly iSubclass: number =
       ƒ.Component.registerSubclass(RotateSprite);
-    public rotSpeed: number = 100; 
+    rotSpeed: number = 100;
 
     constructor() {
       super();
@@ -15,7 +15,7 @@ namespace Game {
       this.addEventListener(ƒ.EVENT.COMPONENT_REMOVE, this.hndEvent);
     }
 
-    public hndEvent = (_event: Event): void => {
+    hndEvent = (_event: Event): void => {
       switch (_event.type) {
         case ƒ.EVENT.COMPONENT_ADD:
           ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, this.update);
@@ -27,7 +27,7 @@ namespace Game {
       }
     };
 
-    public update = (_event: Event): void => {
+    update = (_event: Event): void => {
       this.node
         .getComponent(ƒ.ComponentRigidbody)
         .rotateBody(new ƒ.Vector3(0, 0, (100 * ƒ.Loop.timeFrameGame) / 1000));

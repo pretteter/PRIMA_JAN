@@ -6,11 +6,10 @@ namespace Game {
     protected reduceMutator(_mutator: ƒ.Mutator): void {
       /**/
     }
-    public test: string = "abc";
-    public lifeChar: { char: Character["name"]; life: Character["life"] }[] =
-      [];
-    public testArray: string[] = ["1", "2"];
-    public lifeChar1: number;
+    test: string = "abc";
+    lifeChar: { char: Character["name"]; life: Character["life"] }[] = [];
+    testArray: string[] = ["1", "2"];
+    lifeChar1: number;
     private controller: ƒui.Controller;
 
     constructor() {
@@ -23,9 +22,8 @@ namespace Game {
       this.lifeChar1 = this.lifeChar[0].life;
       this.lifeChar[0].life = 50;
       const x: HTMLDivElement = ƒui.Generator.createInterfaceFromMutator(
-        this.testArray
+        this.testArray[0]
       );
-      console.log(x);
       document.getElementById("vui").appendChild(x);
       this.createInputs();
     }
