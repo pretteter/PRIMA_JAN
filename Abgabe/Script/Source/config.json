@@ -7,8 +7,8 @@
       "moveRight": "D",
       "attack": "SPACE",
       "jump": "W",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "1000"
     },
     {
@@ -17,8 +17,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -27,8 +27,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -37,8 +37,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -47,8 +47,8 @@
       "moveRight": "D",
       "attack": "SPACE",
       "jump": "W",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "1000"
     },
     {
@@ -57,8 +57,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -67,8 +67,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -77,8 +77,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -87,8 +87,8 @@
       "moveRight": "D",
       "attack": "SPACE",
       "jump": "W",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "1000"
     },
     {
@@ -97,8 +97,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -107,8 +107,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -117,8 +117,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -127,8 +127,8 @@
       "moveRight": "D",
       "attack": "SPACE",
       "jump": "W",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "1000"
     },
     {
@@ -137,8 +137,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -147,8 +147,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -157,8 +157,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -167,8 +167,8 @@
       "moveRight": "D",
       "attack": "SPACE",
       "jump": "W",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "1000"
     },
     {
@@ -177,8 +177,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -187,8 +187,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -197,8 +197,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -207,8 +207,8 @@
       "moveRight": "D",
       "attack": "SPACE",
       "jump": "W",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "1000"
     },
     {
@@ -217,8 +217,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -227,8 +227,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -237,8 +237,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -247,8 +247,8 @@
       "moveRight": "D",
       "attack": "SPACE",
       "jump": "W",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "1000"
     },
     {
@@ -257,8 +257,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -267,8 +267,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -277,8 +277,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -287,8 +287,8 @@
       "moveRight": "D",
       "attack": "SPACE",
       "jump": "W",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "1000"
     },
     {
@@ -297,8 +297,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -307,8 +307,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -317,8 +317,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -327,8 +327,8 @@
       "moveRight": "D",
       "attack": "SPACE",
       "jump": "W",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "1000"
     },
     {
@@ -337,8 +337,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -347,8 +347,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -357,8 +357,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -367,8 +367,8 @@
       "moveRight": "D",
       "attack": "SPACE",
       "jump": "W",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "1000"
     },
     {
@@ -377,8 +377,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -387,8 +387,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -397,8 +397,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -407,8 +407,8 @@
       "moveRight": "D",
       "attack": "SPACE",
       "jump": "W",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "1000"
     },
     {
@@ -417,8 +417,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -427,8 +427,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -437,8 +437,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -447,8 +447,8 @@
       "moveRight": "D",
       "attack": "SPACE",
       "jump": "W",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "1000"
     },
     {
@@ -457,8 +457,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -467,8 +467,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -477,8 +477,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -487,8 +487,8 @@
       "moveRight": "D",
       "attack": "SPACE",
       "jump": "W",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "1000"
     },
     {
@@ -497,8 +497,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -507,8 +507,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -517,8 +517,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -527,8 +527,8 @@
       "moveRight": "D",
       "attack": "SPACE",
       "jump": "W",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "1000"
     },
     {
@@ -537,8 +537,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -547,8 +547,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -557,8 +557,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -567,8 +567,8 @@
       "moveRight": "D",
       "attack": "SPACE",
       "jump": "W",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "1000"
     },
     {
@@ -577,8 +577,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -587,8 +587,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -597,8 +597,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -607,8 +607,8 @@
       "moveRight": "D",
       "attack": "SPACE",
       "jump": "W",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "1000"
     },
     {
@@ -617,8 +617,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -627,8 +627,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -637,8 +637,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -647,8 +647,8 @@
       "moveRight": "D",
       "attack": "SPACE",
       "jump": "W",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "1000"
     },
     {
@@ -657,8 +657,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -667,8 +667,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -677,8 +677,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -687,8 +687,8 @@
       "moveRight": "D",
       "attack": "SPACE",
       "jump": "W",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "1000"
     },
     {
@@ -697,8 +697,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -707,8 +707,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -717,8 +717,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -727,8 +727,8 @@
       "moveRight": "D",
       "attack": "SPACE",
       "jump": "W",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "1000"
     },
     {
@@ -737,8 +737,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -747,8 +747,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -757,8 +757,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -767,8 +767,8 @@
       "moveRight": "D",
       "attack": "SPACE",
       "jump": "W",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "1000"
     },
     {
@@ -777,8 +777,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -787,8 +787,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -797,8 +797,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -807,8 +807,8 @@
       "moveRight": "D",
       "attack": "SPACE",
       "jump": "W",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "1000"
     },
     {
@@ -817,8 +817,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -827,8 +827,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -837,8 +837,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -847,8 +847,8 @@
       "moveRight": "D",
       "attack": "SPACE",
       "jump": "W",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "1000"
     },
     {
@@ -857,8 +857,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -867,8 +867,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -877,8 +877,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -887,8 +887,8 @@
       "moveRight": "D",
       "attack": "SPACE",
       "jump": "W",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "1000"
     },
     {
@@ -897,8 +897,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -907,8 +907,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -917,8 +917,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -927,8 +927,8 @@
       "moveRight": "D",
       "attack": "SPACE",
       "jump": "W",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "1000"
     },
     {
@@ -937,8 +937,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -947,8 +947,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     },
     {
@@ -957,8 +957,8 @@
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
       "jump": "ARROW_UP",
-      "startX": "-5",
-      "startY": "5",
+      "startX": "2.5",
+      "startY": "20",
       "mass": "10"
     }
   ]

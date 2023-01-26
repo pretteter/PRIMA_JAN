@@ -8,19 +8,18 @@ namespace Game {
     let attack: ƒ.KEYBOARD_CODE;
     let jump: ƒ.KEYBOARD_CODE;
 
-    moveLeft = index(
-      ƒ.KEYBOARD_CODE,
-      config.character[char.instanceId - 1].moveLeft
-    );
-    moveRight = index(
-      ƒ.KEYBOARD_CODE,
-      config.character[char.instanceId - 1].moveRight
-    );
-    attack = index(
-      ƒ.KEYBOARD_CODE,
-      config.character[char.instanceId - 1].attack
-    );
-    jump = index(ƒ.KEYBOARD_CODE, config.character[char.instanceId - 1].jump);
+    moveLeft =
+      index(ƒ.KEYBOARD_CODE, config.character[char.instanceId - 1].moveLeft) ||
+      ƒ.KEYBOARD_CODE.A;
+    moveRight =
+      index(ƒ.KEYBOARD_CODE, config.character[char.instanceId - 1].moveRight) ||
+      ƒ.KEYBOARD_CODE.D;
+    attack =
+      index(ƒ.KEYBOARD_CODE, config.character[char.instanceId - 1].attack) ||
+      ƒ.KEYBOARD_CODE.W;
+    jump =
+      index(ƒ.KEYBOARD_CODE, config.character[char.instanceId - 1].jump) ||
+      ƒ.KEYBOARD_CODE.SPACE;
 
     movement();
     actions();

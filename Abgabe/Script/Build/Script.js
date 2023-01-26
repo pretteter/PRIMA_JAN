@@ -340,7 +340,7 @@ var Game;
             let rigidBody = new ƒ.ComponentRigidbody();
             rigidBody.effectGravity = 10;
             rigidBody.mass = this.mass;
-            rigidBody.typeCollider = ƒ.COLLIDER_TYPE.CUBE;
+            rigidBody.typeCollider = ƒ.COLLIDER_TYPE.SPHERE;
             rigidBody.typeBody = ƒ.BODY_TYPE.DYNAMIC;
             rigidBody.effectRotation = new ƒ.Vector3(0, 0, 0);
             rigidBody.mtxPivot.scale(new ƒ.Vector3(0.5, 0.5, 1));
