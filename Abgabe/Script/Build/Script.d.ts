@@ -65,7 +65,7 @@ declare namespace Game {
     }
 }
 declare namespace Game {
-    export interface iConfig {
+    interface iConfig {
         character: iCharacter[];
     }
     interface iCharacter {
@@ -78,7 +78,6 @@ declare namespace Game {
         startY: number;
         mass: number;
     }
-    export {};
 }
 declare namespace Game {
     import ƒ = FudgeCore;
@@ -106,7 +105,7 @@ declare namespace Game {
             char: Character["name"];
             life: Character["life"];
         }[];
-        testArray: number[];
+        testArray: string[];
         lifeChar1: number;
         private controller;
         constructor();

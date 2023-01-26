@@ -232,8 +232,11 @@ var Game;
         removeRocket() {
             const sprite = this.getChildrenByName("Sprite")[0];
             sprite.setAnimation(this.animationExplode);
+            this.animationExplode.frames;
+            console.error(this.animationExplode.frames);
             setTimeout(() => {
                 let graph = Game.viewport.getBranch();
+                sprite.stopAnimation();
                 graph.removeChild(this);
             }, 250);
         }
@@ -359,10 +362,14 @@ var Game;
         let moveRight;
         let attack;
         let jump;
-        moveLeft = index(ƒ.KEYBOARD_CODE, Game.config.character[char.instanceId - 1].moveLeft);
-        moveRight = index(ƒ.KEYBOARD_CODE, Game.config.character[char.instanceId - 1].moveRight);
-        attack = index(ƒ.KEYBOARD_CODE, Game.config.character[char.instanceId - 1].attack);
-        jump = index(ƒ.KEYBOARD_CODE, Game.config.character[char.instanceId - 1].jump);
+        let charData = Game.config.character[char.instanceId - 1];
+        moveLeft =
+            ƒ.KEYBOARD_CODE[charData.moveLeft] || ƒ.KEYBOARD_CODE.A;
+        moveRight =
+            ƒ.KEYBOARD_CODE[charData.moveRight] || ƒ.KEYBOARD_CODE.D;
+        attack =
+            ƒ.KEYBOARD_CODE[charData.attack] || ƒ.KEYBOARD_CODE.SPACE;
+        jump = ƒ.KEYBOARD_CODE[charData.jump] || ƒ.KEYBOARD_CODE.W;
         movement();
         actions();
         function movement() {
@@ -383,9 +390,6 @@ var Game;
             if (ƒ.Keyboard.isPressedOne([jump])) {
                 char.jump();
             }
-        }
-        function index(obj, i) {
-            return obj[i];
         }
     }
     Game.characterControlls = characterControlls;
@@ -441,7 +445,7 @@ var Game;
         cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 4, 18));
         cmpCamera.mtxPivot.rotateY(180);
         await hndLoad(_event);
-        console.log(Game.characters[3]);
+        // console.log(characters[3]);
         Game.createSounds();
         Game.audioBackground.play(true);
         ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
@@ -512,7 +516,7 @@ var Game;
         }
         test = "abc";
         lifeChar = [];
-        testArray = [1, 2];
+        testArray = ["1", "2"];
         lifeChar1;
         controller;
         constructor() {
@@ -521,14 +525,16 @@ var Game;
             this.controller = new ƒui.Controller(this, document.querySelector("#vui"));
             this.lifeChar1 = this.lifeChar[0].life;
             this.lifeChar[0].life = 50;
-            console.log(this.controller);
+            const x = ƒui.Generator.createInterfaceFromMutator(this.testArray);
+            console.log(x);
+            document.getElementById("vui").appendChild(x);
             this.createInputs();
         }
         fillLife() {
             Game.characters.forEach((c) => {
                 this.lifeChar.push({ char: c.name, life: c.life });
             });
-            console.log(this.lifeChar[0].life);
+            // console.log(this.lifeChar[0].life);
         }
         createInputs() {
             //   let e = document.getElementById("vui") as HTMLDivElement;

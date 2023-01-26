@@ -9,7 +9,7 @@ namespace Game {
     public test: string = "abc";
     public lifeChar: { char: Character["name"]; life: Character["life"] }[] =
       [];
-    public testArray: number[] = [1, 2];
+    public testArray: string[] = ["1", "2"];
     public lifeChar1: number;
     private controller: ƒui.Controller;
 
@@ -22,7 +22,11 @@ namespace Game {
       );
       this.lifeChar1 = this.lifeChar[0].life;
       this.lifeChar[0].life = 50;
-      console.log(this.controller);
+      const x: HTMLDivElement = ƒui.Generator.createInterfaceFromMutator(
+        this.testArray
+      );
+      console.log(x);
+      document.getElementById("vui").appendChild(x);
       this.createInputs();
     }
 
@@ -30,7 +34,7 @@ namespace Game {
       characters.forEach((c) => {
         this.lifeChar.push({ char: c.name, life: c.life });
       });
-      console.log(this.lifeChar[0].life);
+      // console.log(this.lifeChar[0].life);
     }
 
     createInputs() {

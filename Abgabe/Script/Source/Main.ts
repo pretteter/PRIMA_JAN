@@ -20,7 +20,7 @@ namespace Game {
     cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 4, 18));
     cmpCamera.mtxPivot.rotateY(180);
     await hndLoad(_event);
-    console.log(characters[3]);
+    // console.log(characters[3]);
 
     createSounds();
     audioBackground.play(true);

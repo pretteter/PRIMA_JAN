@@ -8,18 +8,16 @@ namespace Game {
     let attack: ƒ.KEYBOARD_CODE;
     let jump: ƒ.KEYBOARD_CODE;
 
+    let charData: iCharacter = config.character[char.instanceId - 1];
+    type keyType = keyof typeof ƒ.KEYBOARD_CODE;
+
     moveLeft =
-      index(ƒ.KEYBOARD_CODE, config.character[char.instanceId - 1].moveLeft) ||
-      ƒ.KEYBOARD_CODE.A;
+      ƒ.KEYBOARD_CODE[charData.moveLeft as keyType] || ƒ.KEYBOARD_CODE.A;
     moveRight =
-      index(ƒ.KEYBOARD_CODE, config.character[char.instanceId - 1].moveRight) ||
-      ƒ.KEYBOARD_CODE.D;
+      ƒ.KEYBOARD_CODE[charData.moveRight as keyType] || ƒ.KEYBOARD_CODE.D;
     attack =
-      index(ƒ.KEYBOARD_CODE, config.character[char.instanceId - 1].attack) ||
-      ƒ.KEYBOARD_CODE.W;
-    jump =
-      index(ƒ.KEYBOARD_CODE, config.character[char.instanceId - 1].jump) ||
-      ƒ.KEYBOARD_CODE.SPACE;
+      ƒ.KEYBOARD_CODE[charData.attack as keyType] || ƒ.KEYBOARD_CODE.SPACE;
+    jump = ƒ.KEYBOARD_CODE[charData.jump as keyType] || ƒ.KEYBOARD_CODE.W;
 
     movement();
     actions();
@@ -41,10 +39,6 @@ namespace Game {
       if (ƒ.Keyboard.isPressedOne([jump])) {
         char.jump();
       }
-    }
-
-    function index(obj: any, i: any) {
-      return obj[i];
     }
   }
 }
