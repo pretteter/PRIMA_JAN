@@ -87,11 +87,9 @@ namespace Game {
       // this.animationCurrent = this.animationIdle;
     }
 
-    removeRocket() {
+    removeBomb() {
       const sprite = this.getChildrenByName("Sprite")[0] as ƒAid.NodeSprite;
       sprite.setAnimation(this.animationExplode);
-      this.animationExplode.frames
-      console.error(this.animationExplode.frames);
 
       setTimeout(() => {
         let graph: ƒ.Node = viewport.getBranch();

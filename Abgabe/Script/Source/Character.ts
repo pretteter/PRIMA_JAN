@@ -91,7 +91,7 @@ namespace Game {
         rocket.launch(this, this.lookDirection);
         this.hasRocket = true;
         setTimeout(() => {
-          rocket.removeRocket();
+          rocket.removeBomb();
           this.hasRocket = false;
         }, 1200);
       }

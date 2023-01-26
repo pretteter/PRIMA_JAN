@@ -229,11 +229,9 @@ var Game;
             sprite.activate(true);
             // this.animationCurrent = this.animationIdle;
         }
-        removeRocket() {
+        removeBomb() {
             const sprite = this.getChildrenByName("Sprite")[0];
             sprite.setAnimation(this.animationExplode);
-            this.animationExplode.frames;
-            console.error(this.animationExplode.frames);
             setTimeout(() => {
                 let graph = Game.viewport.getBranch();
                 sprite.stopAnimation();
@@ -304,7 +302,7 @@ var Game;
                 rocket.launch(this, this.lookDirection);
                 this.hasRocket = true;
                 setTimeout(() => {
-                    rocket.removeRocket();
+                    rocket.removeBomb();
                     this.hasRocket = false;
                 }, 1200);
             }

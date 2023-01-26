@@ -25,7 +25,7 @@ declare namespace Game {
         private createNewSpriteNode;
         private addRidgetBody;
         setIdleAnimation(): void;
-        removeRocket(): void;
+        removeBomb(): void;
     }
 }
 declare namespace Game {
