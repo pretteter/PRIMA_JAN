@@ -234,8 +234,8 @@ var Game;
             sprite.setAnimation(this.animationExplode);
             setTimeout(() => {
                 let graph = Game.viewport.getBranch();
-                sprite.stopAnimation();
                 graph.removeChild(this);
+                sprite.stopAnimation();
             }, 250);
         }
     }
@@ -438,7 +438,7 @@ var Game;
     document.addEventListener("interactiveViewportStarted", start);
     async function start(_event) {
         Game.viewport = _event.detail;
-        Game.viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
+        // viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
         cmpCamera = Game.viewport.camera;
         cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 4, 18));
         cmpCamera.mtxPivot.rotateY(180);

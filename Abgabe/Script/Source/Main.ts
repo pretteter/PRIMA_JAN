@@ -15,7 +15,7 @@ namespace Game {
 
   async function start(_event: CustomEvent): Promise<void> {
     viewport = _event.detail;
-    viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
+    // viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
     cmpCamera = viewport.camera;
     cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 4, 18));
     cmpCamera.mtxPivot.rotateY(180);

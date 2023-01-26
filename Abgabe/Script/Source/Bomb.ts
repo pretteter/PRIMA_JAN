@@ -93,8 +93,8 @@ namespace Game {
 
       setTimeout(() => {
         let graph: ƒ.Node = viewport.getBranch();
-        sprite.stopAnimation();
         graph.removeChild(this);
+        sprite.stopAnimation();
       }, 250);
     }
   }
