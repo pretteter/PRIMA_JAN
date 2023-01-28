@@ -7,6 +7,7 @@ namespace Game {
     mass: number;
     animationIdle: ƒAid.SpriteSheetAnimation;
     animationExplode: ƒAid.SpriteSheetAnimation;
+    animationCurrent: ƒAid.SpriteSheetAnimation;
 
     static amountOfInstances: number = 0;
     instanceId: number;
@@ -39,19 +40,26 @@ namespace Game {
           0
         )
       );
+      this.getComponent(ƒ.ComponentRigidbody).addEventListener(
+        ƒ.EVENT_PHYSICS.COLLISION_ENTER,
+        (_event: Event) => {
+          this.removeBomb();
+          character.hasRocket = false;
+          console.error("Collison");
+          console.log(_event);
+        }
+      );
     }
 
     private placeBomb(character: Character) {
       this.mtxLocal.translate(
         new ƒ.Vector3(
           character.getComponent(ƒ.ComponentRigidbody).getPosition().x,
-          character.getComponent(ƒ.ComponentRigidbody).getPosition().y + 0.6,
+          character.getComponent(ƒ.ComponentRigidbody).getPosition().y + 1,
           0
         )
       );
-
-      let graph: ƒ.Node = viewport.getBranch();
-      graph.addChild(this);
+      viewport.getBranch().addChild(this);
     }
 
     private createNewSpriteNode(
@@ -84,12 +92,22 @@ namespace Game {
       const sprite = this.getChildrenByName("Sprite")[0] as ƒAid.NodeSprite;
       sprite.setAnimation(this.animationIdle);
       sprite.activate(true);
-      // this.animationCurrent = this.animationIdle;
+      this.animationCurrent = this.animationIdle;
     }
 
     removeBomb() {
       const sprite = this.getChildrenByName("Sprite")[0] as ƒAid.NodeSprite;
-      sprite.setAnimation(this.animationExplode);
+      this.animationCurrent !== this.animationExplode
+        ? sprite.setAnimation(this.animationExplode)
+        : "";
+   
+      // if (sprite.getCurrentFrame >= 2) {
+      //   let graph: ƒ.Node = viewport.getBranch();
+      //   graph.removeChild(this);
+      //   sprite.stopAnimation();
+      // } else {
+      //   this.removeBomb();
+      // }
 
       setTimeout(() => {
         let graph: ƒ.Node = viewport.getBranch();

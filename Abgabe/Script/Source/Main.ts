@@ -16,13 +16,7 @@ namespace Game {
   async function start(_event: CustomEvent): Promise<void> {
     viewport = _event.detail;
     // viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
-    cmpCamera = viewport.camera;
-    cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 4, 18));
-    cmpCamera.mtxPivot.rotateY(180);
     await hndLoad(_event);
-    // console.log(characters[3]);
-
-    createSounds();
     audioBackground.play(true);
 
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
@@ -35,6 +29,7 @@ namespace Game {
     characters.forEach((x) => {
       characterControlls(x);
     });
+    // characters[0].getComponent(ƒ.ComponentRigidbody).checkCollisionEvents();
     viewport.draw();
     ƒ.AudioManager.default.update();
   }
@@ -42,23 +37,25 @@ namespace Game {
   async function hndLoad(_event: Event): Promise<void> {
     config = await (await fetch("Script/Source/config.json")).json();
     config.character.forEach(async (c, i) => {
-      // if (i <= 3) {
-        characters.push(
-          new Character(
-            c.lookDirection || "right",
-            c.startX || 5,
-            c.startY || 5,
-            c.mass || 10
-          )
-        );
+      characters.push(
+        new Character(
+          c.lookDirection || "right",
+          c.startX || 5,
+          c.startY || 5,
+          c.mass || 10
+        )
+      );
 
-        await buildAllAnimationsForCharacter(characters[i]);
-        c.lookDirection === "left"
-          ? characters[i].setIdleAnimation(true)
-          : characters[i].setIdleAnimation();
+      await buildAllAnimationsForCharacter(characters[i]);
+      c.lookDirection === "left"
+        ? characters[i].setIdleAnimation(true)
+        : characters[i].setIdleAnimation();
+    });
 
-          // } else return;
-        });
-        gameState = new State();
+    cmpCamera = viewport.camera;
+    cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 4, 18));
+    cmpCamera.mtxPivot.rotateY(180);
+    gameState = new State();
+    createSounds();
   }
 }

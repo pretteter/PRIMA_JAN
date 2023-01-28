@@ -32,7 +32,7 @@ namespace Game {
       this.initAvatar(lookDirection, coordinateX, coordinateY, mass);
     }
 
-    async initAvatar(
+    initAvatar(
       lookDirection: ConstructorParameters<typeof Character>[0],
       coordinateX: number,
       coordinateY: number,
@@ -46,8 +46,8 @@ namespace Game {
       this.addChild(this.createNewSpriteNode(this.lookDirection));
       this.addRigidBody();
 
-      Character.amountOfInstances % 4  === 0
-        ? this.addComponent(new RotateSprite())
+      Character.amountOfInstances % 4 === 0
+        ? this.addComponent(new RotateRigidBody())
         : "";
 
       let graph: ƒ.Node = viewport.getBranch();
@@ -90,10 +90,6 @@ namespace Game {
         const rocket: Bomb = new Bomb(80000, 50);
         rocket.launch(this, this.lookDirection);
         this.hasRocket = true;
-        setTimeout(() => {
-          rocket.removeBomb();
-          this.hasRocket = false;
-        }, 1200);
       }
     }
 

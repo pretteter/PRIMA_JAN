@@ -32,15 +32,8 @@ namespace Game {
       characters.forEach((c) => {
         this.lifeChar.push({ char: c.name, life: c.life });
       });
-      // console.log(this.lifeChar[0].life);
     }
 
-    createInputs() {
-      //   let e = document.getElementById("vui") as HTMLDivElement;
-      //   characters.forEach(() => {
-      //     e.innerHTML =
-      //       e.innerHTML + "<input type='text' key='lifeChar1' disabled=''/>";
-      //   });
-    }
+    createInputs() {}
   }
 }

@@ -16,6 +16,7 @@ declare namespace Game {
         mass: number;
         animationIdle: ƒAid.SpriteSheetAnimation;
         animationExplode: ƒAid.SpriteSheetAnimation;
+        animationCurrent: ƒAid.SpriteSheetAnimation;
         static amountOfInstances: number;
         instanceId: number;
         constructor(forceStart: number, mass: number);
@@ -42,7 +43,7 @@ declare namespace Game {
         static amountOfInstances: number;
         instanceId: number;
         constructor(lookDirection: "right" | "left", coordinateX: number, coordinateY: number, mass: number);
-        initAvatar(lookDirection: ConstructorParameters<typeof Character>[0], coordinateX: number, coordinateY: number, mass: number): Promise<void>;
+        initAvatar(lookDirection: ConstructorParameters<typeof Character>[0], coordinateX: number, coordinateY: number, mass: number): void;
         move(direction: ConstructorParameters<typeof Character>[0]): void;
         jump(): void;
         attack(): void;
@@ -88,7 +89,7 @@ declare namespace Game {
 }
 declare namespace Game {
     import ƒ = FudgeCore;
-    class RotateSprite extends ƒ.ComponentScript {
+    class RotateRigidBody extends ƒ.ComponentScript {
         static readonly iSubclass: number;
         rotSpeed: number;
         constructor();

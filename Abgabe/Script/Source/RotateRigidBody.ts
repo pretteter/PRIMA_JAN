@@ -2,9 +2,9 @@ namespace Game {
   import ƒ = FudgeCore;
   ƒ.Project.registerScriptNamespace(Game);
 
-  export class RotateSprite extends ƒ.ComponentScript {
+  export class RotateRigidBody extends ƒ.ComponentScript {
     static readonly iSubclass: number =
-      ƒ.Component.registerSubclass(RotateSprite);
+      ƒ.Component.registerSubclass(RotateRigidBody);
     rotSpeed: number = 100;
 
     constructor() {

@@ -177,6 +177,7 @@ var Game;
         mass;
         animationIdle;
         animationExplode;
+        animationCurrent;
         static amountOfInstances = 0;
         instanceId;
         constructor(forceStart, mass) {
@@ -197,11 +198,16 @@ var Game;
             Game.audioShoot.play(true);
             this.placeBomb(character);
             this.getComponent(ƒ.ComponentRigidbody).applyForce(new ƒ.Vector3(direction === "right" ? this.forceStart / 2 : -this.forceStart / 2, this.forceStart, 0));
+            this.getComponent(ƒ.ComponentRigidbody).addEventListener("ColliderEnteredCollision" /* ƒ.EVENT_PHYSICS.COLLISION_ENTER */, (_event) => {
+                this.removeBomb();
+                character.hasRocket = false;
+                console.error("Collison");
+                console.log(_event);
+            });
         }
         placeBomb(character) {
-            this.mtxLocal.translate(new ƒ.Vector3(character.getComponent(ƒ.ComponentRigidbody).getPosition().x, character.getComponent(ƒ.ComponentRigidbody).getPosition().y + 0.6, 0));
-            let graph = Game.viewport.getBranch();
-            graph.addChild(this);
+            this.mtxLocal.translate(new ƒ.Vector3(character.getComponent(ƒ.ComponentRigidbody).getPosition().x, character.getComponent(ƒ.ComponentRigidbody).getPosition().y + 1, 0));
+            Game.viewport.getBranch().addChild(this);
         }
         createNewSpriteNode(frameDirection) {
             let spriteNode = new ƒAid.NodeSprite("Sprite");
@@ -227,11 +233,20 @@ var Game;
             const sprite = this.getChildrenByName("Sprite")[0];
             sprite.setAnimation(this.animationIdle);
             sprite.activate(true);
-            // this.animationCurrent = this.animationIdle;
+            this.animationCurrent = this.animationIdle;
         }
         removeBomb() {
             const sprite = this.getChildrenByName("Sprite")[0];
-            sprite.setAnimation(this.animationExplode);
+            this.animationCurrent !== this.animationExplode
+                ? sprite.setAnimation(this.animationExplode)
+                : "";
+            // if (sprite.getCurrentFrame >= 2) {
+            //   let graph: ƒ.Node = viewport.getBranch();
+            //   graph.removeChild(this);
+            //   sprite.stopAnimation();
+            // } else {
+            //   this.removeBomb();
+            // }
             setTimeout(() => {
                 let graph = Game.viewport.getBranch();
                 graph.removeChild(this);
@@ -266,7 +281,7 @@ var Game;
             // this.lookDirection = lookDirection;
             this.initAvatar(lookDirection, coordinateX, coordinateY, mass);
         }
-        async initAvatar(lookDirection, coordinateX, coordinateY, mass) {
+        initAvatar(lookDirection, coordinateX, coordinateY, mass) {
             this.instanceId = ++Character.amountOfInstances;
             this.mass = mass;
             this.lookDirection = lookDirection;
@@ -275,7 +290,7 @@ var Game;
             this.addChild(this.createNewSpriteNode(this.lookDirection));
             this.addRigidBody();
             Character.amountOfInstances % 4 === 0
-                ? this.addComponent(new Game.RotateSprite())
+                ? this.addComponent(new Game.RotateRigidBody())
                 : "";
             let graph = Game.viewport.getBranch();
             graph.addChild(this);
@@ -301,10 +316,6 @@ var Game;
                 const rocket = new Game.Bomb(80000, 50);
                 rocket.launch(this, this.lookDirection);
                 this.hasRocket = true;
-                setTimeout(() => {
-                    rocket.removeBomb();
-                    this.hasRocket = false;
-                }, 1200);
             }
         }
         setIdleAnimation(otherDirectionThanSprite) {
@@ -439,12 +450,7 @@ var Game;
     async function start(_event) {
         Game.viewport = _event.detail;
         // viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
-        cmpCamera = Game.viewport.camera;
-        cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 4, 18));
-        cmpCamera.mtxPivot.rotateY(180);
         await hndLoad(_event);
-        // console.log(characters[3]);
-        Game.createSounds();
         Game.audioBackground.play(true);
         ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
         ƒ.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
@@ -454,29 +460,32 @@ var Game;
         Game.characters.forEach((x) => {
             Game.characterControlls(x);
         });
+        // characters[0].getComponent(ƒ.ComponentRigidbody).checkCollisionEvents();
         Game.viewport.draw();
         ƒ.AudioManager.default.update();
     }
     async function hndLoad(_event) {
         Game.config = await (await fetch("Script/Source/config.json")).json();
         Game.config.character.forEach(async (c, i) => {
-            // if (i <= 3) {
             Game.characters.push(new Game.Character(c.lookDirection || "right", c.startX || 5, c.startY || 5, c.mass || 10));
             await Game.buildAllAnimationsForCharacter(Game.characters[i]);
             c.lookDirection === "left"
                 ? Game.characters[i].setIdleAnimation(true)
                 : Game.characters[i].setIdleAnimation();
-            // } else return;
         });
+        cmpCamera = Game.viewport.camera;
+        cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 4, 18));
+        cmpCamera.mtxPivot.rotateY(180);
         Game.gameState = new Game.State();
+        Game.createSounds();
     }
 })(Game || (Game = {}));
 var Game;
 (function (Game) {
     var ƒ = FudgeCore;
     ƒ.Project.registerScriptNamespace(Game);
-    class RotateSprite extends ƒ.ComponentScript {
-        static iSubclass = ƒ.Component.registerSubclass(RotateSprite);
+    class RotateRigidBody extends ƒ.ComponentScript {
+        static iSubclass = ƒ.Component.registerSubclass(RotateRigidBody);
         rotSpeed = 100;
         constructor() {
             super();
@@ -502,7 +511,7 @@ var Game;
                 .rotateBody(new ƒ.Vector3(0, 0, (100 * ƒ.Loop.timeFrameGame) / 1000));
         };
     }
-    Game.RotateSprite = RotateSprite;
+    Game.RotateRigidBody = RotateRigidBody;
 })(Game || (Game = {}));
 var Game;
 (function (Game) {
@@ -531,15 +540,8 @@ var Game;
             Game.characters.forEach((c) => {
                 this.lifeChar.push({ char: c.name, life: c.life });
             });
-            // console.log(this.lifeChar[0].life);
         }
-        createInputs() {
-            //   let e = document.getElementById("vui") as HTMLDivElement;
-            //   characters.forEach(() => {
-            //     e.innerHTML =
-            //       e.innerHTML + "<input type='text' key='lifeChar1' disabled=''/>";
-            //   });
-        }
+        createInputs() { }
     }
     Game.State = State;
 })(Game || (Game = {}));
