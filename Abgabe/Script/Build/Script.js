@@ -283,7 +283,7 @@ var Game;
                         this.removeNode(collisionPartner);
                     }
                     Game.gameState.refresh();
-                    this.removeBomb(char);
+                    // this.removeBomb(char);
                 }
                 if (collisionPartner instanceof Game.Character) {
                     console.error("Collison with bomb");

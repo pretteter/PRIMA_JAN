@@ -147,7 +147,7 @@ namespace Game {
               this.removeNode(collisionPartner);
             }
             gameState.refresh();
-            this.removeBomb(char);
+            // this.removeBomb(char);
           }
           if (collisionPartner instanceof Character) {
             console.error("Collison with bomb");
