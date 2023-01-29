@@ -4,7 +4,7 @@ namespace Game {
 
   export let viewport: ƒ.Viewport;
   export let config: iConfig;
-  export let gameState: State;
+  export let gameState: Stats;
   let cmpCamera: ƒ.ComponentCamera;
   export let characters: Character[] = [];
 
@@ -38,12 +38,7 @@ namespace Game {
     config = await (await fetch("Script/Source/config.json")).json();
     config.character.forEach(async (c, i) => {
       characters.push(
-        new Character(
-          c.lookDirection || "right",
-          c.startX || 5,
-          c.startY || 5,
-          c.mass || 10
-        )
+        new Character(c.name, c.lookDirection, c.startX, c.startY, c.mass)
       );
 
       await buildAllAnimationsForCharacter(characters[i]);
@@ -55,7 +50,7 @@ namespace Game {
     cmpCamera = viewport.camera;
     cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 4, 18));
     cmpCamera.mtxPivot.rotateY(180);
-    gameState = new State();
+    gameState = new Stats();
     createSounds();
   }
 }

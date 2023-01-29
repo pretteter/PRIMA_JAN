@@ -2,6 +2,7 @@
   "_comment": "Bis zu 4 Charakteren können so eingefügt werden. Mehr werden ignoriert",
   "character": [
     {
+      "name": "mööööö",
       "lookDirection": "left",
       "moveLeft": "A",
       "moveRight": "D",
@@ -12,6 +13,7 @@
       "mass": "1000"
     },
     {
+      "name": "mööööö",
       "lookDirection": "right",
       "moveLeft": "ARROW_LEFT",
       "moveRight": "ARROW_RIGHT",

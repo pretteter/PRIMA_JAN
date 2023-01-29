@@ -40,15 +40,11 @@ namespace Game {
           0
         )
       );
-      this.getComponent(ƒ.ComponentRigidbody).addEventListener(
-        ƒ.EVENT_PHYSICS.COLLISION_ENTER,
-        (_event: Event) => {
-          this.removeBomb();
-          character.hasRocket = false;
-          console.error("Collison");
-          console.log(_event);
-        }
-      );
+      try {
+        this.manageCollision(character);
+      } catch (e) {
+        console.error(e);
+      }
     }
 
     private placeBomb(character: Character) {
@@ -100,7 +96,7 @@ namespace Game {
       this.animationCurrent !== this.animationExplode
         ? sprite.setAnimation(this.animationExplode)
         : "";
-   
+
       // if (sprite.getCurrentFrame >= 2) {
       //   let graph: ƒ.Node = viewport.getBranch();
       //   graph.removeChild(this);
@@ -110,10 +106,57 @@ namespace Game {
       // }
 
       setTimeout(() => {
-        let graph: ƒ.Node = viewport.getBranch();
-        graph.removeChild(this);
-        sprite.stopAnimation();
+        this.removeNode(this);
       }, 250);
+    }
+
+    manageCollision(char: Character) {
+      this.getComponent(ƒ.ComponentRigidbody).addEventListener(
+        ƒ.EVENT_PHYSICS.COLLISION_ENTER,
+        (_event: any) => {
+          const collisionPartner = _event.cmpRigidbody.node as ƒ.Node;
+
+          if (collisionPartner.name === "mainland") {
+            console.error("Collison with mainland");
+          }
+          if (
+            collisionPartner.name === "left_border" ||
+            collisionPartner.name === "right_border"
+          ) {
+            console.error("Collison with border");
+            let parent = collisionPartner.getParent();
+            let coat = parent.getComponent(ƒ.ComponentMaterial).material
+              .coat as any;
+            coat["color"] = {
+              r: Math.random(),
+              g: Math.random(),
+              b: Math.random(),
+              a: 1,
+            };
+          }
+          if (collisionPartner instanceof Character) {
+            console.error("Collison with char");
+            // gameState.testArray[collisionPartner.instanceId] = (
+            //   Number(gameState.testArray[collisionPartner.instanceId]) - 25
+            // ).toString();
+            collisionPartner.life -= 25;
+            if (collisionPartner.life <= 0) {
+              this.removeNode(collisionPartner);
+            }
+            gameState.refresh();
+          }
+          this.removeBomb();
+          char.hasRocket = false;
+        }
+      );
+    }
+
+    removeNode(node: ƒ.Node) {
+      const sprite = this.getChildrenByName("Sprite")[0] as ƒAid.NodeSprite;
+      let graph: ƒ.Node = viewport.getBranch();
+      graph.removeChild(node);
+      sprite.stopAnimation();
+      viewport.draw();
     }
   }
 }

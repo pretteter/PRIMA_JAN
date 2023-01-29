@@ -27,13 +27,15 @@ declare namespace Game {
         private addRidgetBody;
         setIdleAnimation(): void;
         removeBomb(): void;
+        manageCollision(char: Character): void;
+        removeNode(node: ƒ.Node): void;
     }
 }
 declare namespace Game {
     import ƒ = FudgeCore;
     import ƒAid = FudgeAid;
     class Character extends ƒ.Node {
-        lookDirection: ConstructorParameters<typeof Character>[0];
+        lookDirection: ConstructorParameters<typeof Character>[1];
         animationCurrent: ƒAid.SpriteSheetAnimation;
         animationMove: ƒAid.SpriteSheetAnimation;
         animationIdle: ƒAid.SpriteSheetAnimation;
@@ -42,9 +44,9 @@ declare namespace Game {
         mass: number;
         static amountOfInstances: number;
         instanceId: number;
-        constructor(lookDirection: "right" | "left", coordinateX: number, coordinateY: number, mass: number);
-        initAvatar(lookDirection: ConstructorParameters<typeof Character>[0], coordinateX: number, coordinateY: number, mass: number): void;
-        move(direction: ConstructorParameters<typeof Character>[0]): void;
+        constructor(name: string, lookDirection: "right" | "left", coordinateX: number, coordinateY: number, mass: number);
+        initAvatar(lookDirection: typeof this.lookDirection, coordinateX: number, coordinateY: number, mass: number): void;
+        move(direction: typeof this.lookDirection): void;
         jump(): void;
         attack(): void;
         setIdleAnimation(otherDirectionThanSprite?: boolean): void;
@@ -70,7 +72,8 @@ declare namespace Game {
         character: iCharacter[];
     }
     interface iCharacter {
-        lookDirection: ConstructorParameters<typeof Character>[0];
+        name: string;
+        lookDirection: "right" | "left";
         moveLeft: ƒ.KEYBOARD_CODE;
         moveRight: ƒ.KEYBOARD_CODE;
         attack: ƒ.KEYBOARD_CODE;
@@ -84,7 +87,7 @@ declare namespace Game {
     import ƒ = FudgeCore;
     let viewport: ƒ.Viewport;
     let config: iConfig;
-    let gameState: State;
+    let gameState: Stats;
     let characters: Character[];
 }
 declare namespace Game {
@@ -99,18 +102,17 @@ declare namespace Game {
 }
 declare namespace Game {
     import ƒ = FudgeCore;
-    class State extends ƒ.Mutable {
+    import ƒui = FudgeUserInterface;
+    class Stats extends ƒ.Mutable {
         protected reduceMutator(_mutator: ƒ.Mutator): void;
-        test: string;
         lifeChar: {
             char: Character["name"];
             life: Character["life"];
         }[];
         testArray: string[];
-        lifeChar1: number;
-        private controller;
+        controller: ƒui.Controller;
         constructor();
         fillLife(): void;
-        createInputs(): void;
+        refresh(): void;
     }
 }

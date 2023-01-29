@@ -3,8 +3,9 @@ namespace Game {
     character: iCharacter[];
   }
 
- export interface iCharacter {
-    lookDirection: ConstructorParameters<typeof Character>[0];
+  export interface iCharacter {
+    name: string;
+    lookDirection: "right" | "left";
     moveLeft: ƒ.KEYBOARD_CODE;
     moveRight: ƒ.KEYBOARD_CODE;
     attack: ƒ.KEYBOARD_CODE;

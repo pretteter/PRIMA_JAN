@@ -328,7 +328,7 @@
               },
               {
                 "ƒ.Node": {
-                  "name": "right border",
+                  "name": "right_border",
                   "active": true,
                   "components": {
                     "ComponentMesh": [

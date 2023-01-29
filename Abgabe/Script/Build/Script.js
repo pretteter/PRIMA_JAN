@@ -198,12 +198,12 @@ var Game;
             Game.audioShoot.play(true);
             this.placeBomb(character);
             this.getComponent(ƒ.ComponentRigidbody).applyForce(new ƒ.Vector3(direction === "right" ? this.forceStart / 2 : -this.forceStart / 2, this.forceStart, 0));
-            this.getComponent(ƒ.ComponentRigidbody).addEventListener("ColliderEnteredCollision" /* ƒ.EVENT_PHYSICS.COLLISION_ENTER */, (_event) => {
-                this.removeBomb();
-                character.hasRocket = false;
-                console.error("Collison");
-                console.log(_event);
-            });
+            try {
+                this.manageCollision(character);
+            }
+            catch (e) {
+                console.error(e);
+            }
         }
         placeBomb(character) {
             this.mtxLocal.translate(new ƒ.Vector3(character.getComponent(ƒ.ComponentRigidbody).getPosition().x, character.getComponent(ƒ.ComponentRigidbody).getPosition().y + 1, 0));
@@ -248,10 +248,49 @@ var Game;
             //   this.removeBomb();
             // }
             setTimeout(() => {
-                let graph = Game.viewport.getBranch();
-                graph.removeChild(this);
-                sprite.stopAnimation();
+                this.removeNode(this);
             }, 250);
+        }
+        manageCollision(char) {
+            this.getComponent(ƒ.ComponentRigidbody).addEventListener("ColliderEnteredCollision" /* ƒ.EVENT_PHYSICS.COLLISION_ENTER */, (_event) => {
+                const collisionPartner = _event.cmpRigidbody.node;
+                if (collisionPartner.name === "mainland") {
+                    console.error("Collison with mainland");
+                }
+                if (collisionPartner.name === "left_border" ||
+                    collisionPartner.name === "right_border") {
+                    console.error("Collison with border");
+                    let parent = collisionPartner.getParent();
+                    let coat = parent.getComponent(ƒ.ComponentMaterial).material
+                        .coat;
+                    coat["color"] = {
+                        r: Math.random(),
+                        g: Math.random(),
+                        b: Math.random(),
+                        a: 1,
+                    };
+                }
+                if (collisionPartner instanceof Game.Character) {
+                    console.error("Collison with char");
+                    // gameState.testArray[collisionPartner.instanceId] = (
+                    //   Number(gameState.testArray[collisionPartner.instanceId]) - 25
+                    // ).toString();
+                    collisionPartner.life -= 25;
+                    if (collisionPartner.life <= 0) {
+                        this.removeNode(collisionPartner);
+                    }
+                    Game.gameState.refresh();
+                }
+                this.removeBomb();
+                char.hasRocket = false;
+            });
+        }
+        removeNode(node) {
+            const sprite = this.getChildrenByName("Sprite")[0];
+            let graph = Game.viewport.getBranch();
+            graph.removeChild(node);
+            sprite.stopAnimation();
+            Game.viewport.draw();
         }
     }
     Game.Bomb = Bomb;
@@ -271,15 +310,16 @@ var Game;
         hasRocket;
         life = 100;
         mass;
+        // private jumpAllowed: boolean;
         //     animationJump: ƒAid.SpriteSheetAnimation;
         //     animationFall: ƒAid.SpriteSheetAnimation;
         // animationRun: ƒAid.SpriteSheetAnimation;
         static amountOfInstances = 0;
         instanceId;
-        constructor(lookDirection, coordinateX, coordinateY, mass) {
-            super("Character_" + (Character.amountOfInstances + 1).toString());
+        constructor(name, lookDirection, coordinateX, coordinateY, mass) {
+            super(name || "Character_" + (Character.amountOfInstances + 1).toString());
             // this.lookDirection = lookDirection;
-            this.initAvatar(lookDirection, coordinateX, coordinateY, mass);
+            this.initAvatar(lookDirection || "right", coordinateX || 5, coordinateY || 5, mass || 10);
         }
         initAvatar(lookDirection, coordinateX, coordinateY, mass) {
             this.instanceId = ++Character.amountOfInstances;
@@ -467,7 +507,7 @@ var Game;
     async function hndLoad(_event) {
         Game.config = await (await fetch("Script/Source/config.json")).json();
         Game.config.character.forEach(async (c, i) => {
-            Game.characters.push(new Game.Character(c.lookDirection || "right", c.startX || 5, c.startY || 5, c.mass || 10));
+            Game.characters.push(new Game.Character(c.name, c.lookDirection, c.startX, c.startY, c.mass));
             await Game.buildAllAnimationsForCharacter(Game.characters[i]);
             c.lookDirection === "left"
                 ? Game.characters[i].setIdleAnimation(true)
@@ -476,7 +516,7 @@ var Game;
         cmpCamera = Game.viewport.camera;
         cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 4, 18));
         cmpCamera.mtxPivot.rotateY(180);
-        Game.gameState = new Game.State();
+        Game.gameState = new Game.Stats();
         Game.createSounds();
     }
 })(Game || (Game = {}));
@@ -517,32 +557,73 @@ var Game;
 (function (Game) {
     var ƒ = FudgeCore;
     var ƒui = FudgeUserInterface;
-    class State extends ƒ.Mutable {
+    class Stats extends ƒ.Mutable {
         reduceMutator(_mutator) {
             /**/
         }
-        test = "abc";
+        // test: string = "abc";
         lifeChar = [];
-        testArray = ["1", "2"];
-        lifeChar1;
+        testArray = [];
+        // lifeChar1: number;
         controller;
         constructor() {
             super();
             this.fillLife();
             this.controller = new ƒui.Controller(this, document.querySelector("#vui"));
-            this.lifeChar1 = this.lifeChar[0].life;
-            this.lifeChar[0].life = 50;
-            const x = ƒui.Generator.createInterfaceFromMutator(this.testArray);
-            document.getElementById("vui").appendChild(x);
-            this.createInputs();
+            // this.lifeChar1 = this.lifeChar[0].life;
+            // this.lifeChar[0].life = 50;
+            this.refresh();
+            // this.createInputs();
         }
         fillLife() {
+            this.lifeChar = [];
+            this.testArray = [];
             Game.characters.forEach((c) => {
                 this.lifeChar.push({ char: c.name, life: c.life });
             });
+            this.lifeChar.forEach((input) => {
+                this.testArray.push(input.life.toString());
+            });
+            // this.testArray.push();
         }
-        createInputs() { }
+        // createInputs(): HTMLDivElement {
+        //   let x: HTMLDivElement = Object.create(HTMLDivElement.prototype, {});
+        //   this.lifeChar.forEach((input) => {
+        //     x.appendChild(this.createInput(input.char, input.life));
+        //   });
+        //   return x;
+        // }
+        // createInput(c: string, life: number): HTMLDivElement {
+        //   let x: HTMLDivElement = Object.create(HTMLDivElement.prototype, {});
+        //   x.appendChild(this.createCharInput(c));
+        //   x.appendChild(this.createLifeInput(life));
+        //   return x;
+        // }
+        // private createLifeInput(life: number): HTMLDivElement {
+        //   const x: HTMLDivElement = Object.create(HTMLDivElement.prototype, {});
+        //   x.appendChild(ƒui.Generator.createInterfaceFromMutator(life as Object));
+        //   return x;
+        // }
+        // private createCharInput(c: string): HTMLDivElement {
+        //   const x: HTMLDivElement = Object.create(HTMLDivElement.prototype, {});
+        //   x.appendChild(ƒui.Generator.createInterfaceFromMutator(c as Object));
+        //   return x;
+        // }
+        refresh() {
+            const myNode = document.getElementById("vui");
+            while (myNode.firstChild) {
+                myNode.removeChild(myNode.lastChild);
+            }
+            this.fillLife();
+            const x = ƒui.Generator.createInterfaceFromMutator(this.testArray);
+            for (let i in x.children) {
+                if (Number(i) <= Game.characters.length)
+                    x.children[i]?.setAttribute("label", Game.characters[i].name);
+                // x.children[i].setAttribute("label", "hu");
+            }
+            myNode.appendChild(x);
+        }
     }
-    Game.State = State;
+    Game.Stats = Stats;
 })(Game || (Game = {}));
 //# sourceMappingURL=Script.js.map

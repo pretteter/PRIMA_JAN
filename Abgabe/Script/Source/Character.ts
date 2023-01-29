@@ -7,13 +7,14 @@ namespace Game {
     //     cmpAudio: ƒ.ComponentAudio;
     // moveSpeed: number = 2;
 
-    lookDirection: ConstructorParameters<typeof Character>[0];
+    lookDirection: ConstructorParameters<typeof Character>[1];
     animationCurrent: ƒAid.SpriteSheetAnimation;
     animationMove: ƒAid.SpriteSheetAnimation;
     animationIdle: ƒAid.SpriteSheetAnimation;
     hasRocket: boolean;
     life: number = 100;
     mass: number;
+    // private jumpAllowed: boolean;
     //     animationJump: ƒAid.SpriteSheetAnimation;
     //     animationFall: ƒAid.SpriteSheetAnimation;
     // animationRun: ƒAid.SpriteSheetAnimation;
@@ -22,18 +23,26 @@ namespace Game {
     instanceId: number;
 
     public constructor(
+      name: string,
       lookDirection: "right" | "left",
       coordinateX: number,
       coordinateY: number,
       mass: number
     ) {
-      super("Character_" + (Character.amountOfInstances + 1).toString());
+      super(
+        name || "Character_" + (Character.amountOfInstances + 1).toString()
+      );
       // this.lookDirection = lookDirection;
-      this.initAvatar(lookDirection, coordinateX, coordinateY, mass);
+      this.initAvatar(
+        lookDirection || "right",
+        coordinateX || 5,
+        coordinateY || 5,
+        mass || 10
+      );
     }
 
     initAvatar(
-      lookDirection: ConstructorParameters<typeof Character>[0],
+      lookDirection: typeof this.lookDirection,
       coordinateX: number,
       coordinateY: number,
       mass: number
@@ -54,7 +63,7 @@ namespace Game {
       graph.addChild(this);
     }
 
-    move(direction: ConstructorParameters<typeof Character>[0]) {
+    move(direction: typeof this.lookDirection) {
       const sprite = this.getChildrenByName("Sprite")[0] as ƒAid.NodeSprite;
       const anmToUse = this.animationMove;
       this.animationCurrent !== anmToUse ? sprite.setAnimation(anmToUse) : "";
@@ -120,7 +129,7 @@ namespace Game {
     }
 
     private createNewSpriteNode(
-      frameDirection: ConstructorParameters<typeof Character>[0]
+      frameDirection: typeof this.lookDirection
     ): ƒAid.NodeSprite {
       let spriteNode = new ƒAid.NodeSprite("Sprite");
       spriteNode.addComponent(new ƒ.ComponentTransform());
