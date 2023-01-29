@@ -282,6 +282,9 @@ var Game;
                     }
                     Game.gameState.refresh();
                 }
+                if (collisionPartner instanceof Game.Character) {
+                    console.error("Collison with bomb");
+                }
                 this.removeBomb(char);
                 // char.hasRocket = false;
             });
@@ -291,6 +294,12 @@ var Game;
             let graph = Game.viewport.getBranch();
             graph.removeChild(node);
             sprite.stopAnimation();
+            if (node instanceof Game.Character) {
+                Game.characters.forEach((c, i) => {
+                    if (c === node)
+                        Game.characters.splice(i, 1);
+                });
+            }
             Game.viewport.draw();
         }
     }

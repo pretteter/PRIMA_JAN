@@ -146,6 +146,9 @@ namespace Game {
             }
             gameState.refresh();
           }
+          if (collisionPartner instanceof Character) {
+            console.error("Collison with bomb");
+          }
           this.removeBomb(char);
           // char.hasRocket = false;
         }
@@ -157,6 +160,11 @@ namespace Game {
       let graph: ƒ.Node = viewport.getBranch();
       graph.removeChild(node);
       sprite.stopAnimation();
+      if (node instanceof Character) {
+        characters.forEach((c, i) => {
+          if (c === node) characters.splice(i, 1);
+        });
+      }
       viewport.draw();
     }
   }
