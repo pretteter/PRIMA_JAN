@@ -91,7 +91,7 @@ namespace Game {
       this.animationCurrent = this.animationIdle;
     }
 
-    removeBomb() {
+    removeBomb(char: Character) {
       const sprite = this.getChildrenByName("Sprite")[0] as ƒAid.NodeSprite;
       this.animationCurrent !== this.animationExplode
         ? sprite.setAnimation(this.animationExplode)
@@ -107,6 +107,7 @@ namespace Game {
 
       setTimeout(() => {
         this.removeNode(this);
+        char.hasRocket = false;
       }, 250);
     }
 
@@ -145,8 +146,8 @@ namespace Game {
             }
             gameState.refresh();
           }
-          this.removeBomb();
-          char.hasRocket = false;
+          this.removeBomb(char);
+          // char.hasRocket = false;
         }
       );
     }

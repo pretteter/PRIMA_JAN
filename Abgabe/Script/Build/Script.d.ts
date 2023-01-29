@@ -26,7 +26,7 @@ declare namespace Game {
         private createNewSpriteNode;
         private addRidgetBody;
         setIdleAnimation(): void;
-        removeBomb(): void;
+        removeBomb(char: Character): void;
         manageCollision(char: Character): void;
         removeNode(node: ƒ.Node): void;
     }

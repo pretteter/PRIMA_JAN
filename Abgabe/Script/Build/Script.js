@@ -235,7 +235,7 @@ var Game;
             sprite.activate(true);
             this.animationCurrent = this.animationIdle;
         }
-        removeBomb() {
+        removeBomb(char) {
             const sprite = this.getChildrenByName("Sprite")[0];
             this.animationCurrent !== this.animationExplode
                 ? sprite.setAnimation(this.animationExplode)
@@ -249,6 +249,7 @@ var Game;
             // }
             setTimeout(() => {
                 this.removeNode(this);
+                char.hasRocket = false;
             }, 250);
         }
         manageCollision(char) {
@@ -281,8 +282,8 @@ var Game;
                     }
                     Game.gameState.refresh();
                 }
-                this.removeBomb();
-                char.hasRocket = false;
+                this.removeBomb(char);
+                // char.hasRocket = false;
             });
         }
         removeNode(node) {
