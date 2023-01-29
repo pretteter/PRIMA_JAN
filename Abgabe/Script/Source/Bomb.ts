@@ -119,6 +119,7 @@ namespace Game {
 
           if (collisionPartner.name === "mainland") {
             console.error("Collison with mainland");
+            this.removeBomb(char);
           }
           if (
             collisionPartner.name === "left_border" ||
@@ -134,6 +135,7 @@ namespace Game {
               b: Math.random(),
               a: 1,
             };
+            this.removeBomb(char);
           }
           if (collisionPartner instanceof Character) {
             console.error("Collison with char");
@@ -145,11 +147,12 @@ namespace Game {
               this.removeNode(collisionPartner);
             }
             gameState.refresh();
+            this.removeBomb(char);
           }
           if (collisionPartner instanceof Character) {
             console.error("Collison with bomb");
           }
-          this.removeBomb(char);
+          // this.removeBomb(char);
           // char.hasRocket = false;
         }
       );
