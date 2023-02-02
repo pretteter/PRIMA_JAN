@@ -141,45 +141,6 @@ namespace Game {
     );
   }
 
-  //   async function buildJumpAnimation(character:Character) {
-  //     animationJump = await buildSingleAnimation(
-  //       "assets/Mario/marioSpriteSheet.png",
-  //       "jump",
-  //       335,
-  //       1,
-  //       18,
-  //       28,
-  //       1,
-  //       0
-  //     );
-  //   }
-
-  //   async function buildFallAnimation(character:Character) {
-  //     animationFall = await buildSingleAnimation(
-  //       "assets/Mario/marioSpriteSheet.png",
-  //       "fall",
-  //       366,
-  //       1,
-  //       16,
-  //       28,
-  //       1,
-  //       0
-  //     );
-  //   }
-
-  //   async function buildRunAnimation(character:Character) {
-  //     animationRun = await buildSingleAnimation(
-  //       "assets/Mario/marioSpriteSheet.png",
-  //       "run",
-  //       245,
-  //       41,
-  //       18,
-  //       28,
-  //       3,
-  //       30
-  //     );
-  //   }
-
   async function buildSingleAnimation(
     path: string,
     name: string,

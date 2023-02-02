@@ -53,6 +53,7 @@ declare namespace Game {
         turnCharacter(otherDirectionThanSprite?: boolean): void;
         private createNewSpriteNode;
         private addRigidBody;
+        private addLight;
     }
 }
 declare namespace Game {

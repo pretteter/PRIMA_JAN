@@ -11,13 +11,9 @@ namespace Game {
     animationCurrent: ƒAid.SpriteSheetAnimation;
     animationMove: ƒAid.SpriteSheetAnimation;
     animationIdle: ƒAid.SpriteSheetAnimation;
-    hasRocket: boolean;
+    hasRocket: boolean = false;
     life: number = 100;
     mass: number;
-    // private jumpAllowed: boolean;
-    //     animationJump: ƒAid.SpriteSheetAnimation;
-    //     animationFall: ƒAid.SpriteSheetAnimation;
-    // animationRun: ƒAid.SpriteSheetAnimation;
 
     static amountOfInstances: number = 0;
     instanceId: number;
@@ -54,6 +50,7 @@ namespace Game {
       this.mtxLocal.translate(new ƒ.Vector3(coordinateX, coordinateY, 0));
       this.addChild(this.createNewSpriteNode(this.lookDirection));
       this.addRigidBody();
+      this.addLight();
 
       Character.amountOfInstances % 4 === 0
         ? this.addComponent(new RotateRigidBody())
@@ -95,7 +92,7 @@ namespace Game {
     }
 
     attack() {
-      if (!this.hasRocket) {
+      if (this.hasRocket === false) {
         const rocket: Bomb = new Bomb(80000, 50);
         rocket.launch(this, this.lookDirection);
         this.hasRocket = true;
@@ -145,12 +142,20 @@ namespace Game {
       let rigidBody = new ƒ.ComponentRigidbody();
       rigidBody.effectGravity = 10;
       rigidBody.mass = this.mass;
-      rigidBody.typeCollider = ƒ.COLLIDER_TYPE.SPHERE;
+      rigidBody.typeCollider = ƒ.COLLIDER_TYPE.CUBE;
       rigidBody.typeBody = ƒ.BODY_TYPE.DYNAMIC;
       rigidBody.effectRotation = new ƒ.Vector3(0, 0, 0);
       rigidBody.mtxPivot.scale(new ƒ.Vector3(0.5, 0.5, 1));
       rigidBody.initialize();
       this.addComponent(rigidBody);
+    }
+
+    private addLight() {
+      let light = new ƒ.ComponentLight();
+      light.setType(ƒ.LightDirectional);
+      light.mtxPivot.rotate(new ƒ.Vector3(0, 0, 0));
+      this.addComponent(light);
+      console.error(light);
     }
   }
 }

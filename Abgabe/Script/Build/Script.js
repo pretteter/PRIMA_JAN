@@ -98,42 +98,6 @@ var Game;
         let distanceBetweenSprites = 29;
         bomb.animationExplode = await buildSingleAnimation(path, "idle", startX, startY, width, height, frames, distanceBetweenSprites);
     }
-    //   async function buildJumpAnimation(character:Character) {
-    //     animationJump = await buildSingleAnimation(
-    //       "assets/Mario/marioSpriteSheet.png",
-    //       "jump",
-    //       335,
-    //       1,
-    //       18,
-    //       28,
-    //       1,
-    //       0
-    //     );
-    //   }
-    //   async function buildFallAnimation(character:Character) {
-    //     animationFall = await buildSingleAnimation(
-    //       "assets/Mario/marioSpriteSheet.png",
-    //       "fall",
-    //       366,
-    //       1,
-    //       16,
-    //       28,
-    //       1,
-    //       0
-    //     );
-    //   }
-    //   async function buildRunAnimation(character:Character) {
-    //     animationRun = await buildSingleAnimation(
-    //       "assets/Mario/marioSpriteSheet.png",
-    //       "run",
-    //       245,
-    //       41,
-    //       18,
-    //       28,
-    //       3,
-    //       30
-    //     );
-    //   }
     async function buildSingleAnimation(path, name, startX, startY, width, height, frames, distanceBetweenSprites) {
         let coat = await loadTextureFromSpriteSheet(path);
         let animation = new ƒAid.SpriteSheetAnimation(name, coat);
@@ -195,9 +159,12 @@ var Game;
             this.setIdleAnimation();
         }
         launch(character, direction) {
+            console.log("Char Launch Bomb");
+            console.log(character);
             Game.audioShoot.play(true);
             this.placeBomb(character);
             this.getComponent(ƒ.ComponentRigidbody).applyForce(new ƒ.Vector3(direction === "right" ? this.forceStart / 2 : -this.forceStart / 2, this.forceStart, 0));
+            character.hasRocket = true;
             try {
                 this.manageCollision(character);
             }
@@ -240,13 +207,6 @@ var Game;
             this.animationCurrent !== this.animationExplode
                 ? sprite.setAnimation(this.animationExplode)
                 : "";
-            // if (sprite.getCurrentFrame >= 2) {
-            //   let graph: ƒ.Node = viewport.getBranch();
-            //   graph.removeChild(this);
-            //   sprite.stopAnimation();
-            // } else {
-            //   this.removeBomb();
-            // }
             setTimeout(() => {
                 this.removeNode(this);
                 char.hasRocket = false;
@@ -255,41 +215,33 @@ var Game;
         manageCollision(char) {
             this.getComponent(ƒ.ComponentRigidbody).addEventListener("ColliderEnteredCollision" /* ƒ.EVENT_PHYSICS.COLLISION_ENTER */, (_event) => {
                 const collisionPartner = _event.cmpRigidbody.node;
-                if (collisionPartner.name === "mainland") {
-                    console.error("Collison with mainland");
-                    this.removeBomb(char);
-                }
-                if (collisionPartner.name === "left_border" ||
-                    collisionPartner.name === "right_border") {
-                    console.error("Collison with border");
-                    let parent = collisionPartner.getParent();
-                    let coat = parent.getComponent(ƒ.ComponentMaterial).material
-                        .coat;
-                    coat["color"] = {
-                        r: Math.random(),
-                        g: Math.random(),
-                        b: Math.random(),
-                        a: 1,
-                    };
-                    this.removeBomb(char);
-                }
-                if (collisionPartner instanceof Game.Character) {
-                    console.error("Collison with char");
-                    // gameState.testArray[collisionPartner.instanceId] = (
-                    //   Number(gameState.testArray[collisionPartner.instanceId]) - 25
-                    // ).toString();
-                    collisionPartner.life -= 25;
-                    if (collisionPartner.life <= 0) {
-                        this.removeNode(collisionPartner);
+                if (char.hasRocket === true) {
+                    if (collisionPartner.name === "mainland") {
+                        console.error("Collison with mainland");
                     }
-                    Game.gameState.refresh();
-                    this.removeBomb(char);
+                    if (collisionPartner.name === "left_border" ||
+                        collisionPartner.name === "right_border") {
+                        console.error("Collison with border");
+                        let parent = collisionPartner.getParent();
+                        let coat = parent.getComponent(ƒ.ComponentMaterial).material
+                            .coat;
+                        coat["color"] = {
+                            r: Math.random(),
+                            g: Math.random(),
+                            b: Math.random(),
+                            a: 1,
+                        };
+                    }
+                    if (collisionPartner instanceof Game.Character) {
+                        console.error("Collison with char");
+                        collisionPartner.life -= 25;
+                        if (collisionPartner.life <= 0) {
+                            this.removeNode(collisionPartner);
+                        }
+                        Game.gameState.refresh();
+                    }
                 }
-                if (collisionPartner instanceof Game.Character) {
-                    console.error("Collison with bomb");
-                }
-                // this.removeBomb(char);
-                // char.hasRocket = false;
+                this.removeBomb(char);
             });
         }
         removeNode(node) {
@@ -320,13 +272,9 @@ var Game;
         animationCurrent;
         animationMove;
         animationIdle;
-        hasRocket;
+        hasRocket = false;
         life = 100;
         mass;
-        // private jumpAllowed: boolean;
-        //     animationJump: ƒAid.SpriteSheetAnimation;
-        //     animationFall: ƒAid.SpriteSheetAnimation;
-        // animationRun: ƒAid.SpriteSheetAnimation;
         static amountOfInstances = 0;
         instanceId;
         constructor(name, lookDirection, coordinateX, coordinateY, mass) {
@@ -342,6 +290,7 @@ var Game;
             this.mtxLocal.translate(new ƒ.Vector3(coordinateX, coordinateY, 0));
             this.addChild(this.createNewSpriteNode(this.lookDirection));
             this.addRigidBody();
+            this.addLight();
             Character.amountOfInstances % 4 === 0
                 ? this.addComponent(new Game.RotateRigidBody())
                 : "";
@@ -365,7 +314,7 @@ var Game;
                 this.getComponent(ƒ.ComponentRigidbody).applyForce(new ƒ.Vector3(0, this.mass * 1600, 0));
         }
         attack() {
-            if (!this.hasRocket) {
+            if (this.hasRocket === false) {
                 const rocket = new Game.Bomb(80000, 50);
                 rocket.launch(this, this.lookDirection);
                 this.hasRocket = true;
@@ -405,12 +354,19 @@ var Game;
             let rigidBody = new ƒ.ComponentRigidbody();
             rigidBody.effectGravity = 10;
             rigidBody.mass = this.mass;
-            rigidBody.typeCollider = ƒ.COLLIDER_TYPE.SPHERE;
+            rigidBody.typeCollider = ƒ.COLLIDER_TYPE.CUBE;
             rigidBody.typeBody = ƒ.BODY_TYPE.DYNAMIC;
             rigidBody.effectRotation = new ƒ.Vector3(0, 0, 0);
             rigidBody.mtxPivot.scale(new ƒ.Vector3(0.5, 0.5, 1));
             rigidBody.initialize();
             this.addComponent(rigidBody);
+        }
+        addLight() {
+            let light = new ƒ.ComponentLight();
+            light.setType(ƒ.LightDirectional);
+            light.mtxPivot.rotate(new ƒ.Vector3(0, 0, 0));
+            this.addComponent(light);
+            console.error(light);
         }
     }
     Game.Character = Character;
@@ -527,7 +483,7 @@ var Game;
                 : Game.characters[i].setIdleAnimation();
         });
         cmpCamera = Game.viewport.camera;
-        cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 4, 18));
+        cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 4, 15));
         cmpCamera.mtxPivot.rotateY(180);
         Game.gameState = new Game.Stats();
         Game.createSounds();
@@ -597,31 +553,7 @@ var Game;
             this.lifeChar.forEach((input) => {
                 this.testArray.push(input.life.toString());
             });
-            // this.testArray.push();
         }
-        // createInputs(): HTMLDivElement {
-        //   let x: HTMLDivElement = Object.create(HTMLDivElement.prototype, {});
-        //   this.lifeChar.forEach((input) => {
-        //     x.appendChild(this.createInput(input.char, input.life));
-        //   });
-        //   return x;
-        // }
-        // createInput(c: string, life: number): HTMLDivElement {
-        //   let x: HTMLDivElement = Object.create(HTMLDivElement.prototype, {});
-        //   x.appendChild(this.createCharInput(c));
-        //   x.appendChild(this.createLifeInput(life));
-        //   return x;
-        // }
-        // private createLifeInput(life: number): HTMLDivElement {
-        //   const x: HTMLDivElement = Object.create(HTMLDivElement.prototype, {});
-        //   x.appendChild(ƒui.Generator.createInterfaceFromMutator(life as Object));
-        //   return x;
-        // }
-        // private createCharInput(c: string): HTMLDivElement {
-        //   const x: HTMLDivElement = Object.create(HTMLDivElement.prototype, {});
-        //   x.appendChild(ƒui.Generator.createInterfaceFromMutator(c as Object));
-        //   return x;
-        // }
         refresh() {
             const myNode = document.getElementById("vui");
             while (myNode.firstChild) {
@@ -632,7 +564,6 @@ var Game;
             for (let i in x.children) {
                 if (Number(i) <= Game.characters.length)
                     x.children[i]?.setAttribute("label", Game.characters[i].name);
-                // x.children[i].setAttribute("label", "hu");
             }
             myNode.appendChild(x);
         }

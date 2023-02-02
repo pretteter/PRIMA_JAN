@@ -31,6 +31,9 @@ namespace Game {
     }
 
     launch(character: Character, direction: "right" | "left") {
+      console.log("Char Launch Bomb");
+      console.log(character);
+
       audioShoot.play(true);
       this.placeBomb(character);
       this.getComponent(ƒ.ComponentRigidbody).applyForce(
@@ -40,6 +43,7 @@ namespace Game {
           0
         )
       );
+      character.hasRocket = true;
       try {
         this.manageCollision(character);
       } catch (e) {
@@ -97,14 +101,6 @@ namespace Game {
         ? sprite.setAnimation(this.animationExplode)
         : "";
 
-      // if (sprite.getCurrentFrame >= 2) {
-      //   let graph: ƒ.Node = viewport.getBranch();
-      //   graph.removeChild(this);
-      //   sprite.stopAnimation();
-      // } else {
-      //   this.removeBomb();
-      // }
-
       setTimeout(() => {
         this.removeNode(this);
         char.hasRocket = false;
@@ -116,44 +112,37 @@ namespace Game {
         ƒ.EVENT_PHYSICS.COLLISION_ENTER,
         (_event: any) => {
           const collisionPartner = _event.cmpRigidbody.node as ƒ.Node;
-
-          if (collisionPartner.name === "mainland") {
-            console.error("Collison with mainland");
-            this.removeBomb(char);
-          }
-          if (
-            collisionPartner.name === "left_border" ||
-            collisionPartner.name === "right_border"
-          ) {
-            console.error("Collison with border");
-            let parent = collisionPartner.getParent();
-            let coat = parent.getComponent(ƒ.ComponentMaterial).material
-              .coat as any;
-            coat["color"] = {
-              r: Math.random(),
-              g: Math.random(),
-              b: Math.random(),
-              a: 1,
-            };
-            this.removeBomb(char);
-          }
-          if (collisionPartner instanceof Character) {
-            console.error("Collison with char");
-            // gameState.testArray[collisionPartner.instanceId] = (
-            //   Number(gameState.testArray[collisionPartner.instanceId]) - 25
-            // ).toString();
-            collisionPartner.life -= 25;
-            if (collisionPartner.life <= 0) {
-              this.removeNode(collisionPartner);
+          if (char.hasRocket === true) {
+            if (collisionPartner.name === "mainland") {
+              console.error("Collison with mainland");
+            
             }
-            gameState.refresh();
-            this.removeBomb(char);
+            if (
+              collisionPartner.name === "left_border" ||
+              collisionPartner.name === "right_border"
+            ) {
+              console.error("Collison with border");
+              let parent = collisionPartner.getParent();
+              let coat = parent.getComponent(ƒ.ComponentMaterial).material
+                .coat as any;
+              coat["color"] = {
+                r: Math.random(),
+                g: Math.random(),
+                b: Math.random(),
+                a: 1,
+              };
+             
+            }
+            if (collisionPartner instanceof Character) {
+              console.error("Collison with char");
+              collisionPartner.life -= 25;
+              if (collisionPartner.life <= 0) {
+                this.removeNode(collisionPartner);
+              }
+              gameState.refresh();
+            }
           }
-          if (collisionPartner instanceof Character) {
-            console.error("Collison with bomb");
-          }
-          // this.removeBomb(char);
-          // char.hasRocket = false;
+          this.removeBomb(char);
         }
       );
     }

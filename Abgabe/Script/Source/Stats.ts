@@ -34,34 +34,7 @@ namespace Game {
       this.lifeChar.forEach((input) => {
         this.testArray.push(input.life.toString());
       });
-
-      // this.testArray.push();
     }
-    // createInputs(): HTMLDivElement {
-    //   let x: HTMLDivElement = Object.create(HTMLDivElement.prototype, {});
-    //   this.lifeChar.forEach((input) => {
-    //     x.appendChild(this.createInput(input.char, input.life));
-    //   });
-    //   return x;
-    // }
-
-    // createInput(c: string, life: number): HTMLDivElement {
-    //   let x: HTMLDivElement = Object.create(HTMLDivElement.prototype, {});
-    //   x.appendChild(this.createCharInput(c));
-    //   x.appendChild(this.createLifeInput(life));
-    //   return x;
-    // }
-
-    // private createLifeInput(life: number): HTMLDivElement {
-    //   const x: HTMLDivElement = Object.create(HTMLDivElement.prototype, {});
-    //   x.appendChild(ƒui.Generator.createInterfaceFromMutator(life as Object));
-    //   return x;
-    // }
-    // private createCharInput(c: string): HTMLDivElement {
-    //   const x: HTMLDivElement = Object.create(HTMLDivElement.prototype, {});
-    //   x.appendChild(ƒui.Generator.createInterfaceFromMutator(c as Object));
-    //   return x;
-    // }
 
     refresh() {
       const myNode = document.getElementById("vui");
@@ -74,9 +47,7 @@ namespace Game {
       );
       for (let i in x.children) {
         if (Number(i) <= characters.length)
-          x.children[i]?.setAttribute("label",characters[i].name);
-
-        // x.children[i].setAttribute("label", "hu");
+          x.children[i]?.setAttribute("label", characters[i].name);
       }
 
       myNode.appendChild(x);

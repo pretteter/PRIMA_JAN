@@ -25,6 +25,28 @@
     },
     {
       "lookDirection": "right",
+      "moveLeft": "NUMPAD4",
+      "moveRight": "NUMPAD6",
+      "attack": "SPACE",
+      "jump": "NUMPAD8",
+      "startX": "2.5",
+      "startY": "20",
+      "mass": "10"
+    },
+    {
+      "name": "mööööö",
+      "lookDirection": "left",
+      "moveLeft": "A",
+      "moveRight": "D",
+      "attack": "SPACE",
+      "jump": "W",
+      "startX": "2.5",
+      "startY": "20",
+      "mass": "1000"
+    },
+    {
+      "name": "mööööö",
+      "lookDirection": "right",
       "moveLeft": "ARROW_LEFT",
       "moveRight": "ARROW_RIGHT",
       "attack": "NUMPAD0",
@@ -35,13 +57,14 @@
     },
     {
       "lookDirection": "right",
-      "moveLeft": "ARROW_LEFT",
-      "moveRight": "ARROW_RIGHT",
-      "attack": "NUMPAD0",
-      "jump": "ARROW_UP",
+      "moveLeft": "NUMPAD4",
+      "moveRight": "NUMPAD6",
+      "attack": "SPACE",
+      "jump": "NUMPAD8",
       "startX": "2.5",
       "startY": "20",
       "mass": "10"
     }
+
   ]
 }

@@ -48,7 +48,7 @@ namespace Game {
     });
 
     cmpCamera = viewport.camera;
-    cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 4, 18));
+    cmpCamera.mtxPivot.translate(new ƒ.Vector3(0, 4, 15));
     cmpCamera.mtxPivot.rotateY(180);
     gameState = new Stats();
     createSounds();
