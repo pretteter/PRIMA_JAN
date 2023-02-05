@@ -25,6 +25,7 @@ namespace Game {
 
       this.addComponent(new ƒ.ComponentTransform());
       this.addRidgetBody();
+      this.addLight()
       this.addChild(this.createNewSpriteNode("right"));
       await buildBombAnimation(this);
       this.setIdleAnimation();
@@ -115,7 +116,6 @@ namespace Game {
           if (char.hasRocket === true) {
             if (collisionPartner.name === "mainland") {
               console.error("Collison with mainland");
-            
             }
             if (
               collisionPartner.name === "left_border" ||
@@ -125,13 +125,14 @@ namespace Game {
               let parent = collisionPartner.getParent();
               let coat = parent.getComponent(ƒ.ComponentMaterial).material
                 .coat as any;
+              console.log(coat["color"]);
               coat["color"] = {
                 r: Math.random(),
                 g: Math.random(),
                 b: Math.random(),
                 a: 1,
               };
-             
+              console.log(coat["color"]);
             }
             if (collisionPartner instanceof Character) {
               console.error("Collison with char");
@@ -158,6 +159,16 @@ namespace Game {
         });
       }
       viewport.draw();
+    }
+
+    private addLight() {
+      let light = new ƒ.ComponentLight();
+      light.setType(ƒ.LightPoint);
+      light.mtxPivot.translate(new ƒ.Vector3(0, 0, 1))
+      light.mtxPivot.scale(new ƒ.Vector3(20, 20, 2))
+      // light.mtxPivot.rotate(new ƒ.Vector3(0, 0, 0));
+      this.addComponent(light);
+    
     }
   }
 }

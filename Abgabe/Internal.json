@@ -160,20 +160,6 @@
       }
     }
   },
-  "Material|2023-02-02T12:54:32.120Z|59252": {
-    "ƒ.Material": {
-      "name": "ShaderGouraud",
-      "idResource": "Material|2023-02-02T12:54:32.120Z|59252",
-      "shader": "ShaderGouraud",
-      "coat": {
-        "ƒ.CoatRemissive": {
-          "color": "[0.3176470588235294, 1, 0, 1]",
-          "diffuse": 1,
-          "specular": 0
-        }
-      }
-    }
-  },
   "Graph|2023-01-11T21:27:37.847Z|54791": {
     "ƒ.Graph": {
       "name": "Ground",
@@ -188,11 +174,11 @@
               "ComponentMesh": [
                 {
                   "ƒ.ComponentMesh": {
-                    "idMesh": "MeshTerrain|2023-01-10T18:48:23.158Z|00318",
+                    "idMesh": "MeshQuad|2023-02-05T14:12:55.449Z|38434",
                     "pivot": {
                       "translation": "[0, 0, 0]",
                       "rotation": "[0, 0, 0]",
-                      "scaling": "[20, 3, 1]"
+                      "scaling": "[20, 4, 1]"
                     },
                     "Component": {
                       "active": true
@@ -231,7 +217,7 @@
                     "pivot": {
                       "translation": "[0, 0, 0]",
                       "rotation": "[0, 0, 0]",
-                      "scaling": "[20, 3, 1]"
+                      "scaling": "[20, 4, 1]"
                     },
                     "Component": {
                       "active": true
@@ -253,7 +239,7 @@
                     "Component": {
                       "active": true
                     },
-                    "idMaterial": "Material|2023-02-02T12:54:32.120Z|59252"
+                    "idMaterial": "Material|2023-02-05T14:14:08.234Z|13776"
                   }
                 }
               ]
@@ -469,6 +455,26 @@
       ],
       "idResource": "Graph|2023-01-11T21:27:37.847Z|54791",
       "type": "Graph"
+    }
+  },
+  "MeshQuad|2023-02-05T14:12:55.449Z|38434": {
+    "ƒ.MeshQuad": {
+      "idResource": "MeshQuad|2023-02-05T14:12:55.449Z|38434",
+      "name": "MeshGround"
+    }
+  },
+  "Material|2023-02-05T14:14:08.234Z|13776": {
+    "ƒ.Material": {
+      "name": "ShaderGround",
+      "idResource": "Material|2023-02-05T14:14:08.234Z|13776",
+      "shader": "ShaderPhong",
+      "coat": {
+        "ƒ.CoatRemissive": {
+          "color": "[0.11764705882352941, 1, 0, 1]",
+          "diffuse": 1,
+          "specular": 0
+        }
+      }
     }
   }
 }

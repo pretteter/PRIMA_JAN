@@ -154,6 +154,7 @@ var Game;
             this.instanceId = ++Bomb.amountOfInstances;
             this.addComponent(new ƒ.ComponentTransform());
             this.addRidgetBody();
+            this.addLight();
             this.addChild(this.createNewSpriteNode("right"));
             await Game.buildBombAnimation(this);
             this.setIdleAnimation();
@@ -225,12 +226,14 @@ var Game;
                         let parent = collisionPartner.getParent();
                         let coat = parent.getComponent(ƒ.ComponentMaterial).material
                             .coat;
+                        console.log(coat["color"]);
                         coat["color"] = {
                             r: Math.random(),
                             g: Math.random(),
                             b: Math.random(),
                             a: 1,
                         };
+                        console.log(coat["color"]);
                     }
                     if (collisionPartner instanceof Game.Character) {
                         console.error("Collison with char");
@@ -256,6 +259,14 @@ var Game;
                 });
             }
             Game.viewport.draw();
+        }
+        addLight() {
+            let light = new ƒ.ComponentLight();
+            light.setType(ƒ.LightPoint);
+            light.mtxPivot.translate(new ƒ.Vector3(0, 0, 1));
+            light.mtxPivot.scale(new ƒ.Vector3(20, 20, 2));
+            // light.mtxPivot.rotate(new ƒ.Vector3(0, 0, 0));
+            this.addComponent(light);
         }
     }
     Game.Bomb = Bomb;
@@ -363,10 +374,11 @@ var Game;
         }
         addLight() {
             let light = new ƒ.ComponentLight();
-            light.setType(ƒ.LightDirectional);
-            light.mtxPivot.rotate(new ƒ.Vector3(0, 0, 0));
+            light.setType(ƒ.LightPoint);
+            light.mtxPivot.translate(new ƒ.Vector3(0, 0, 1));
+            light.mtxPivot.scale(new ƒ.Vector3(20, 20, 2));
+            // light.mtxPivot.rotate(new ƒ.Vector3(0, 0, 0));
             this.addComponent(light);
-            console.error(light);
         }
     }
     Game.Character = Character;

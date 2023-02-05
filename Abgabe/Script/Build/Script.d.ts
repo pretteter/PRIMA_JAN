@@ -29,6 +29,7 @@ declare namespace Game {
         removeBomb(char: Character): void;
         manageCollision(char: Character): void;
         removeNode(node: ƒ.Node): void;
+        private addLight;
     }
 }
 declare namespace Game {

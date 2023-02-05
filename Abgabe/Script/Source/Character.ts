@@ -152,10 +152,12 @@ namespace Game {
 
     private addLight() {
       let light = new ƒ.ComponentLight();
-      light.setType(ƒ.LightDirectional);
-      light.mtxPivot.rotate(new ƒ.Vector3(0, 0, 0));
+      light.setType(ƒ.LightPoint);
+      light.mtxPivot.translate(new ƒ.Vector3(0, 0, 1))
+      light.mtxPivot.scale(new ƒ.Vector3(20, 20, 2))
+      // light.mtxPivot.rotate(new ƒ.Vector3(0, 0, 0));
       this.addComponent(light);
-      console.error(light);
+    
     }
   }
 }
