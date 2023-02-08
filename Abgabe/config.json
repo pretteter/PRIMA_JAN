@@ -1,0 +1,17 @@
+{
+  "_comment": "Bis zu 4 Charakteren können so eingefügt werden. Mehr werden ignoriert",
+  "character": [
+    {
+      "name": "mööööö",
+      "lookDirection": "right",
+      "moveLeft": "A",
+      "moveRight": "D",
+      "attack": "SPACE",
+      "jump": "W",
+      "startX": "2.5",
+      "startY": "20",
+      "mass": "1000"
+    }
+
+  ]
+}

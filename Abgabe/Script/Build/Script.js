@@ -228,6 +228,7 @@ var Game;
                         light.color.r = Math.random();
                         light.color.g = Math.random();
                         light.color.b = Math.random();
+                        light.color.a = Math.random();
                     }
                     if (collisionPartner instanceof Game.Character) {
                         console.error("Collison with char");
