@@ -223,17 +223,11 @@ var Game;
                     if (collisionPartner.name === "left_border" ||
                         collisionPartner.name === "right_border") {
                         console.error("Collison with border");
-                        let parent = collisionPartner.getParent();
-                        let coat = parent.getComponent(ƒ.ComponentMaterial).material
-                            .coat;
-                        console.log(coat["color"]);
-                        coat["color"] = {
-                            r: Math.random(),
-                            g: Math.random(),
-                            b: Math.random(),
-                            a: 1,
-                        };
-                        console.log(coat["color"]);
+                        let main = collisionPartner.getParent().getParent().getParent();
+                        let light = main.getComponent(ƒ.ComponentLight).light;
+                        light.color.r = Math.random();
+                        light.color.g = Math.random();
+                        light.color.b = Math.random();
                     }
                     if (collisionPartner instanceof Game.Character) {
                         console.error("Collison with char");
@@ -301,7 +295,7 @@ var Game;
             this.mtxLocal.translate(new ƒ.Vector3(coordinateX, coordinateY, 0));
             this.addChild(this.createNewSpriteNode(this.lookDirection));
             this.addRigidBody();
-            this.addLight();
+            // this.addLight();
             Character.amountOfInstances % 4 === 0
                 ? this.addComponent(new Game.RotateRigidBody())
                 : "";
@@ -345,6 +339,9 @@ var Game;
         }
         turnCharacter(otherDirectionThanSprite) {
             this.getComponent(ƒ.ComponentRigidbody).rotateBody(new ƒ.Vector3(0, 180, 0));
+            // this.getComponent(ƒ.ComponentLight).mtxPivot.rotate(
+            //   new ƒ.Vector3(0, 0, 180)
+            // );
             if (otherDirectionThanSprite)
                 return;
             this.lookDirection === "right"
@@ -371,14 +368,6 @@ var Game;
             rigidBody.mtxPivot.scale(new ƒ.Vector3(0.5, 0.5, 1));
             rigidBody.initialize();
             this.addComponent(rigidBody);
-        }
-        addLight() {
-            let light = new ƒ.ComponentLight();
-            light.setType(ƒ.LightPoint);
-            light.mtxPivot.translate(new ƒ.Vector3(0, 0, 1));
-            light.mtxPivot.scale(new ƒ.Vector3(20, 20, 2));
-            // light.mtxPivot.rotate(new ƒ.Vector3(0, 0, 0));
-            this.addComponent(light);
         }
     }
     Game.Character = Character;

@@ -50,7 +50,7 @@ namespace Game {
       this.mtxLocal.translate(new ƒ.Vector3(coordinateX, coordinateY, 0));
       this.addChild(this.createNewSpriteNode(this.lookDirection));
       this.addRigidBody();
-      this.addLight();
+      // this.addLight();
 
       Character.amountOfInstances % 4 === 0
         ? this.addComponent(new RotateRigidBody())
@@ -117,6 +117,9 @@ namespace Game {
       this.getComponent(ƒ.ComponentRigidbody).rotateBody(
         new ƒ.Vector3(0, 180, 0)
       );
+      // this.getComponent(ƒ.ComponentLight).mtxPivot.rotate(
+      //   new ƒ.Vector3(0, 0, 180)
+      // );
       if (otherDirectionThanSprite) return;
       this.lookDirection === "right"
         ? (this.lookDirection = "left")
@@ -150,14 +153,13 @@ namespace Game {
       this.addComponent(rigidBody);
     }
 
-    private addLight() {
-      let light = new ƒ.ComponentLight();
-      light.setType(ƒ.LightPoint);
-      light.mtxPivot.translate(new ƒ.Vector3(0, 0, 1))
-      light.mtxPivot.scale(new ƒ.Vector3(20, 20, 2))
-      // light.mtxPivot.rotate(new ƒ.Vector3(0, 0, 0));
-      this.addComponent(light);
-    
-    }
+    // private addLight() {
+    //   let light = new ƒ.ComponentLight();
+    //   light.setType(ƒ.LightPoint);
+    //   light.mtxPivot.translate(new ƒ.Vector3(0, 0, 1));
+    //   light.mtxPivot.scale(new ƒ.Vector3(20, 20, 2));
+    //   // light.mtxPivot.rotate(new ƒ.Vector3(180, 180, 180));
+    //   this.addComponent(light);
+    // }
   }
 }

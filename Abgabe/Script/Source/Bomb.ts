@@ -25,7 +25,7 @@ namespace Game {
 
       this.addComponent(new ƒ.ComponentTransform());
       this.addRidgetBody();
-      this.addLight()
+      this.addLight();
       this.addChild(this.createNewSpriteNode("right"));
       await buildBombAnimation(this);
       this.setIdleAnimation();
@@ -122,17 +122,11 @@ namespace Game {
               collisionPartner.name === "right_border"
             ) {
               console.error("Collison with border");
-              let parent = collisionPartner.getParent();
-              let coat = parent.getComponent(ƒ.ComponentMaterial).material
-                .coat as any;
-              console.log(coat["color"]);
-              coat["color"] = {
-                r: Math.random(),
-                g: Math.random(),
-                b: Math.random(),
-                a: 1,
-              };
-              console.log(coat["color"]);
+              let main = collisionPartner.getParent().getParent().getParent();
+              let light = main.getComponent(ƒ.ComponentLight).light;
+              light.color.r = Math.random();
+              light.color.g = Math.random();
+              light.color.b = Math.random();
             }
             if (collisionPartner instanceof Character) {
               console.error("Collison with char");
@@ -164,11 +158,10 @@ namespace Game {
     private addLight() {
       let light = new ƒ.ComponentLight();
       light.setType(ƒ.LightPoint);
-      light.mtxPivot.translate(new ƒ.Vector3(0, 0, 1))
-      light.mtxPivot.scale(new ƒ.Vector3(20, 20, 2))
+      light.mtxPivot.translate(new ƒ.Vector3(0, 0, 1));
+      light.mtxPivot.scale(new ƒ.Vector3(20, 20, 2));
       // light.mtxPivot.rotate(new ƒ.Vector3(0, 0, 0));
       this.addComponent(light);
-    
     }
   }
 }

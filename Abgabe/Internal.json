@@ -61,7 +61,27 @@
     "ƒ.Graph": {
       "name": "World",
       "active": true,
-      "components": {},
+      "components": {
+        "ComponentLight": [
+          {
+            "ƒ.ComponentLight": {
+              "pivot": {
+                "translation": "[0, 0, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[1, 1, 1]"
+              },
+              "light": {
+                "ƒ.LightAmbient": {
+                  "color": "[0, 1, 0.03137254901960784, 1]"
+                }
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          }
+        ]
+      },
       "children": [
         {
           "ƒ.Node": {
@@ -111,6 +131,34 @@
             "name": "Ground",
             "idSource": "Graph|2023-01-11T21:27:37.847Z|54791"
           }
+        },
+        {
+          "ƒ.Node": {
+            "name": "Light",
+            "active": true,
+            "components": {
+              "ComponentLight": [
+                {
+                  "ƒ.ComponentLight": {
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "light": {
+                      "ƒ.LightAmbient": {
+                        "color": "[0.3176470588235294, 1, 0, 1]"
+                      }
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
         }
       ],
       "idResource": "Graph|2023-01-10T18:12:22.667Z|11898",
@@ -156,6 +204,26 @@
       "coat": {
         "ƒ.CoatColored": {
           "color": "[1, 1, 1, 1]"
+        }
+      }
+    }
+  },
+  "MeshQuad|2023-02-05T14:12:55.449Z|38434": {
+    "ƒ.MeshQuad": {
+      "idResource": "MeshQuad|2023-02-05T14:12:55.449Z|38434",
+      "name": "MeshGround"
+    }
+  },
+  "Material|2023-02-05T14:14:08.234Z|13776": {
+    "ƒ.Material": {
+      "name": "ShaderGround",
+      "idResource": "Material|2023-02-05T14:14:08.234Z|13776",
+      "shader": "ShaderPhong",
+      "coat": {
+        "ƒ.CoatRemissive": {
+          "color": "[0.06666666666666667, 1, 0, 1]",
+          "diffuse": 1,
+          "specular": 0
         }
       }
     }
@@ -455,26 +523,6 @@
       ],
       "idResource": "Graph|2023-01-11T21:27:37.847Z|54791",
       "type": "Graph"
-    }
-  },
-  "MeshQuad|2023-02-05T14:12:55.449Z|38434": {
-    "ƒ.MeshQuad": {
-      "idResource": "MeshQuad|2023-02-05T14:12:55.449Z|38434",
-      "name": "MeshGround"
-    }
-  },
-  "Material|2023-02-05T14:14:08.234Z|13776": {
-    "ƒ.Material": {
-      "name": "ShaderGround",
-      "idResource": "Material|2023-02-05T14:14:08.234Z|13776",
-      "shader": "ShaderPhong",
-      "coat": {
-        "ƒ.CoatRemissive": {
-          "color": "[0.11764705882352941, 1, 0, 1]",
-          "diffuse": 1,
-          "specular": 0
-        }
-      }
     }
   }
 }
