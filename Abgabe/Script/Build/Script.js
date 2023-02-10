@@ -165,7 +165,6 @@ var Game;
             Game.audioShoot.play(true);
             this.placeBomb(character);
             this.getComponent(ƒ.ComponentRigidbody).applyForce(new ƒ.Vector3(direction === "right" ? this.forceStart / 2 : -this.forceStart / 2, this.forceStart, 0));
-            character.hasRocket = true;
             try {
                 this.manageCollision(character);
             }
@@ -210,34 +209,23 @@ var Game;
                 : "";
             setTimeout(() => {
                 this.removeNode(this);
+                this.getComponent(ƒ.ComponentRigidbody).removeEventListener("ColliderEnteredCollision" /* ƒ.EVENT_PHYSICS.COLLISION_ENTER */, (_event) => { });
                 char.hasRocket = false;
             }, 250);
         }
         manageCollision(char) {
             this.getComponent(ƒ.ComponentRigidbody).addEventListener("ColliderEnteredCollision" /* ƒ.EVENT_PHYSICS.COLLISION_ENTER */, (_event) => {
                 const collisionPartner = _event.cmpRigidbody.node;
-                if (char.hasRocket === true) {
-                    if (collisionPartner.name === "mainland") {
-                        console.error("Collison with mainland");
+                if (collisionPartner.name === "mainland") {
+                    console.error("Collison with mainland");
+                }
+                if (collisionPartner instanceof Game.Character) {
+                    console.error("Collison with char");
+                    collisionPartner.life -= 25;
+                    if (collisionPartner.life <= 0) {
+                        this.removeNode(collisionPartner);
                     }
-                    if (collisionPartner.name === "left_border" ||
-                        collisionPartner.name === "right_border") {
-                        console.error("Collison with border");
-                        let main = collisionPartner.getParent().getParent().getParent();
-                        let light = main.getComponent(ƒ.ComponentLight).light;
-                        light.color.r = Math.random();
-                        light.color.g = Math.random();
-                        light.color.b = Math.random();
-                        light.color.a = Math.random();
-                    }
-                    if (collisionPartner instanceof Game.Character) {
-                        console.error("Collison with char");
-                        collisionPartner.life -= 25;
-                        if (collisionPartner.life <= 0) {
-                            this.removeNode(collisionPartner);
-                        }
-                        Game.gameState.refresh();
-                    }
+                    Game.gameState.refresh();
                 }
                 this.removeBomb(char);
             });
@@ -322,8 +310,8 @@ var Game;
         attack() {
             if (this.hasRocket === false) {
                 const rocket = new Game.Bomb(80000, 50);
-                rocket.launch(this, this.lookDirection);
                 this.hasRocket = true;
+                rocket.launch(this, this.lookDirection);
             }
         }
         setIdleAnimation(otherDirectionThanSprite) {
@@ -477,10 +465,10 @@ var Game;
     }
     async function hndLoad(_event) {
         Game.config = await (await fetch("Script/Source/config.json")).json();
-        Game.config.character.forEach(async (c, i) => {
-            Game.characters.push(new Game.Character(c.name, c.lookDirection, c.startX, c.startY, c.mass));
+        Game.config.character.forEach(async (char, i) => {
+            Game.characters.push(new Game.Character(char.name, char.lookDirection, char.startX, char.startY, char.mass));
             await Game.buildAllAnimationsForCharacter(Game.characters[i]);
-            c.lookDirection === "left"
+            char.lookDirection === "left"
                 ? Game.characters[i].setIdleAnimation(true)
                 : Game.characters[i].setIdleAnimation();
         });
@@ -489,6 +477,28 @@ var Game;
         cmpCamera.mtxPivot.rotateY(180);
         Game.gameState = new Game.Stats();
         Game.createSounds();
+        manageBorderCollision();
+    }
+    function manageBorderCollision() {
+        let borders = Game.viewport
+            .getBranch()
+            .getChildrenByName("Ground")[0]
+            .getChildrenByName("mainland")[0]
+            .getChildren();
+        borders.forEach((b) => {
+            b.getComponent(ƒ.ComponentRigidbody).addEventListener("ColliderEnteredCollision" /* ƒ.EVENT_PHYSICS.COLLISION_ENTER */, (_event) => {
+                const collisionPartner = _event.cmpRigidbody.node;
+                if (collisionPartner instanceof Game.Bomb) {
+                    console.error("Collison with " + b.name);
+                    let main = b.getParent().getParent().getParent();
+                    let light = main.getComponent(ƒ.ComponentLight).light;
+                    light.color.r = Math.random();
+                    light.color.g = Math.random();
+                    light.color.b = Math.random();
+                    light.color.a = Math.random();
+                }
+            });
+        });
     }
 })(Game || (Game = {}));
 var Game;

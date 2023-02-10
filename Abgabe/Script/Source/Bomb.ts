@@ -44,7 +44,6 @@ namespace Game {
           0
         )
       );
-      character.hasRocket = true;
       try {
         this.manageCollision(character);
       } catch (e) {
@@ -104,6 +103,10 @@ namespace Game {
 
       setTimeout(() => {
         this.removeNode(this);
+        this.getComponent(ƒ.ComponentRigidbody).removeEventListener(
+          ƒ.EVENT_PHYSICS.COLLISION_ENTER,
+          (_event: any) => {}
+        );
         char.hasRocket = false;
       }, 250);
     }
@@ -113,31 +116,19 @@ namespace Game {
         ƒ.EVENT_PHYSICS.COLLISION_ENTER,
         (_event: any) => {
           const collisionPartner = _event.cmpRigidbody.node as ƒ.Node;
-          if (char.hasRocket === true) {
-            if (collisionPartner.name === "mainland") {
-              console.error("Collison with mainland");
-            }
-            if (
-              collisionPartner.name === "left_border" ||
-              collisionPartner.name === "right_border"
-            ) {
-              console.error("Collison with border");
-              let main = collisionPartner.getParent().getParent().getParent();
-              let light = main.getComponent(ƒ.ComponentLight).light;
-              light.color.r = Math.random();
-              light.color.g = Math.random();
-              light.color.b = Math.random();
-              light.color.a = Math.random();
-            }
-            if (collisionPartner instanceof Character) {
-              console.error("Collison with char");
-              collisionPartner.life -= 25;
-              if (collisionPartner.life <= 0) {
-                this.removeNode(collisionPartner);
-              }
-              gameState.refresh();
-            }
+
+          if (collisionPartner.name === "mainland") {
+            console.error("Collison with mainland");
           }
+          if (collisionPartner instanceof Character) {
+            console.error("Collison with char");
+            collisionPartner.life -= 25;
+            if (collisionPartner.life <= 0) {
+              this.removeNode(collisionPartner);
+            }
+            gameState.refresh();
+          }
+
           this.removeBomb(char);
         }
       );

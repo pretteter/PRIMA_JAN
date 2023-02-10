@@ -94,8 +94,8 @@ namespace Game {
     attack() {
       if (this.hasRocket === false) {
         const rocket: Bomb = new Bomb(80000, 50);
-        rocket.launch(this, this.lookDirection);
         this.hasRocket = true;
+        rocket.launch(this, this.lookDirection);
       }
     }
 

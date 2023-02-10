@@ -36,13 +36,19 @@ namespace Game {
 
   async function hndLoad(_event: Event): Promise<void> {
     config = await (await fetch("Script/Source/config.json")).json();
-    config.character.forEach(async (c, i) => {
+    config.character.forEach(async (char, i) => {
       characters.push(
-        new Character(c.name, c.lookDirection, c.startX, c.startY, c.mass)
+        new Character(
+          char.name,
+          char.lookDirection,
+          char.startX,
+          char.startY,
+          char.mass
+        )
       );
 
       await buildAllAnimationsForCharacter(characters[i]);
-      c.lookDirection === "left"
+      char.lookDirection === "left"
         ? characters[i].setIdleAnimation(true)
         : characters[i].setIdleAnimation();
     });
@@ -52,5 +58,31 @@ namespace Game {
     cmpCamera.mtxPivot.rotateY(180);
     gameState = new Stats();
     createSounds();
+    manageBorderCollision();
+  }
+
+  function manageBorderCollision() {
+    let borders = viewport
+      .getBranch()
+      .getChildrenByName("Ground")[0]
+      .getChildrenByName("mainland")[0]
+      .getChildren();
+    borders.forEach((b) => {
+      b.getComponent(ƒ.ComponentRigidbody).addEventListener(
+        ƒ.EVENT_PHYSICS.COLLISION_ENTER,
+        (_event: any) => {
+          const collisionPartner = _event.cmpRigidbody.node as ƒ.Node;
+          if (collisionPartner instanceof Bomb) {
+            console.error("Collison with " + b.name);
+            let main = b.getParent().getParent().getParent();
+            let light = main.getComponent(ƒ.ComponentLight).light;
+            light.color.r = Math.random();
+            light.color.g = Math.random();
+            light.color.b = Math.random();
+            light.color.a = Math.random();
+          }
+        }
+      );
+    });
   }
 }
