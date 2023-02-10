@@ -11,6 +11,17 @@
       "startX": "2.5",
       "startY": "20",
       "mass": "1000"
+    },
+    {
+      "name": "määäää",
+      "lookDirection": "left",
+      "moveLeft": "ARROW_LEFT",
+      "moveRight": "ARROW_RIGHT",
+      "attack": "NUMPAD0",
+      "jump": "ARROW_UP",
+      "startX": "-2.5",
+      "startY": "20",
+      "mass": "100"
     }
 
   ]
