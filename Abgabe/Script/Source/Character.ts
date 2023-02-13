@@ -73,7 +73,7 @@ namespace Game {
       ) {
         this.getComponent(ƒ.ComponentRigidbody).applyForce(
           new ƒ.Vector3(
-            direction === "right" ? this.mass * 10 : -this.mass * 10,
+            direction === "right" ? this.mass * 20 : -this.mass * 20,
             0,
             0
           )
@@ -93,8 +93,8 @@ namespace Game {
 
     attack() {
       if (this.hasRocket === false) {
-        const rocket: Bomb = new Bomb(80000, 50);
         this.hasRocket = true;
+        const rocket: Bomb = new Bomb(80000, 50);
         rocket.launch(this, this.lookDirection);
       }
     }

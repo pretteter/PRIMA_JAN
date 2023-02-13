@@ -299,7 +299,7 @@ var Game;
             this.lookDirection !== direction ? this.turnCharacter() : "";
             if (this.getComponent(ƒ.ComponentRigidbody).getVelocity().x >= -10 &&
                 this.getComponent(ƒ.ComponentRigidbody).getVelocity().x <= 10) {
-                this.getComponent(ƒ.ComponentRigidbody).applyForce(new ƒ.Vector3(direction === "right" ? this.mass * 10 : -this.mass * 10, 0, 0));
+                this.getComponent(ƒ.ComponentRigidbody).applyForce(new ƒ.Vector3(direction === "right" ? this.mass * 20 : -this.mass * 20, 0, 0));
             }
         }
         jump() {
@@ -309,8 +309,8 @@ var Game;
         }
         attack() {
             if (this.hasRocket === false) {
-                const rocket = new Game.Bomb(80000, 50);
                 this.hasRocket = true;
+                const rocket = new Game.Bomb(80000, 50);
                 rocket.launch(this, this.lookDirection);
             }
         }
