@@ -297,9 +297,9 @@ var Game;
             this.animationCurrent !== anmToUse ? sprite.setAnimation(anmToUse) : "";
             this.animationCurrent = anmToUse;
             this.lookDirection !== direction ? this.turnCharacter() : "";
-            if (this.getComponent(ƒ.ComponentRigidbody).getVelocity().x >= -10 &&
-                this.getComponent(ƒ.ComponentRigidbody).getVelocity().x <= 10) {
-                this.getComponent(ƒ.ComponentRigidbody).applyForce(new ƒ.Vector3(direction === "right" ? this.mass * 20 : -this.mass * 20, 0, 0));
+            if (this.getComponent(ƒ.ComponentRigidbody).getVelocity().x >= -5 &&
+                this.getComponent(ƒ.ComponentRigidbody).getVelocity().x <= 5) {
+                this.getComponent(ƒ.ComponentRigidbody).applyForce(new ƒ.Vector3(direction === "right" ? this.mass * 50 : -this.mass * 50, 0, 0));
             }
         }
         jump() {
