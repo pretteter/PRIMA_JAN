@@ -73,7 +73,7 @@ namespace Game {
       ) {
         this.getComponent(ƒ.ComponentRigidbody).applyForce(
           new ƒ.Vector3(
-            direction === "right" ? this.mass * 50 : -this.mass * 50,
+            direction === "right" ? this.mass * 10 : -this.mass * 10,
             0,
             0
           )

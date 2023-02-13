@@ -67,14 +67,14 @@ namespace Game {
       .getChildrenByName("Ground")[0]
       .getChildrenByName("mainland")[0]
       .getChildren();
-    borders.forEach((b) => {
-      b.getComponent(ƒ.ComponentRigidbody).addEventListener(
+    borders.forEach((border) => {
+      border.getComponent(ƒ.ComponentRigidbody).addEventListener(
         ƒ.EVENT_PHYSICS.COLLISION_ENTER,
         (_event: any) => {
           const collisionPartner = _event.cmpRigidbody.node as ƒ.Node;
           if (collisionPartner instanceof Bomb) {
-            console.error("Collison with " + b.name);
-            let main = b.getParent().getParent().getParent();
+            console.error("Collison with " + border.name);
+            let main = border.getParent().getParent().getParent();
             let light = main.getComponent(ƒ.ComponentLight).light;
             light.color.r = Math.random();
             light.color.g = Math.random();

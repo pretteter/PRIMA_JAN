@@ -299,7 +299,7 @@ var Game;
             this.lookDirection !== direction ? this.turnCharacter() : "";
             if (this.getComponent(ƒ.ComponentRigidbody).getVelocity().x >= -10 &&
                 this.getComponent(ƒ.ComponentRigidbody).getVelocity().x <= 10) {
-                this.getComponent(ƒ.ComponentRigidbody).applyForce(new ƒ.Vector3(direction === "right" ? this.mass * 50 : -this.mass * 50, 0, 0));
+                this.getComponent(ƒ.ComponentRigidbody).applyForce(new ƒ.Vector3(direction === "right" ? this.mass * 10 : -this.mass * 10, 0, 0));
             }
         }
         jump() {
@@ -485,12 +485,12 @@ var Game;
             .getChildrenByName("Ground")[0]
             .getChildrenByName("mainland")[0]
             .getChildren();
-        borders.forEach((b) => {
-            b.getComponent(ƒ.ComponentRigidbody).addEventListener("ColliderEnteredCollision" /* ƒ.EVENT_PHYSICS.COLLISION_ENTER */, (_event) => {
+        borders.forEach((border) => {
+            border.getComponent(ƒ.ComponentRigidbody).addEventListener("ColliderEnteredCollision" /* ƒ.EVENT_PHYSICS.COLLISION_ENTER */, (_event) => {
                 const collisionPartner = _event.cmpRigidbody.node;
                 if (collisionPartner instanceof Game.Bomb) {
-                    console.error("Collison with " + b.name);
-                    let main = b.getParent().getParent().getParent();
+                    console.error("Collison with " + border.name);
+                    let main = border.getParent().getParent().getParent();
                     let light = main.getComponent(ƒ.ComponentLight).light;
                     light.color.r = Math.random();
                     light.color.g = Math.random();
