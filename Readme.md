@@ -27,7 +27,7 @@ Hochschule Furtwangen<br>
 
 ### Zusätzliche Links
 [GitHub Pages](https://pretteter.github.io/PRIMA_JAN/Abgabe/index)<br>
-[Source Code](https://github.com/pretteter/PRIMA_JAN/tree/main/Abgabe)<br>
+[Source Code](https://github.com/pretteter/PRIMA_JAN/tree/main/Abgabe/Script/Source)<br>
 [Konzept](https://github.com/pretteter/PRIMA_JAN/blob/main/Abgabe/Design_Document_Christmeier_Jan_PRIMA_MIB_WS_2022-2023.pdf)<br>
 
 ## Checkliste für die Abschlussarbeit
