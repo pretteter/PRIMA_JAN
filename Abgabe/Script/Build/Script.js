@@ -446,7 +446,7 @@ var Game;
     document.addEventListener("interactiveViewportStarted", start);
     async function start(_event) {
         Game.viewport = _event.detail;
-        Game.viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
+        // viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
         await hndLoad(_event);
         Game.audioBackground.play(true);
         ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);
