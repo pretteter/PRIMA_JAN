@@ -28,7 +28,7 @@ Hochschule Furtwangen<br>
 ### Zusätzliche Links
 [GitHub Pages](https://pretteter.github.io/PRIMA_JAN/Abgabe/index)<br>
 [Source Code](https://github.com/pretteter/PRIMA_JAN/tree/main/Abgabe)<br>
-[Konzept](https://github.com/qlulezz/Prima-WiSe-2022-23/blob/main/XSoldier/xsoldier.pdf)<br>
+[Konzept](https://github.com/pretteter/PRIMA_JAN/tree/main/Abgabe/Christmeier_Jan_PRIMA_MIB_WS_2022-2023.pdf)<br>
 
 ## Checkliste für die Abschlussarbeit
 © Prof. Dipl.-Ing. Jirka R. Dell'Oro-Friedl, HFU
