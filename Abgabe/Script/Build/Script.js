@@ -4,9 +4,6 @@ var Game;
     async function buildAllAnimationsForCharacter(character) {
         await buildMoveAnimation(character);
         await buildIdleAnimation(character);
-        // await buildJumpAnimation(character);
-        // await buildFallAnimation(character);
-        // await buildRunAnimation(character);
     }
     Game.buildAllAnimationsForCharacter = buildAllAnimationsForCharacter;
     async function buildBombAnimation(bomb) {
@@ -343,7 +340,7 @@ var Game;
             let spriteNode = new ƒAid.NodeSprite("Sprite");
             spriteNode.addComponent(new ƒ.ComponentTransform());
             spriteNode.setFrameDirection(frameDirection === "left" ? -1 : frameDirection === "right" ? 1 : 1);
-            spriteNode.mtxLocal.translateY(-0.25);
+            // spriteNode.mtxLocal.translateY(0.5);
             spriteNode.activate(false);
             return spriteNode;
         }
@@ -355,6 +352,7 @@ var Game;
             rigidBody.typeBody = ƒ.BODY_TYPE.DYNAMIC;
             rigidBody.effectRotation = new ƒ.Vector3(0, 0, 0);
             rigidBody.mtxPivot.scale(new ƒ.Vector3(0.5, 0.5, 1));
+            rigidBody.mtxPivot.translateY(0.5);
             rigidBody.initialize();
             this.addComponent(rigidBody);
         }
@@ -448,7 +446,7 @@ var Game;
     document.addEventListener("interactiveViewportStarted", start);
     async function start(_event) {
         Game.viewport = _event.detail;
-        // viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
+        Game.viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
         await hndLoad(_event);
         Game.audioBackground.play(true);
         ƒ.Loop.addEventListener("loopFrame" /* ƒ.EVENT.LOOP_FRAME */, update);

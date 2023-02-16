@@ -131,34 +131,6 @@
             "name": "Ground",
             "idSource": "Graph|2023-01-11T21:27:37.847Z|54791"
           }
-        },
-        {
-          "ƒ.Node": {
-            "name": "Light",
-            "active": true,
-            "components": {
-              "ComponentLight": [
-                {
-                  "ƒ.ComponentLight": {
-                    "pivot": {
-                      "translation": "[0, 0, 0]",
-                      "rotation": "[0, 0, 0]",
-                      "scaling": "[1, 1, 1]"
-                    },
-                    "light": {
-                      "ƒ.LightAmbient": {
-                        "color": "[0.3176470588235294, 1, 0, 1]"
-                      }
-                    },
-                    "Component": {
-                      "active": true
-                    }
-                  }
-                }
-              ]
-            },
-            "children": []
-          }
         }
       ],
       "idResource": "Graph|2023-01-10T18:12:22.667Z|11898",

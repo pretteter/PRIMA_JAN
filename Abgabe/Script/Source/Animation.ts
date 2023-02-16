@@ -2,9 +2,6 @@ namespace Game {
   export async function buildAllAnimationsForCharacter(character: Character) {
     await buildMoveAnimation(character);
     await buildIdleAnimation(character);
-    // await buildJumpAnimation(character);
-    // await buildFallAnimation(character);
-    // await buildRunAnimation(character);
   }
 
   export async function buildBombAnimation(bomb: Bomb) {

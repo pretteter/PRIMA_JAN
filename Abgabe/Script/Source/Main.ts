@@ -15,7 +15,7 @@ namespace Game {
 
   async function start(_event: CustomEvent): Promise<void> {
     viewport = _event.detail;
-    // viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
+    viewport.physicsDebugMode = ƒ.PHYSICS_DEBUGMODE.COLLIDERS;
     await hndLoad(_event);
     audioBackground.play(true);
 

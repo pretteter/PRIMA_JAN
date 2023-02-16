@@ -136,7 +136,7 @@ namespace Game {
       spriteNode.setFrameDirection(
         frameDirection === "left" ? -1 : frameDirection === "right" ? 1 : 1
       );
-      spriteNode.mtxLocal.translateY(-0.25);
+      // spriteNode.mtxLocal.translateY(0.5);
       spriteNode.activate(false);
       return spriteNode;
     }
@@ -149,6 +149,7 @@ namespace Game {
       rigidBody.typeBody = ƒ.BODY_TYPE.DYNAMIC;
       rigidBody.effectRotation = new ƒ.Vector3(0, 0, 0);
       rigidBody.mtxPivot.scale(new ƒ.Vector3(0.5, 0.5, 1));
+      rigidBody.mtxPivot.translateY(0.5);
       rigidBody.initialize();
       this.addComponent(rigidBody);
     }
