@@ -214,10 +214,10 @@ var Game;
             this.getComponent(ƒ.ComponentRigidbody).addEventListener("ColliderEnteredCollision" /* ƒ.EVENT_PHYSICS.COLLISION_ENTER */, (_event) => {
                 const collisionPartner = _event.cmpRigidbody.node;
                 if (collisionPartner.name === "mainland") {
-                    console.error("Collison with mainland");
+                    // console.error("Collison with mainland");
                 }
                 if (collisionPartner instanceof Game.Character) {
-                    console.error("Collison with char");
+                    // console.error("Collison with char");
                     collisionPartner.life -= 25;
                     if (collisionPartner.life <= 0) {
                         this.removeNode(collisionPartner);
