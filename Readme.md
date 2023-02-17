@@ -33,7 +33,7 @@ Hochschule Furtwangen<br>
 [Konzept](https://github.com/pretteter/PRIMA_JAN/blob/main/Abgabe/Design_Document_Christmeier_Jan_PRIMA_MIB_WS_2022-2023.pdf)<br>
 
 ### Default-Steuerung
-Der linke Char bewegt sich mit WASD und schießt mit SPACE
+Der linke Char bewegt sich mit WASD und schießt mit SPACE <br>
 Der rechte Char bewegt sich mit den Pfeiltasten und schießt mit Numpad0
 
 ## Checkliste für die Abschlussarbeit
